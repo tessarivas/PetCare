@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <string.h>
 
+// Hola
+
 // DEFINICIONES
 #define ANCHO 414
 #define ALTO 896
