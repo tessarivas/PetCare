@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+ola
 
 // DEFINICIONES
 #define ANCHO 414
