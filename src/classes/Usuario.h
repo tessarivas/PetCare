@@ -34,12 +34,12 @@ public:
     Usuario();
     Usuario(string nombre, string email,string passwoard,string telefono);
     
-    // Acciones respecto a la cuenta
-    virtual void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono);
-    virtual void IniciarSesion(string Email,string Contrasenia);
-    virtual void RecuperarContr(string Email);
-    bool CerrarSesion();
-    void EliminarCuenta();
+    // // Acciones respecto a la cuenta
+    // virtual void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono);
+    // virtual void IniciarSesion(string Email,string Contrasenia);
+    // virtual void RecuperarContr(string Email);
+    // bool CerrarSesion();
+    // void EliminarCuenta();
     
     // Id
     virtual string GenID ();
@@ -53,7 +53,7 @@ string Usuario::GenID() {
     while (id.length() < 4) {
         id = "0" + id; // Asegura que el ID tenga 4 dígitos
     }
-
+    id = '#' + id;
     return id;
 }
 
@@ -87,7 +87,7 @@ void RecuperarContr(string Email){
 }
 
 bool CerrarSesion(){
-
+    return false;
 }
 
 void EliminarCuenta(){

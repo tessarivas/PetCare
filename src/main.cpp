@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "classes/Usuario.h"
+
 using std::cout;
 using std::endl;
 using std::string;
@@ -55,6 +57,7 @@ void DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
 int main(){
     // Variables
     srand(time(NULL));
+    Usuario user;
 
     // Ventana
     InitWindow(ANCHO, ALTO, "PetCare");
