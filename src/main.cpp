@@ -74,16 +74,13 @@ int main(){
 
     // PROGRAMA PRINCIPAL
     while(!WindowShouldClose()){
-        // BOTONES PARA NAVEGAR ENTRE PANTALLAS
-        int click1 = DibujarInicio(img);
-
-        // CAMBIO DE PANTALLAS
+        BeginDrawing();
         switch(pantalla_actual)
         {
             case INICIO:
             {
-                DibujarMenu(pantalla_actual, img);
-                if(IsKeyPressed(KEY_SPACE) || click1 == 1){
+                DibujarInicio(img);
+                if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     // Primero descargar la pantalla actual
                     DescargarContenido(pantalla_actual, img); //En vez de tener que enviar una cadena podemos solamente enviar la pantalla
                     // Actualizamos la variable que representa la pantalla
@@ -91,6 +88,7 @@ int main(){
                     // Actualizamos la textura
                     img = CargarContenido(pantalla_actual, img);
                 }
+                
                 break;
             }
             case CREAR_DUENO:
@@ -108,16 +106,16 @@ int main(){
             case MIS_MASCOTAS:
             {
                 DibujarMisMascotas(img);
-                if(IsKeyPressed(KEY_SPACE) || click1 == 1){
-                    DescargarContenido(pantalla_actual, img);
-                    pantalla_actual = CREAR_MASCOTA;
-                    img = CargarContenido(pantalla_actual, img);
-                }
+                DescargarContenido(pantalla_actual, img);
+                pantalla_actual = CREAR_MASCOTA;
+                img = CargarContenido(pantalla_actual, img);
                 break;
             }
             case CREAR_MASCOTA:
             {
-                if(IsKeyPressed(KEY_SPACE) || click1 == 1){
+                cout<<"ENTRO AQUI"<<endl;
+                DibujarCrearMascota(img);
+                if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     DescargarContenido(pantalla_actual, img);
                     pantalla_actual = CREAR_MASCOTA;
                     img = CargarContenido(pantalla_actual, img);
@@ -128,6 +126,7 @@ int main(){
             default:
                 break;
         }
+        EndDrawing();
         // DibujarMenu(pantalla_actual, archivos);
     }
 
@@ -202,7 +201,7 @@ int DibujarCrearDueno(Cargas archivos){
     //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
     //     (Vector2){0, 0},
     //     0.0f,
-    // WHITE);
+    //     WHITE);
     DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
 
     return 0;
@@ -213,6 +212,7 @@ string DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight){
     int CharacterCont=0;
     char name[MaxCharacter+1];
     string nombre;
+    bool band= false;
     do
     {
         BeginDrawing();
@@ -251,26 +251,27 @@ string DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight){
             name[CharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
         }
         if (IsKeyPressed(KEY_ENTER)){
-            nombre = name;
-            return nombre;
+            band = true;
         }
 
-        if (IsKeyPressed(KEY_ESCAPE)){
-            break;
-        }
         EndDrawing();
-    } while (true);
+    } while (band == false);
+    nombre = name;
+    return nombre;
 }
 
 void DibujarMisMascotas(Cargas archivos){
-    // DrawTexturePro(
-    //     archivos.FondoInicio,
-    //     (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
-    //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
-    //     (Vector2){0, 0},
-    //     0.0f,
-    // WHITE);
-    DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
+    while (true)
+    {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.2f,WHITE);
+        if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            break;
+        }
+        EndDrawing();
+    }
+    
 }
 
 void DibujarCrearMascota(Cargas archivos){
@@ -284,36 +285,3 @@ void DibujarCrearMascota(Cargas archivos){
     DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
 }
 
-
-// DIBUJAR MENU, PARA QUE SE PUEDA DESPLAZAR ENTRE PANTALLAS Y NO CARGAR TODO AL MISMO TIEMPO
-void DibujarMenu(Pantalla pantalla_actual, Cargas archivos){
-    // LIMPIAR PANTALLA
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    
-    // DIBUJAR ENTRE PANTALLAS
-    switch(pantalla_actual){
-        case INICIO:
-        {
-            DibujarInicio(archivos);
-            break;
-        }
-        case CREAR_DUENO:
-        {
-            DibujarCrearDueno(archivos);
-            break;
-        }
-        case MIS_MASCOTAS:
-        {
-            DibujarMisMascotas(archivos);
-        }
-        case CREAR_MASCOTA:
-        {
-            DibujarCrearMascota(archivos);
-        }
-        default:
-            break;
-    }
-
-    EndDrawing();
-}
