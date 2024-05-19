@@ -1,14 +1,21 @@
-// BIBLIOTECAS
 #include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <iostream>
+#include <string>
+
+using std::cout;
+using std::endl;
+using std::string;
+
+
 // DEFINICIONES
 #define ANCHO 414
 #define ALTO 896
 
-// ESTRCUTURAS
+//---------------------Escenarios------------------------------------------------
 typedef enum Pantalla{
     INICIO = 0,
     CREAR_DUENO, // Donde se crea al dueño al entrar
@@ -24,93 +31,88 @@ typedef enum Pantalla{
     */
 } Pantalla;
 
-// ESTRUCTURA PARA ARCHIVOS SUBIDOS
+//----------------------Images----------------------------------------------------
 typedef struct Cargas{
     Texture2D FondoInicio;
     Vector2 Position;
 } Cargas;
 
-// FUNCIONES A IMPLEMENTAR:
-// SUBIR IMAGENES, AUDIO, ETC...
+//------------------Load And Unload Content----------------------------------------
 Cargas CargarContenido(Pantalla actual, Cargas archivos);
-//DIBUJAR PANTALLAS
+void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
+
+//-----------------------Draw Screen-----------------------------------------------
 void DibujarMenu(Pantalla pantalla_actual, Cargas archivos);
 int DibujarInicio(Cargas archivos);
 int DibujarCrearDueno(Cargas archivos);
-// int DibujarDueno(Cargas archivos);
-// int DibujarCrearMascota(Cargas archivos);
-// int DibujarMascota(Cargas archivos);
-// int DibujarInfoMascota(Cargas archivos);
-// int DibujarCartilla(Cargas archivos);
-// int DibujarCalendario(Cargas archivos);
-// BAJAR IMAGENES, AUDIO, ETC...
-void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
 
-// Functions
+//-----------------------Extra Functions-------------------------------------------
 void DibujarMisMascotas(Cargas archivos);
 void DibujarCrearMascota(Cargas archivos);
 void DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
 
-// MENU PRINCIPAL
+//-------------------------MAIN----------------------------------------------------
 int main(){
-    // CREAR VENTANA
+    // Variables
+    srand(time(NULL));
+
+    // Ventana
     InitWindow(ANCHO, ALTO, "PetCare");
     SetTargetFPS(60);
-    // Ruta
     Image icono = LoadImage("../assets/PetCare_LOGO.png");
     SetWindowIcon(icono);
 
-    // ASIGNAR PANTALLAS A VARIABLES
+    // Iniciar pantallas
     Pantalla pantalla_actual = INICIO;
-    Cargas archivos;
-    archivos = CargarContenido(pantalla_actual, archivos);
+    Cargas img;
+    img = CargarContenido(pantalla_actual, img);
 
     // PROGRAMA PRINCIPAL
     while(!WindowShouldClose()){
         // BOTONES PARA NAVEGAR ENTRE PANTALLAS
-        int click1 = DibujarInicio(archivos);
+        int click1 = DibujarInicio(img);
 
         // CAMBIO DE PANTALLAS
         switch(pantalla_actual)
         {
             case INICIO:
             {
-                DibujarMenu(pantalla_actual, archivos);
+                DibujarMenu(pantalla_actual, img);
                 if(IsKeyPressed(KEY_SPACE) || click1 == 1){
                     // Primero descargar la pantalla actual
-                    DescargarContenido(pantalla_actual, archivos); //En vez de tener que enviar una cadena podemos solamente enviar la pantalla
+                    DescargarContenido(pantalla_actual, img); //En vez de tener que enviar una cadena podemos solamente enviar la pantalla
                     // Actualizamos la variable que representa la pantalla
                     pantalla_actual = CREAR_DUENO;
                     // Actualizamos la textura
-                    archivos = CargarContenido(pantalla_actual, archivos);
+                    img = CargarContenido(pantalla_actual, img);
                 }
                 break;
             }
             case CREAR_DUENO:
             {
-                DibujarCrearPerfil(archivos,ANCHO,ALTO);
+                DibujarCrearPerfil(img,ANCHO,ALTO);
                 if(IsKeyPressed(KEY_SPACE) || click1 == 1){
-                    DescargarContenido(pantalla_actual, archivos);
+                    DescargarContenido(pantalla_actual, img);
                     pantalla_actual = MIS_MASCOTAS;
-                    archivos = CargarContenido(pantalla_actual, archivos);
+                    img = CargarContenido(pantalla_actual, img);
                 }
                 break;
             }
             case MIS_MASCOTAS:
             {
                 if(IsKeyPressed(KEY_SPACE) || click1 == 1){
-                    DescargarContenido(pantalla_actual, archivos);
+                    DescargarContenido(pantalla_actual, img);
                     pantalla_actual = CREAR_MASCOTA;
-                    archivos = CargarContenido(pantalla_actual, archivos);
+                    img = CargarContenido(pantalla_actual, img);
                 }
                 break;
             }
             case CREAR_MASCOTA:
             {
                 if(IsKeyPressed(KEY_SPACE) || click1 == 1){
-                    DescargarContenido(pantalla_actual, archivos);
+                    DescargarContenido(pantalla_actual, img);
                     pantalla_actual = CREAR_MASCOTA;
-                    archivos = CargarContenido(pantalla_actual, archivos);
+                    img = CargarContenido(pantalla_actual, img);
                 }
                 break;
             }
@@ -122,7 +124,7 @@ int main(){
     }
 
     // DESCARGAR CONTENIDO
-    DescargarContenido(pantalla_actual, archivos);
+    DescargarContenido(pantalla_actual, img);
     UnloadImage(icono);
 
     // CERRAR VENTANA
@@ -186,13 +188,14 @@ int DibujarInicio(Cargas archivos){
 
 // DIBUJAR LA PANTALLA DE CREAR DUEÑO
 int DibujarCrearDueno(Cargas archivos){
-    DrawTexturePro(
-        archivos.FondoInicio,
-        (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
-        (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
-        (Vector2){0, 0},
-        0.0f,
-    WHITE);
+    // DrawTexturePro(
+    //     archivos.FondoInicio,
+    //     (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
+    //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
+    //     (Vector2){0, 0},
+    //     0.0f,
+    // WHITE);
+    DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
 
     return 0;
 }
@@ -247,23 +250,25 @@ void DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight){
 }
 
 void DibujarMisMascotas(Cargas archivos){
-    DrawTexturePro(
-        archivos.FondoInicio,
-        (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
-        (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
-        (Vector2){0, 0},
-        0.0f,
-    WHITE);
+    // DrawTexturePro(
+    //     archivos.FondoInicio,
+    //     (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
+    //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
+    //     (Vector2){0, 0},
+    //     0.0f,
+    // WHITE);
+    DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
 }
 
 void DibujarCrearMascota(Cargas archivos){
     
-    DrawTexturePro(archivos.FondoInicio,
-        (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
-        (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
-        (Vector2){0, 0},
-        0.0f,
-    WHITE);
+    // DrawTexturePro(archivos.FondoInicio,
+    //     (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
+    //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
+    //     (Vector2){0, 0},
+    //     0.0f,
+    // WHITE);
+    DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
 }
 
 
