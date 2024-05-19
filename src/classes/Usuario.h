@@ -4,11 +4,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <string>
 
 using std::cout;
 using std::endl;
 using std::cin;
 using std::string;
+using std::to_string;
 
 class Usuario{
 protected:
@@ -40,20 +42,19 @@ public:
     void EliminarCuenta();
     
     // Id
-    virtual int GenID ();
+    virtual string GenID ();
 };
 
-int Usuario::GenID(){
-    cout<<"genera la id";
-    int id;
-    id = rand()% (9999-0+1)-0;
-    if ( id <= 999 ){ // No alcanza los 4 digitos
-        if ( id <= 99 ) { // No alcanza ni los 3 digitos
-            if ( id <= 9 ){ // No alcanza ni los 2 digitos
-                // agregar 0 necesarios
-            } 
-        }
+string Usuario::GenID() {
+    int idt = rand() % 1000; // Genera un número entre 0 y 9999
+    string id = to_string(idt);
+
+    // Si id.anchura es menor a 4 digitos
+    while (id.length() < 4) {
+        id = "0" + id; // Asegura que el ID tenga 4 dígitos
     }
+
+    return id;
 }
 
 Usuario::Usuario(){
@@ -73,3 +74,22 @@ Usuario::Usuario(string nombre, string email,string passwoard,string telefono){
     this->Telefono=telefono;
 }
 
+void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono){
+
+}
+
+void IniciarSesion(string Email,string Contrasenia){
+
+}
+
+void RecuperarContr(string Email){
+
+}
+
+bool CerrarSesion(){
+
+}
+
+void EliminarCuenta(){
+
+}
