@@ -33,6 +33,7 @@ public:
     // Constructores
     Usuario();
     Usuario(string nombre, string email,string passwoard,string telefono);
+    void DefineName(string name);
     
     // // Acciones respecto a la cuenta
     // virtual void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono);
@@ -43,6 +44,7 @@ public:
     
     // Id
     virtual string GenID ();
+    void GetName();
 };
 
 string Usuario::GenID() {
@@ -55,6 +57,14 @@ string Usuario::GenID() {
     }
     id = '#' + id;
     return id;
+}
+
+void Usuario::GetName(){
+    cout<<this->Nombre<<endl;
+}
+
+void Usuario::DefineName(string name){
+    this->Nombre = name;
 }
 
 Usuario::Usuario(){

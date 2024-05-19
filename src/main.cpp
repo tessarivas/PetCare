@@ -51,13 +51,15 @@ int DibujarCrearDueno(Cargas archivos);
 //-----------------------Extra Functions-------------------------------------------
 void DibujarMisMascotas(Cargas archivos);
 void DibujarCrearMascota(Cargas archivos);
-void DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
+string DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
 
 //-------------------------MAIN----------------------------------------------------
 int main(){
     // Variables
     srand(time(NULL));
     Usuario user;
+
+    string tempName;
 
     // Ventana
     InitWindow(ANCHO, ALTO, "PetCare");
@@ -93,8 +95,10 @@ int main(){
             }
             case CREAR_DUENO:
             {
-                DibujarCrearPerfil(img,ANCHO,ALTO);
-                if(IsKeyPressed(KEY_SPACE) || click1 == 1){
+                tempName = DibujarCrearPerfil(img,ANCHO,ALTO);
+                user.DefineName(tempName);
+                if(tempName != " "){
+                    user.GetName();
                     DescargarContenido(pantalla_actual, img);
                     pantalla_actual = MIS_MASCOTAS;
                     img = CargarContenido(pantalla_actual, img);
@@ -103,6 +107,7 @@ int main(){
             }
             case MIS_MASCOTAS:
             {
+                DibujarMisMascotas(img);
                 if(IsKeyPressed(KEY_SPACE) || click1 == 1){
                     DescargarContenido(pantalla_actual, img);
                     pantalla_actual = CREAR_MASCOTA;
@@ -155,7 +160,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         }
         case MIS_MASCOTAS:
         {
-            archivos.FondoInicio=LoadTexture("./assets/MisMascotas.png");
+            archivos.FondoInicio=LoadTexture("../assets/MisMascotas.png");
             break;
         }
         case CREAR_MASCOTA:
@@ -203,11 +208,11 @@ int DibujarCrearDueno(Cargas archivos){
     return 0;
 }
 
-void DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight){
+string DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight){
     const int MaxCharacter=20;
     int CharacterCont=0;
     char name[MaxCharacter+1];
-
+    string nombre;
     do
     {
         BeginDrawing();
@@ -245,6 +250,11 @@ void DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight){
             }
             name[CharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
         }
+        if (IsKeyPressed(KEY_ENTER)){
+            nombre = name;
+            return nombre;
+        }
+
         if (IsKeyPressed(KEY_ESCAPE)){
             break;
         }
