@@ -200,7 +200,7 @@ int DibujarCrearDueno(Cargas archivos){
     //     (Rectangle){0, 0, (float)archivos.FondoInicio.width, (float)archivos.FondoInicio.height},
     //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
     //     (Vector2){0, 0},
-    //     0.0f,
+    //     0.0f,        `
     //     WHITE);
     DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
 

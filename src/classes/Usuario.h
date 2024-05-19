@@ -84,22 +84,22 @@ Usuario::Usuario(string nombre, string email,string passwoard,string telefono){
     this->Telefono=telefono;
 }
 
-void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono){
+// void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono){
 
-}
+// }
 
-void IniciarSesion(string Email,string Contrasenia){
+// void IniciarSesion(string Email,string Contrasenia){
 
-}
+// }
 
-void RecuperarContr(string Email){
+// void RecuperarContr(string Email){
 
-}
+// }
 
-bool CerrarSesion(){
-    return false;
-}
+// bool CerrarSesion(){
+//     return false;
+// }
 
-void EliminarCuenta(){
+// void EliminarCuenta(){
 
-}
+// }
