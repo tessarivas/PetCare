@@ -67,7 +67,7 @@ int main(){
 
     // Iniciar pantallas
     Pantalla pantalla_actual = INICIO;
-    Cargas img;
+    Cargas img; // Fondo
     img = CargarContenido(pantalla_actual, img);
 
     // PROGRAMA PRINCIPAL
@@ -164,7 +164,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             break;
         }
         default:
-            break;
+        break;
     }
 
     return archivos;
@@ -183,7 +183,7 @@ int DibujarInicio(Cargas archivos){
     //     (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
     //     (Vector2){0, 0},
     //     0.0f,
-    // WHITE);
+    //     WHITE);
     DrawTextureEx(archivos.FondoInicio,archivos.Position,0.0f,1.0f,WHITE);
     
     return 0;
