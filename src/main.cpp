@@ -262,6 +262,9 @@ string DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
     char name[MaxCharacter+1];
     string nombre;
     bool band= false;
+    /*
+        falta validar que haga click en el cuadro de texto y que haga click en los avatares
+    */
     do
     {
         BeginDrawing();
