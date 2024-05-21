@@ -1,5 +1,6 @@
 #pragma once
 
+#include "raylib.h"
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>

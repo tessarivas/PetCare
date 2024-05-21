@@ -16,6 +16,7 @@ public:
     //Datos medicos
     float Peso;
     string Padecimientos;
+    Texture2D Avatar;
     //Los padecimientos podemos hacerlo en una estructura de datos para poder poner mas de uno, pero eso ya despues :b
 
     //Constructor
@@ -30,6 +31,9 @@ public:
     int getYear();
     float getPeso();
     string getPadecimientos();
+
+    // Define
+    void DefineAvatar(Texture2D textura);
 
 };
 
@@ -62,4 +66,8 @@ string Dog::getName(){
 
 string Dog::getRaza(){
     return this->Raza;
+}
+
+void Dog::DefineAvatar(Texture2D textura){
+    this->Avatar=textura;
 }
