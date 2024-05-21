@@ -921,7 +921,7 @@ Dog SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight){
     bool finish = false;
     while(finish == false){
         BeginDrawing();
-            DrawTextureEx();
+            
         EndDrawing();
     }
 }
