@@ -30,6 +30,8 @@ typedef enum Pantalla{
     // Registrar
     REGISTRAR_PERRO,
     REGISTRAR_GATO,
+    AVATAR_PERRO,
+    MI_PERFIL,
 } Pantalla;
 
 //----------------------Images----------------------------------------------------
@@ -48,6 +50,8 @@ typedef struct Cargas{
     // REGISTRAR GATO
     Texture2D FondoRegGato;
 
+    Texture2D Background;
+
     Vector2 Position = { 0.0f, 0.0f };
 } Cargas;
 
@@ -62,13 +66,14 @@ int DibujarCrearDueno(Cargas archivos);
 
 //-----------------------Registro de mascotas--------------------------------------//
 Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
+Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
 
 //-----------------------Extra Functions-------------------------------------------//
 void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight);
 string DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
-string CuadroDeTexto(Rectangle posicion,Color color);
 
+Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro);
 
 //-------------------------MAIN----------------------------------------------------//
 int main(){
@@ -83,7 +88,6 @@ int main(){
     Pantalla pantalla_actual = INICIO;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
-    Cargas archivos;
 
     // Variables
     srand(time(NULL));
@@ -152,7 +156,29 @@ int main(){
             case REGISTRAR_PERRO:
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-                cout<<perro.Nombre<< " "<<perro.Dia<<" "<<perro.Peso<<endl;
+                // Nueva escena
+                pantalla_actual=AVATAR_PERRO;
+                // Descargar y cargar
+                UnloadTexture(fondo_actual.FondoRegPerro);
+                // Cargamos la pantalla siguiente
+                fondo_actual.Background=LoadTexture("../assets/Temp/avataresDogo.png");
+                break;
+            }
+            case AVATAR_PERRO:
+            {
+                // cargamos la textura que selecciono el usuario
+                perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
+                
+                pantalla_actual=MI_PERFIL;
+
+                UnloadTexture(fondo_actual.Background);
+                fondo_actual.Background=LoadTexture("../assets/Temp/MiPerfil.png");
+                break;
+            }
+            case MI_PERFIL:
+            {   
+                pantalla_actual= MiPerfil(fondo_actual,ANCHO,ALTO,perro);
+                UnloadTexture(fondo_actual.Background);
                 break;
             }
             default:
@@ -913,15 +939,161 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     return temp_dog;
 }
 
-Dog SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight){
+Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight){
     
-    /*Esta funcion es para seleccionar el avatar del perro, tengo pensado
-    hacer una variable dog temporal para retornarla con dog.avatar = eleccionarAvatarPerro()*/
+    /*
+        Maybe y la dejamos para el final
+
+        Esta funcion es para que el usuario seleccione un avatar para el perro, devolvera una variable que tenga cargada la textura 
+        de la mascota
+    */
     
     bool finish = false;
+
+    // HitBox De avatares
+    // 1 renglon------------------
+    Rectangle av1;
+    av1.x= screenWidth * 0.18;
+    av1.y= screenHeight * 0.32;
+    av1.width= screenWidth * 0.3;
+    av1.height= screenHeight * 0.13;
+    
+    Rectangle av2;
+    av2.x= screenWidth * 0.50;
+    av2.y= screenHeight * 0.32;
+    av2.width= screenWidth * 0.3;
+    av2.height= screenHeight * 0.13;
+    // 2 renglon------------------
+    Rectangle av3;
+    av3.x= screenWidth * 0.18;
+    av3.y= screenHeight * 0.46;
+    av3.width= screenWidth * 0.3;
+    av3.height= screenHeight * 0.13;
+    
+    Rectangle av4;
+    av4.x= screenWidth * 0.50;
+    av4.y= screenHeight * 0.46;
+    av4.width= screenWidth * 0.3;
+    av4.height= screenHeight * 0.13;
+    // 3 renglon------------------
+    Rectangle av5;
+    av5.x= screenWidth * 0.18;
+    av5.y= screenHeight * 0.60;
+    av5.width= screenWidth * 0.3;
+    av5.height= screenHeight * 0.13;
+    
+    Rectangle av6;
+    av6.x= screenWidth * 0.50;
+    av6.y= screenHeight * 0.60;
+    av6.width= screenWidth * 0.3;
+    av6.height= screenHeight * 0.13;
+
+    // 4 renglon------------------
+    Rectangle av7;
+    av7.x= screenWidth * 0.18;
+    av7.y= screenHeight * 0.74;
+    av7.width= screenWidth * 0.3;
+    av7.height= screenHeight * 0.13;
+    
+    Rectangle av8;
+    av8.x= screenWidth * 0.50;
+    av8.y= screenHeight * 0.74;
+    av8.width= screenWidth * 0.3;
+    av8.height= screenHeight * 0.13;
+
+    Vector2 Mouse;
+    Vector2 LastClick;
+
+    // Texturas
+    // Aqui la imagen
+    Texture2D av1_textura = LoadTexture("../assets/PetCare_avatares/1.png");
+
     while(finish == false){
         BeginDrawing();
-            
+            Mouse= GetMousePosition();
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                LastClick=Mouse;
+            }
+
+            //Fondo
+            DrawTextureEx(archivos.Background, archivos.Position,0.0f,0.84f,WHITE);
+            // Avatares
+            //1er renglon
+            DrawRectangleRec(av1, RED);
+            DrawRectangleRec(av2, RED);
+            // 2do renglon
+            DrawRectangleRec(av3, BLUE);
+            DrawRectangleRec(av4, BLUE);
+            //3er renglon
+            DrawRectangleRec(av5, RED);
+            DrawRectangleRec(av6, RED);
+            //4to renglon
+            DrawRectangleRec(av7, BLUE);
+            DrawRectangleRec(av8, BLUE);
+
+            // Comprobacion de click en avatares
+            if(CheckCollisionPointRec(LastClick,av1)){
+                cout<<"selecciono el avatar 1"<<endl;
+                /*
+                    Unload texturas
+                */
+                return av1_textura;
+            }
+            if(CheckCollisionPointRec(LastClick,av2)){
+                cout<<"selecciono el avatar 2"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av3)){
+                cout<<"selecciono el avatar 3"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av4)){
+                cout<<"selecciono el avatar 4"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av5)){
+                cout<<"selecciono el avatar 5"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av6)){
+                cout<<"selecciono el avatar 6"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av7)){
+                cout<<"selecciono el avatar 7"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av8)){
+                cout<<"selecciono el avatar 8"<<endl;
+            }
+
+        EndDrawing();
+    }
+    // Descargamos las texturas antes de salir de la funcion.
+    UnloadTexture(av1_textura);
+}
+
+Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
+    /*
+        Habria que, o adaptar la funcion de mi perfil para que acepte tanto perros y gatos, 
+        o hacer una clase animal que contenga a los 2 . _  .
+    */
+    bool select=false;
+
+    // Posicion del avatar
+    Vector2 AvatarPos;
+    AvatarPos.x=screenWidth*0.2;
+    AvatarPos.y=screenHeight*0.92;
+
+    // lo transformamos a cadena
+    const char * mascota=perro.Nombre.c_str();
+
+
+    while(select==false)
+    {
+        BeginDrawing();
+            // Fondo
+            DrawTextureEx(archivos.Background, archivos.Position,0.0f,0.85f,WHITE);
+            // avatar de perro
+            DrawTextureEx(perro.Avatar,AvatarPos,0.0f,0.8f,WHITE);
+            // Nombre del perro
+            DrawText(mascota,screenWidth * 0.4, screenHeight * 0.94,40,BLACK);
+
         EndDrawing();
     }
 }
+
