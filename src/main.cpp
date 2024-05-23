@@ -8,6 +8,7 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
+#include <utility> 
 
 #include "classes/Usuario.h"
 #include "classes/Dog.h"
@@ -16,6 +17,7 @@
 using std::cout;
 using std::endl;
 using std::string;
+using std::pair;
 
 // DEFINICIONES
 #define ANCHO 414
@@ -41,8 +43,17 @@ typedef struct Cargas{
     Texture2D BotonEntrar;
     // CREAR DUEÑO
     Texture2D FondoCrearDueno;
+    Texture2D BotonListo;
+    Texture2D BotonAtras;
+    Texture2D Avatar1;
+    Texture2D Avatar2;
+    Texture2D Avatar3;
+    Texture2D Avatar4;
+    Texture2D Avatar5;
+    Texture2D Avatar6;
     // MIS MASCOTAS
     Texture2D FondoMisMascotas;
+    Texture2D BotonAnadir;
     // AÑADIR MASCOTAS
     Texture2D FondoAnadirMascotas;
     // REGISTRAR PERRO
@@ -51,7 +62,6 @@ typedef struct Cargas{
     Texture2D FondoRegGato;
 
     Texture2D Background;
-
     Vector2 Position = { 0.0f, 0.0f };
 } Cargas;
 
@@ -70,7 +80,7 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
 
 //-----------------------Extra Functions-------------------------------------------//
 void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight);
-string DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
+pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 
 Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro);
@@ -105,14 +115,13 @@ int main(){
     // PROGRAMA PRINCIPAL
     while(!WindowShouldClose()){
         BeginDrawing();
-        int boton_click_inicio; // Solo cuando se de click al boton y no en cualquier parte de la pantalla
-        // Si esta bn pero la obtencion de la posicion del mouse deberia de estar en el ciclo, osea en el case inicio
 
         switch(pantalla_actual)
         {
             case INICIO:
             {
-                boton_click_inicio= DibujarInicio(fondo_actual);
+                int boton_click_inicio;
+                boton_click_inicio = DibujarInicio(fondo_actual);
                 if(IsKeyPressed(KEY_SPACE) || boton_click_inicio == 1){
                     DescargarContenido(INICIO, fondo_actual);
                     pantalla_actual = CREAR_DUENO;
@@ -122,13 +131,20 @@ int main(){
             }
             case CREAR_DUENO:
             {
-                tempName = DibujarCrearPerfil(fondo_actual,ANCHO,ALTO);
-                user.DefineName(tempName);
-                if(tempName != " "){
-                    user.GetName();
+                auto [tempName, regresar] = DibujarCrearPerfil(fondo_actual, ANCHO, ALTO);
+                if (regresar) {
+                    // Si se debe regresar, limpiar contenido y volver a la pantalla de inicio
                     DescargarContenido(CREAR_DUENO, fondo_actual);
-                    pantalla_actual = MIS_MASCOTAS;
+                    pantalla_actual = INICIO;
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                } else {
+                    user.DefineName(tempName);
+                    if (tempName != " ") {
+                        user.GetName();
+                        DescargarContenido(CREAR_DUENO, fondo_actual);
+                        pantalla_actual = MIS_MASCOTAS;
+                        fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                    }
                 }
                 break;
             }
@@ -209,16 +225,25 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         case CREAR_DUENO:
         {
             archivos.FondoCrearDueno = LoadTexture("../assets/PetCare_CrearDueno.png");
+            archivos.BotonListo = LoadTexture("../assets/PetCare_BotonListo.png");
+            archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
+            archivos.Avatar1 = LoadTexture("../assets/PetCare_Avatares/1.png");
+            archivos.Avatar2 = LoadTexture("../assets/PetCare_Avatares/2.png");
+            archivos.Avatar3 = LoadTexture("../assets/PetCare_Avatares/3.png");
+            archivos.Avatar4 = LoadTexture("../assets/PetCare_Avatares/4.png");
+            archivos.Avatar5 = LoadTexture("../assets/PetCare_Avatares/5.png");
+            archivos.Avatar6 = LoadTexture("../assets/PetCare_Avatares/6.png");
             break;
         }
         case MIS_MASCOTAS:
         {
-            archivos.FondoMisMascotas=LoadTexture("../assets/PetCare_MisMascotas.png");
+            archivos.FondoMisMascotas = LoadTexture("../assets/PetCare_MisMascotas.png");
+            archivos.BotonAnadir = LoadTexture("../assets/PetCare_BotonAnadir.png");
             break;
         }
         case CREAR_MASCOTA:
         {
-            archivos.FondoAnadirMascotas=LoadTexture("../assets/PetCare_AnadirMascotas.png");
+            archivos.FondoAnadirMascotas = LoadTexture("../assets/PetCare_AnadirMascotas.png");
             break;
         }
         case REGISTRAR_PERRO:
@@ -239,9 +264,18 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
     }
     if(pantalla_actual == CREAR_DUENO){
         UnloadTexture(archivos.FondoCrearDueno);
+        UnloadTexture(archivos.BotonListo);
+        UnloadTexture(archivos.BotonAtras);
+        UnloadTexture(archivos.Avatar1);
+        UnloadTexture(archivos.Avatar2);
+        UnloadTexture(archivos.Avatar3);
+        UnloadTexture(archivos.Avatar4);
+        UnloadTexture(archivos.Avatar5);
+        UnloadTexture(archivos.Avatar6);
     }
     if(pantalla_actual == MIS_MASCOTAS){
         UnloadTexture(archivos.FondoMisMascotas);
+        UnloadTexture(archivos.BotonAnadir);
     }
     if(pantalla_actual == CREAR_MASCOTA){
         UnloadTexture(archivos.FondoAnadirMascotas);
@@ -274,47 +308,49 @@ int DibujarInicio(Cargas archivos) {
     return 0;
 }
 
-string DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
+pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
     const int MaxCharacter=20;
     int CharacterCont=0;
     
-    char name[MaxCharacter+1];
+    char name[MaxCharacter+1] = "";
     string nombre;
     
-    bool band= false;
+    bool regresar = false; // Para boton atras
+    bool band = false; // Para boton listo
     
-    // Posicion actual de mouse
-    Vector2 Mouse;
-    // Posicion del ultimo click
-    Vector2 LastClick;
+    Vector2 Mouse; // Posicion actual de mouse
+    Vector2 LastClick; // Posicion del ultimo click
 
     int tamano_fondo = GetScreenWidth();
-        
-    //Color de fondo
-    Color color_fondo_texto = { 251, 247, 235, 255 };
+    // Color color_fondo_texto = { 251, 247, 235, 255 }; //Color de fondo
+
+    // Boton atras
+    Rectangle atras;
+    atras.width = screenWidth * 0.1;
+    atras.height = screenHeight * 0.05;
+    atras.y = 20;
+    atras.x = 20;
 
     // Boton listo
     Rectangle listo;
-    listo.width=screenWidth*0.6;
+    listo.width=screenWidth*0.55;
     listo.height=screenHeight*0.1;
-    
     listo.y=screenHeight*0.75;
     listo.x=(screenWidth/2) - (listo.width/2);
 
-    //Cuadro de texto de nombre
+    // Cuadro de texto de nombre
     Rectangle c_name;
     c_name.x=(tamano_fondo - 320 )/2;
     c_name.y=320.0f;
     c_name.width=320.0f;
     c_name.height=70.0f;
 
-    //Cuadro de avatares
+    // Cuadro de avatares
     Rectangle c_avatares;
     c_avatares.x=(tamano_fondo - 320 )/2;
     c_avatares.y=430;
     c_avatares.width=320;
     c_avatares.height=225;
-
 
     // HitBox de avatares
     Rectangle av1;
@@ -353,11 +389,10 @@ string DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
     av6.width = screenWidth * 0.2;
     av6.height = screenHeight * 0.1;
     
-    do
-    {
+    do{
         BeginDrawing();
-        
-        //Mouse
+        ClearBackground(RAYWHITE);
+
         Mouse = GetMousePosition();
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             LastClick = Mouse;
@@ -366,44 +401,36 @@ string DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
         //Fondo
         DrawTextureEx(archivos.FondoCrearDueno,archivos.Position,0.0f,1.0f,WHITE);
 
-        
         //Rectangulo de nombre
-        DrawRectangleRec(c_name, RED);
-        
+        DrawRectangleRec(c_name, YELLOW);
+
         //Cuadro de texto
         DrawText(name,55,325,30,BLACK);
-        
+
         //Rectangulo de avatares
-        DrawRectangleRec(c_avatares, RED);
+        DrawRectangleRec(c_avatares, YELLOW);
         // float rectX = (tamano_fondo - 320.0f) / 2;
         // DrawRectangle(rectX, 320.0f, 320.0f, 70.0f, color_fondo_texto); // RECTANGULO NOMBRE
         // DrawRectangle(rectX, 430.0f, 320.0f, 300.0f, color_fondo_texto); // RECTANGULO AVATAR
-        
-        // Tecla presionada
-        int key = GetCharPressed();
+
+        int key = GetCharPressed(); // Tecla presionada
 
         // Checar si dio click en el cuadro de nombre
         if(CheckCollisionPointRec(LastClick, c_name)){
             // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada
-            while (key > 0)
-            {
-                if ((key >= 32) && (key <= 125) && (CharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
-                {
-                    name[CharacterCont] = (char)key; //transformar el caracter de codigo asci a caracter
-                    name[CharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    CharacterCont++; //Aumentamso el contador de caracteres
+            while (key > 0){
+                if ((key >= 32) && (key <= 125) && (CharacterCont <MaxCharacter)){ // Solo caracteres entre el 32 y 125
+                    name[CharacterCont] = (char)key; // Transformar el caracter de codigo asci a caracter
+                    name[CharacterCont+1] = '\0'; // Agregar caracter nulo al final de la cadena
+                    CharacterCont++; // Aumentamos el contador de caracteres
                 }
-
                 key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola
             }
 
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
-            {
+            if (IsKeyPressed(KEY_BACKSPACE)){
                 if (CharacterCont <= 0){
                     // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
+                } else{
                     name[CharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
                     CharacterCont--; //Si no esta vacia eliminara un espacio     
                 }
@@ -411,46 +438,45 @@ string DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
         }
 
         // HitBox de avatares
-        //Avatar1
-        DrawRectangleRec(av1,BLACK);
-        
-        //Avatar2
-        DrawRectangleRec(av2,BLACK);
-        
-        //Avatar3
-        DrawRectangleRec(av3,BLACK);
-        
-        //Avatar4
-        DrawRectangleRec(av4,BLACK);
+        DrawTextureEx(archivos.Avatar1, { av1.x, av1.y }, 0.0f, 1.0f, WHITE);
+        DrawTextureEx(archivos.Avatar2, { av2.x, av2.y }, 0.0f, 1.0f, WHITE);
+        DrawTextureEx(archivos.Avatar3, { av3.x, av3.y }, 0.0f, 1.0f, WHITE);
+        DrawTextureEx(archivos.Avatar4, { av4.x, av4.y }, 0.0f, 1.0f, WHITE);
+        DrawTextureEx(archivos.Avatar5, { av5.x, av5.y }, 0.0f, 1.0f, WHITE);
+        DrawTextureEx(archivos.Avatar6, { av6.x, av6.y }, 0.0f, 1.0f, WHITE);
 
-        //Avatar5
-        DrawRectangleRec(av5,BLACK);
-        
-        //Avatar6
-        DrawRectangleRec(av6,BLACK);
-        
+        // Boton atras
+        DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
+
+        // Verificar si se presiono atras
+        if(CheckCollisionPointRec(LastClick, atras)){
+            regresar = true;
+            break;
+        }
+
         // Boton listo
-        DrawRectangleRec(listo,YELLOW);
+        DrawTexture(archivos.BotonListo, listo.x, listo.y, WHITE);
 
-        if(CheckCollisionPointRec(LastClick,listo)){
+        // Verificar si se presiono listo
+        if(CheckCollisionPointRec(LastClick, listo)){
             band = true;
         }
 
         EndDrawing();
-    } while (band == false);
+        } while(band == false);
 
-    nombre = name;
-    return nombre;
+        nombre = name;
+        return make_pair(nombre, regresar);
 }
 
 void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
     
-    /* Faltaria agregar una formade agregsar las mascotas registradas, y ver cual de ellas selecciona
+    /* Faltaria agregar una forma de agregar las mascotas registradas, y ver cual de ellas selecciona
     Pero ya despues ;b*/
     
     Rectangle anadir;
-    anadir.width = screenWidth * 0.4;
-    anadir.height = screenHeight * 0.13;
+    anadir.width = screenWidth * 0.55;
+    anadir.height = screenHeight * 0.1;
     anadir.x=(screenWidth/2) - (anadir.width/2);
     anadir.y=screenHeight * 0.76;
     
@@ -474,9 +500,10 @@ void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
             DrawTextureEx(archivos.FondoMisMascotas,archivos.Position,0.0f,1.0f,WHITE);
             
             // Boton de anadir
-            DrawRectangleRec(anadir,YELLOW);
-            
-            if(CheckCollisionPointRec(LastClick,anadir)){
+            DrawTexture(archivos.BotonAnadir, anadir.x, anadir.y, WHITE);
+
+            // Verificar colision en boton añadir
+            if(CheckCollisionPointRec(LastClick, anadir)){
                 finish = true;
             }
             
@@ -550,7 +577,6 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
 }
 
 //--------------Registros de mascotas----------------//
-
 Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
 
     //Cuadro de nombre-------
@@ -1096,4 +1122,3 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
         EndDrawing();
     }
 }
-
