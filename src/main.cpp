@@ -95,7 +95,7 @@ int main(){
     SetWindowIcon(icono);
 
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = MI_PERFIL;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
@@ -188,11 +188,12 @@ int main(){
                 pantalla_actual=MI_PERFIL;
 
                 UnloadTexture(fondo_actual.Background);
-                fondo_actual.Background=LoadTexture("../assets/Temp/MiPerfil.png");
                 break;
             }
             case MI_PERFIL:
             {   
+                //originalmente iria arriba pero por debugeo lo dejo aqui
+                fondo_actual.Background=LoadTexture("../assets/Temp/MiPerfil.png");
                 pantalla_actual= MiPerfil(fondo_actual,ANCHO,ALTO,perro);
                 UnloadTexture(fondo_actual.Background);
                 break;
@@ -1105,6 +1106,25 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
     AvatarPos.x=screenWidth*0.2;
     AvatarPos.y=screenHeight*0.92;
 
+    Rectangle info;
+    info.x=screenWidth * 0.2;
+    info.y=screenHeight * 0.27;
+    info.width = screenWidth * 0.6;
+    info.height = screenHeight * 0.1;
+
+    Rectangle cartilla;
+    cartilla.x=screenWidth *0.2;
+    cartilla.y=screenHeight * 0.43;
+    cartilla.width = screenWidth * 0.6;
+    cartilla.height=screenHeight * 0.18;
+    
+    Rectangle calendario;
+    calendario.x=screenWidth *0.2;
+    calendario.y=screenHeight * 0.66;
+    calendario.width = screenWidth * 0.6;
+    calendario.height=screenHeight * 0.18;
+
+
     // lo transformamos a cadena
     const char * mascota=perro.Nombre.c_str();
 
@@ -1114,6 +1134,12 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
         BeginDrawing();
             // Fondo
             DrawTextureEx(archivos.Background, archivos.Position,0.0f,0.85f,WHITE);
+            
+            DrawRectangleRec(info,RED);
+            DrawRectangleRec(cartilla,BLUE);
+            DrawRectangleRec(calendario,YELLOW);
+            
+            
             // avatar de perro
             DrawTextureEx(perro.Avatar,AvatarPos,0.0f,0.8f,WHITE);
             // Nombre del perro
