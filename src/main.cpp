@@ -56,13 +56,17 @@ typedef struct Cargas{
     Texture2D BotonAnadir;
     // AÑADIR MASCOTAS
     Texture2D FondoAnadirMascotas;
+    Texture2D BotonPerro;
+    Texture2D BotonGato;
     // REGISTRAR PERRO
     Texture2D FondoRegPerro;
+    Texture2D BotonAdelante;
     // REGISTRAR GATO
     Texture2D FondoRegGato;
-
+    // EXTRAS
     Texture2D Background;
     Vector2 Position = { 0.0f, 0.0f };
+    Font Fuente;
 } Cargas;
 
 //------------------Load And Unload Content----------------------------------------//
@@ -161,10 +165,12 @@ int main(){
                 mascota_actual = DibujarCrearMascota(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(CREAR_MASCOTA,fondo_actual);
                 if(mascota_actual == 1){
-                    pantalla_actual = REGISTRAR_PERRO;
-                }
-                else{
                     pantalla_actual = REGISTRAR_GATO;
+                }
+                else if(mascota_actual == 2){
+                    pantalla_actual = REGISTRAR_PERRO;
+                } else{
+                    pantalla_actual = MIS_MASCOTAS;;
                 }
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -233,6 +239,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.Avatar4 = LoadTexture("../assets/PetCare_Avatares/4.png");
             archivos.Avatar5 = LoadTexture("../assets/PetCare_Avatares/5.png");
             archivos.Avatar6 = LoadTexture("../assets/PetCare_Avatares/6.png");
+            archivos.Fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
             break;
         }
         case MIS_MASCOTAS:
@@ -244,11 +251,16 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         case CREAR_MASCOTA:
         {
             archivos.FondoAnadirMascotas = LoadTexture("../assets/PetCare_AnadirMascotas.png");
+            archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
+            archivos.BotonPerro = LoadTexture("../assets/PetCare_BotonPerro.png");
+            archivos.BotonGato = LoadTexture("../assets/PetCare_BotonGato.png");
             break;
         }
         case REGISTRAR_PERRO:
         {
-            archivos.FondoRegPerro = LoadTexture("../assets/Temp/RegistrarPerro.png");
+            archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
+            archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
+            archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
         }
         default:
         break;
@@ -272,6 +284,7 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.Avatar4);
         UnloadTexture(archivos.Avatar5);
         UnloadTexture(archivos.Avatar6);
+        UnloadFont(archivos.Fuente);
     }
     if(pantalla_actual == MIS_MASCOTAS){
         UnloadTexture(archivos.FondoMisMascotas);
@@ -279,9 +292,14 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
     }
     if(pantalla_actual == CREAR_MASCOTA){
         UnloadTexture(archivos.FondoAnadirMascotas);
+        UnloadTexture(archivos.BotonAtras);
+        UnloadTexture(archivos.BotonPerro);
+        UnloadTexture(archivos.BotonGato);
     }
     if(pantalla_actual == REGISTRAR_PERRO){
         UnloadTexture(archivos.FondoRegPerro);
+        UnloadTexture(archivos.BotonAtras);
+        UnloadTexture(archivos.BotonAdelante);
     }
 }
 
@@ -405,7 +423,8 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
         DrawRectangleRec(c_name, YELLOW);
 
         //Cuadro de texto
-        DrawText(name,55,325,30,BLACK);
+        Vector2 posicion_texto = {55, 325};
+        DrawTextEx(archivos.Fuente, name, posicion_texto, 30, 2, BLACK);
 
         //Rectangulo de avatares
         DrawRectangleRec(c_avatares, YELLOW);
@@ -513,162 +532,173 @@ void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
 
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     //--------------Botones----------------//
+    // Boton atras
+    Rectangle atras;
+    atras.width = screenWidth * 0.1;
+    atras.height = screenHeight * 0.05;
+    atras.y = 20;
+    atras.x = 20;
+    
     // Boton de gato
     Rectangle Cat;
     //Posicion
-    Cat.x = screenWidth * 0.1; // El 20% de la pantalla
+    Cat.x = screenWidth * 0.1; // El 10% de la pantalla
     Cat.y = screenHeight * 0.36;
     // Largo y ancho
-    Cat.width= screenWidth * 0.79;
+    Cat.width = screenWidth * 0.79;
     Cat.height = 120;
     
     // Boton de perro
     Rectangle Dog;
     //Posicion
-    Dog.x = screenWidth * 0.1; // El 20% de la pantalla
-    Dog.y = screenHeight * 0.56; // un 20% mas abajo
+    Dog.x = screenWidth * 0.1; // El 10% de la pantalla
+    Dog.y = screenHeight * 0.56; // Un 20% más abajo
     // Largo y ancho
-    Dog.width= screenWidth * 0.79;
+    Dog.width = screenWidth * 0.79;
     Dog.height = 120;
 
     //----------Otras variables--------------//
     //Posicion actual del mouse
-    Vector2 Mouse = {0.0f,0.0f};
-
-    // Banderas
-    // 0 = gato, 1 = perro
-    int selection = 0;
+    Vector2 Mouse = {0.0f, 0.0f};
 
     bool ciclo = true;
 
-    //  Puedes usar la posicion del rectangulo para poner la imagen de los botones
+    // Puedes usar la posicion del rectangulo para poner la imagen de los botones
     while (ciclo == true){
+        Mouse = GetMousePosition();
+        
         BeginDrawing();
-            //Fondo
-            Mouse = GetMousePosition();
-            DrawTextureEx(archivos.FondoAnadirMascotas,archivos.Position,0.0f,1.0f,WHITE);
-            
-            //Botones Posicion, Para no batallar con las imagenes podemos hacerlos invisibles y solo sobreponer las imagenes 
-            DrawRectangleRec(Cat,RED);
-            DrawRectangleRec(Dog,BLUE);
+            ClearBackground(RAYWHITE); // Limpia la pantalla con un color de fondo
+            DrawTextureEx(archivos.FondoAnadirMascotas, archivos.Position, 0.0f, 1.0f, WHITE);
+
+            // Boton átras
+            DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
+
+            //Botones Posicion
+            DrawRectangleRec(Cat, WHITE);
+            DrawTextureEx(archivos.BotonGato, {Cat.x, Cat.y}, 0.0f, 1.0f, WHITE);
+            DrawRectangleRec(Dog, WHITE);
+            DrawTextureEx(archivos.BotonPerro, {Dog.x, Dog.y}, 0.0f, 1.0f, WHITE);
 
             // Comparar las posiciones del mouse con un rectangulo
-            if(CheckCollisionPointRec(Mouse,Cat)){
-                //Se encuentra encima del rectangulo
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                    //Hace click
-                    selection = 0;
-                    ciclo = false;
-                }
+            // SI PRESIONA GATO:
+            if (CheckCollisionPointRec(Mouse, Cat) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                ciclo = false;
+                return 1;
             }
-            else{
-                if(CheckCollisionPointRec(Mouse,Dog)){
-                    //Se encuentra encima del rectangulo
-                    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                        //Hace click
-                        selection = 1;
-                        ciclo = false;
-                    }
-                }
+            // SI PRESIONA PERRO:
+            if (CheckCollisionPointRec(Mouse, Dog) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                ciclo = false;
+                return 2;
             }
+            // SI PRESIONA ATRAS:
+            if (CheckCollisionPointRec(Mouse, atras) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                ciclo = false;
+                return 3;
+            }
+
         EndDrawing();
     }
-    return selection;
+    return 0;
 }
 
 //--------------Registros de mascotas----------------//
 Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
-
-    //Cuadro de nombre-------
+    // Nombre
     Rectangle c_nombre;
     c_nombre.x=screenWidth * 0.1; // 10% de espacio entre el borde de la izquierda
     c_nombre.y=screenHeight * 0.3; // 30% de espacio entre el borde de arriba
     c_nombre.width = screenWidth * 0.78; // 78% de tamanio de la pantalla medira el cuadro de ancho
     c_nombre.height = 40; // 40px medira el cuadro
-    
-    //Cuado de raza------------------
+    // --------------------------------------------- //
+    // Raza
     Rectangle c_raza;
     c_raza.x=screenWidth * 0.1;
     c_raza.y=screenHeight * 0.4;
     c_raza.width = screenWidth * 0.78;
     c_raza.height = 40;
-    
-    //Cuadro de Fecha de nacimineto---
+    // --------------------------------------------- //
+    // FECHA
     Rectangle c_dia;
     Rectangle c_mes;
     Rectangle c_anio;
+    // DIA
     c_dia.x=screenWidth * 0.1;
     c_dia.y=screenHeight * 0.5;
     c_dia.width= screenWidth * 0.25;
     c_dia.height = 40;
-    
+    // MES
     c_mes.x=screenWidth * 0.36;
     c_mes.y=screenHeight * 0.5;
     c_mes.width= screenWidth * 0.26;
     c_mes.height = 40;
-    
+    // AÑO
     c_anio.x=screenWidth * 0.63;
     c_anio.y=screenHeight * 0.5;
     c_anio.width= screenWidth * 0.25;
     c_anio.height = 40;
-
-    //Cuadro de peso------------------
+    // --------------------------------------------- //
+    // PESO
     Rectangle c_peso;
     c_peso.x=screenWidth * 0.1;
     c_peso.y=screenHeight * 0.6;
     c_peso.width = screenWidth * 0.78;
     c_peso.height = 40;
-    
-    //Cuadro de padecimientos---------
+    // --------------------------------------------- //
+    // PADECIMIENTOS
     Rectangle c_padecimientos;
     c_padecimientos.x=screenWidth * 0.1;
     c_padecimientos.y=screenHeight * 0.7;
     c_padecimientos.width = screenWidth * 0.78;
     c_padecimientos.height = 40;
+    // --------------------------------------------- //
+    // ADELANTE/SIGUIENTE
+    Rectangle adelante;
+    adelante.x = 40;
+    adelante.y = 40;
+    adelante.width = screenWidth * 0.1;
+    adelante.height = screenHeight * 0.05;
+    // --------------------------------------------- //
+    // ATRAS
+    Rectangle atras;
+    atras.y = 20;
+    atras.x = 20;
+    atras.width = screenWidth * 0.1;
+    atras.height = screenHeight * 0.05;
 
-    // Boton de siguiente-------------
-    Rectangle next;
-    next.x=screenWidth * 0.9;
-    next.y=screenHeight * 0.1;
-    next.width = 40;
-    next.height = 40;
-
+    // Variables temporales de cada dato
     string temp_name;
     string temp_raza;
-    
     int temp_dia;
     int temp_mes;
     int temp_anio;
-    
     float temp_peso;
     string temp_padecimientos;
 
+    // Manejo de clicks
     Vector2 Mouse;
     Vector2 lastClick;
-
-    // Maybe y los cuadros no esten centrados ahorita donde deberian de estar, pero eso se actualiza facil cuando pongamos el fondo original ;b
 
     // Maximo de caracteres
     const int MaxCharacter=20;
     // Cadena que almacenara caracter por caracter, +1 por el caracter nulo
     char name[MaxCharacter+1]={""};
     char raza[MaxCharacter+1]={""};
-        
     char dia[MaxCharacter+1]={""};
     char mes[MaxCharacter+1]={""};
     char anio[MaxCharacter+1]={""};
-    
     char peso[MaxCharacter+1]={""};
     char padecimientos[MaxCharacter+1]={""};
     
     //Contador de caracteres actuales
     int nameCharacterCont=0;
     int razaCharacterCont=0;
-    
     int diaCharacterCont=0;
     int mesCharacterCont=0;
     int anioCharacterCont=0;
-    
     int pesoCharacterCont=0;
     int padecimientosCharacterCont=0;
     
@@ -680,18 +710,28 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         BeginDrawing();
         
         // Fondo
-        DrawTextureEx(archivos.FondoRegPerro,archivos.Position,0.0f,1.3f,WHITE);
+        DrawTextureEx(archivos.FondoRegPerro,archivos.Position,0.0f,1.0f,WHITE);
         
-        // Obteine la posicion actual de mous
+        // Obtiene la posicion actual de mouse
         Mouse = GetMousePosition();
-        
         // Este almacenara la ultima posicion de donde hizo click
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             lastClick = Mouse;
         }
 
-        DrawRectangleRec(next,RED);
-        if(CheckCollisionPointRec(lastClick, next)){
+        // Boton atras
+        DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
+        /*
+        // Verificar si se presiono atras
+        if(CheckCollisionPointRec(LastClick, atras)){
+            regresar = true;
+            break;
+        }
+        */
+
+        // Verificar que se hayan llenado los campos para avanzar adelante
+        DrawTexture(archivos.BotonAdelante, adelante.x, adelante.y, WHITE);
+        if(CheckCollisionPointRec(lastClick, adelante)){
             temp_name=name;
             temp_raza=raza;
 
@@ -703,257 +743,197 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
             temp_padecimientos = padecimientos;
             
             band = true;
-            
         }
-        
-        /*
-            Como son varios cuadros de texto creo que tendria que copiar y pegar varias veces el ciclo para escribir pero hacer una validacion
-            para saber en que cuadro de texto estara escribiendo, podria hacer que el mouse tenga que estar encima de donde lo requiera o
-            una forma de que se quede registrado la ultima posicion donde dio click, y compararla con los cuadros de texto, dependiendo la posicion
-            que haga la funcion de x o y cuadro o.O
 
-            a wilson la 2da si jalo jijiji
-        */
-
-        //------------Nombre-----------------//
-        // Dibujar cuadro de texto
-        DrawRectangleRec(c_nombre,RED);
-        // Dibujar texto acutal de nombre
-        DrawText(name,c_nombre.x+10,c_nombre.y+10,15,BLACK);
+        // --------------- N O M B R E ---------------- //
+        DrawRectangleRec(c_nombre, YELLOW);
+        DrawText(name, c_nombre.x+10, c_nombre.y+10, 15, BLACK);
         
         // Colision con cuadro de texto de nombre
-        if(CheckCollisionPointRec(lastClick,c_nombre)){
+        if(CheckCollisionPointRec(lastClick,c_nombre))
+        {
             int key = GetCharPressed();
-
             // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
             while (key > 0)
             {
                 if ((key >= 32) && (key <= 122) && (nameCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
                 {
-                    name[nameCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    name[nameCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    nameCharacterCont++; //Aumentamos el contador de caracteres
+                    name[nameCharacterCont] = (char)key; // Transformar el caracter de codigo ascii a caracter
+                    name[nameCharacterCont+1] = '\0'; // Agregar caracter nulo al final de la cadena
+                    nameCharacterCont++; // Aumentamos el contador de caracteres
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed();  // Revisamos si hay nuevos caracteres en cola en el mismo frame
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE)) // Borrar
             {
                 if (nameCharacterCont < 0){
                     // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    nameCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    name[nameCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    nameCharacterCont--; // Si no esta vacia eliminara un espacio     
+                    name[nameCharacterCont] = '\0'; // Al ultimo que antes era una letra la sustituimos por el caracter nulo
                 }
             }
         }
-        
-        //------------Raza-----------------//
-        // Dibujar cuadro de texto
+
+        // SE REPITE LO MISMO PARA CADA DATO INGRESADO DE LA MASCOTA:
+        // ---------------- R A Z A ------------------- //
         DrawRectangleRec(c_raza,RED);
-        // Dibujar texto acutal
-        DrawText(raza,c_raza.x+10,c_raza.y+10,15,BLACK);
+        DrawText(raza ,c_raza.x+10, c_raza.y+10, 15, BLACK);
         
-        // Cuadro de texto de Raza
-        if(CheckCollisionPointRec(lastClick,c_raza)){
+        if(CheckCollisionPointRec(lastClick,c_raza))
+        {
             int key = GetCharPressed();
-
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
-            while (key > 0)
+            while (key > 0) 
             {
-                if ((key >= 32) && (key <= 122) && (razaCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                if ((key >= 32) && (key <= 122) && (razaCharacterCont <MaxCharacter))
                 {
-                    raza[razaCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    raza[razaCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    razaCharacterCont++; //Aumentamos el contador de caracteres
+                    raza[razaCharacterCont] = (char)key;
+                    raza[razaCharacterCont+1] = '\0'; 
+                    razaCharacterCont++; 
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed(); 
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE)) 
             {
                 if (razaCharacterCont < 0){
-                    // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    razaCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    raza[razaCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    razaCharacterCont--;   
+                    raza[razaCharacterCont] = '\0'; 
                 }
             }
         }
         
-        //------------Dia-----------------//
-        //Dibujar cuadro de texto
-        DrawRectangleRec(c_dia,GRAY);
-        //Dibujar texto acutal
-        DrawText(dia,c_dia.x+10,c_dia.y+10,15,BLACK);
+        // ----------------- D I A -------------------- //
+        DrawRectangleRec(c_dia, YELLOW);
+        DrawText(dia, c_dia.x+10, c_dia.y+10, 15, BLACK);
         
-        if(CheckCollisionPointRec(lastClick,c_dia)){
+        if(CheckCollisionPointRec(lastClick,c_dia))
+        {
             int key = GetCharPressed();
-
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
             while (key > 0)
             {
-                if ((key >= 48) && (key <= 57) && (diaCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                if ((key >= 48) && (key <= 57) && (diaCharacterCont <MaxCharacter)) 
                 {
-                    dia[diaCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    dia[diaCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    diaCharacterCont++; //Aumentamos el contador de caracteres
+                    dia[diaCharacterCont] = (char)key; 
+                    dia[diaCharacterCont+1] = '\0'; 
+                    diaCharacterCont++; 
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed();  
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE)) 
             {
                 if (diaCharacterCont < 0){
-                    // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    diaCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    dia[diaCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    diaCharacterCont--;   
+                    dia[diaCharacterCont] = '\0'; 
                 }
             }
         }
 
-        //------------Mes-----------------//
-        DrawRectangleRec(c_mes,GRAY);
-        //Dibujar texto acutal
-        DrawText(mes,c_mes.x+10,c_mes.y+10,15,BLACK);
+        // ----------------- M E S -------------------- //
+        DrawRectangleRec(c_mes, YELLOW);
+        DrawText(mes, c_mes.x+10, c_mes.y+10, 15, BLACK);
 
-        if(CheckCollisionPointRec(lastClick,c_mes)){
+        if(CheckCollisionPointRec(lastClick,c_mes))
+        {
             int key = GetCharPressed();
-
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
             while (key > 0)
             {
-                if ((key >= 48) && (key <= 57) && (mesCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                if ((key >= 48) && (key <= 57) && (mesCharacterCont <MaxCharacter))
                 {
-                    mes[mesCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    mes[mesCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    mesCharacterCont++; //Aumentamos el contador de caracteres
+                    mes[mesCharacterCont] = (char)key; 
+                    mes[mesCharacterCont+1] = '\0';
+                    mesCharacterCont++; 
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed();  
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE))
             {
                 if (mesCharacterCont < 0){
-                    // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    mesCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    mes[mesCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    mesCharacterCont--;   
+                    mes[mesCharacterCont] = '\0'; 
                 }
             }
         }
 
-        //------------Anio-----------------//
-        DrawRectangleRec(c_anio,GRAY);
-        //Dibujar texto acutal
-        DrawText(anio,c_anio.x+10,c_anio.y+10,15,BLACK);
+        // ---------------- A N I O ------------------- //
+        DrawRectangleRec(c_anio, YELLOW);
+        DrawText(anio, c_anio.x+10, c_anio.y+10, 15, BLACK);
 
-        if(CheckCollisionPointRec(lastClick,c_anio)){
+        if(CheckCollisionPointRec(lastClick,c_anio))
+        {
             int key = GetCharPressed();
-
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
             while (key > 0)
             {
-                if ((key >= 48) && (key <= 57) && (anioCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                if ((key >= 48) && (key <= 57) && (anioCharacterCont <MaxCharacter)) 
                 {
-                    anio[anioCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    anio[anioCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    anioCharacterCont++; //Aumentamos el contador de caracteres
+                    anio[anioCharacterCont] = (char)key; 
+                    anio[anioCharacterCont+1] = '\0'; 
+                    anioCharacterCont++; 
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed();  
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE)) 
             {
                 if (anioCharacterCont < 0){
-                    // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    anioCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    anio[anioCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    anioCharacterCont--;     
+                    anio[anioCharacterCont] = '\0';
                 }
             }
         }
 
-        //------------Peso-----------------//
-        DrawRectangleRec(c_peso,GRAY);
-        // Cuadro de texto
-        DrawText(peso,c_peso.x+10,c_peso.y+10,15,BLACK);
+        // ---------------- P E S O ------------------- //
+        DrawRectangleRec(c_peso, YELLOW);
+        DrawText(peso, c_peso.x+10, c_peso.y+10, 15,BLACK);
 
-        if(CheckCollisionPointRec(lastClick,c_peso)){
+        if(CheckCollisionPointRec(lastClick,c_peso))
+        {
             int key = GetCharPressed();
-
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
             while (key > 0)
             {
-                if ((key >= 46) && (key <= 57) && (pesoCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                if ((key >= 46) && (key <= 57) && (pesoCharacterCont <MaxCharacter)) 
                 {
-                    peso[pesoCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    peso[pesoCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    pesoCharacterCont++; //Aumentamos el contador de caracteres
+                    peso[pesoCharacterCont] = (char)key;
+                    peso[pesoCharacterCont+1] = '\0'; 
+                    pesoCharacterCont++; 
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed();  
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE)) 
             {
                 if (pesoCharacterCont < 0){
-                    // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    pesoCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    peso[pesoCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    pesoCharacterCont--;    
+                    peso[pesoCharacterCont] = '\0'; 
                 }
             }
         }
 
         //------------Padecimientos-----------------//
         DrawRectangleRec(c_padecimientos,GRAY);
-        //Cuadro de texto
         DrawText(padecimientos,c_padecimientos.x+10,c_padecimientos.y+10,15,BLACK);
         
-        if(CheckCollisionPointRec(lastClick,c_padecimientos)){
+        if(CheckCollisionPointRec(lastClick,c_padecimientos))
+        {
             int key = GetCharPressed();
-
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
             while (key > 0)
             {
-                if ((key >= 32) && (key <= 122) && (padecimientosCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                if ((key >= 32) && (key <= 122) && (padecimientosCharacterCont <MaxCharacter)) 
                 {
-                    padecimientos[padecimientosCharacterCont] = (char)key; //transformar el caracter de codigo ascii a caracter
-                    padecimientos[padecimientosCharacterCont+1] = '\0'; //Agregar caracter nulo al final de la cadena
-                    padecimientosCharacterCont++; //Aumentamos el contador de caracteres
+                    padecimientos[padecimientosCharacterCont] = (char)key; 
+                    padecimientos[padecimientosCharacterCont+1] = '\0'; 
+                    padecimientosCharacterCont++; 
                 }
-
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola en el mismo frame
+                key = GetCharPressed();  
             }
-
-            if (IsKeyPressed(KEY_BACKSPACE)) //Borrar
+            if (IsKeyPressed(KEY_BACKSPACE)) 
             {
                 if (padecimientosCharacterCont < 0){
-                    // Si la cadena esta vacia no hara nada
-                }
-                else
-                {
-                    padecimientosCharacterCont--; //Si no esta vacia eliminara un espacio     
-                    padecimientos[padecimientosCharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
+                } else{
+                    padecimientosCharacterCont--;    
+                    padecimientos[padecimientosCharacterCont] = '\0'; 
                 }
             }
         }
@@ -961,7 +941,7 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         EndDrawing();
     } while (band == false);
 
-    Dog temp_dog(temp_name,temp_raza,temp_dia,temp_mes,temp_anio,temp_peso,temp_padecimientos);
+    Dog temp_dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
     return temp_dog;
 }
 
