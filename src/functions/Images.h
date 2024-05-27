@@ -37,7 +37,17 @@ typedef struct Cargas{
     // REGISTRAR GATO
     Texture2D FondoRegGato;
     // EXTRAS
+    
+    // Fondo predeteminado
     Texture2D Background;
+    
+    // Posicion predeteminada
     Vector2 Position = { 0.0f, 0.0f };
-    Font Fuente;
+    
+    // Fuente
+    Font fuente;
+    
+    // Color de los bloques de texto
+    Color Bloque1={245,246,243,255};
+
 } Cargas;

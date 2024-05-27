@@ -13,6 +13,7 @@
 #include "../clases/Usuario.h"
 
 
+
 // ------------------Prototype------------------ //
 void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
 
@@ -20,7 +21,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
 // Dibujar papuCalendario
 void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
 
-    // Fondo
+    //------------------------- FONDO ------------------------------ //
     Texture2D fondo = LoadTexture("../assets/Temp/calendario.png");
     Vector2 fondoPos;
     fondoPos.x=0;
@@ -29,7 +30,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     // Bandera de salida
     bool finish=false;
 
-    //-------------------------Parte Superior------------------------------
+    //-------------------------Parte Superior------------------------------ // 
     // titulo de calendario
     Rectangle TitleCalendario;
     TitleCalendario.x=screenWidth * 0.03;
@@ -102,7 +103,9 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     
     //-------------------------------------------------------//
 
+    // Posicion del mouse
     Vector2 Mouse;
+    // Donde hizo click
     Vector2 lastclick={0,0};
 
     // Slecciono un dia?
@@ -120,6 +123,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     test.width=screenWidth*0.12;
     test.height=screenHeight*0.06;
 
+    // ---------- Textos ----------- //
     const int MaxCharacter=20;
     char title[MaxCharacter+1]={""};
     int titleCharacterCont=0;
@@ -127,6 +131,16 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     char des[MaxCharacter+1]={""};
     int desCharacterCont=0;
 
+    // ---------- Posicion de textos ----------- //
+    Vector2 titlePos;
+    titlePos.x=titleEvent.x+10;
+    titlePos.y=titleEvent.y+10;
+
+    Vector2 desPos;
+    desPos.x=desEvent.x+10;
+    desPos.y=desEvent.y+10;
+    
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
     while(finish == false){
         BeginDrawing();
@@ -215,11 +229,13 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                 }
             }
 
-            DrawText(title,titleEvent.x+10,titleEvent.y+10,24,BLACK);
+            // Titulo del eveneto
+            DrawTextEx(fuente,title,titlePos,24,2,BLACK);
             
-            DrawText(des,desEvent.x+10,desEvent.y+10,24,BLACK);
-
-            // Agregar evento------------------
+            // Asutno de evento
+            DrawTextEx(fuente,des,desPos,24,2,BLACK);
+            
+            // Agregar evento
             DrawRectangleRec(Agregar,RED);
 
             // Regresar

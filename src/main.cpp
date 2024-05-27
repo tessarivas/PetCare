@@ -46,11 +46,16 @@ typedef enum Pantalla{
 */
 
 /*
-    Nos hace falta
-    Cambiar las imagenes de fondo
-    Los avatares de perros y gatos
-    Validar que los avatares de personas
+    ---------------Nos hace falta---------------
+    Remplazar algunos fondos
+    
+    Avatares de perros y gatos
+    El boton de regresar al registrar mascota
+    
     Cartilla medica
+
+    Remplazar fondo del calendario
+    Poner una condicion para los meses y anio bisiesto
     Hacer que el usuario guarde el dia, el titulo, y el asunto que guarde en el calendario
 */
 
@@ -78,6 +83,9 @@ int main(){
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
+    // Fuente
+    
+
     // Variables
     srand(time(NULL));
     // Usuario
@@ -89,6 +97,7 @@ int main(){
     
     /*1 = gato, 2 = perro*/
     int mascota_actual;
+    
 
     // PROGRAMA PRINCIPAL
     while(!WindowShouldClose()){
@@ -244,7 +253,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.Avatar4 = LoadTexture("../assets/PetCare_Avatares/4.png");
             archivos.Avatar5 = LoadTexture("../assets/PetCare_Avatares/5.png");
             archivos.Avatar6 = LoadTexture("../assets/PetCare_Avatares/6.png");
-            archivos.Fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+            archivos.fuente=LoadFont("../assets/Fuentes/TangoSans.ttf");
             break;
         }
         case MIS_MASCOTAS:
@@ -295,7 +304,7 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.Avatar4);
         UnloadTexture(archivos.Avatar5);
         UnloadTexture(archivos.Avatar6);
-        UnloadFont(archivos.Fuente);
+
     }
     if(pantalla_actual == MIS_MASCOTAS){
         UnloadTexture(archivos.FondoMisMascotas);
@@ -432,11 +441,11 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
         DrawTextureEx(archivos.FondoCrearDueno,archivos.Position,0.0f,1.0f,WHITE);
 
         //Rectangulo de nombre
-        DrawRectangleRec(c_name, YELLOW);
+        DrawRectangleRec(c_name, archivos.Bloque1);
 
         //Cuadro de texto
         Vector2 posicion_texto = {55, 325};
-        DrawTextEx(archivos.Fuente, name, posicion_texto, 30, 2, BLACK);
+        DrawTextEx(archivos.fuente, name, posicion_texto, 30, 2, BLACK);
 
         //Rectangulo de avatares
         DrawRectangleRec(c_avatares, YELLOW);
@@ -533,6 +542,10 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
 
     // lo transformamos a cadena
     const char * mascota=perro.Nombre.c_str();
+    // Posicion del texto de la mascota
+    Vector2 mascotaPos;
+    mascotaPos.x=screenWidth * 0.4;
+    mascotaPos.y=screenHeight * 0.92;
 
     Vector2 Mouse;
     Vector2 Click;
@@ -562,7 +575,7 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
             // avatar de perro
             DrawTextureEx(perro.Avatar,AvatarPos,0.0f,0.8f,WHITE);
             // Nombre del perro
-            DrawText(mascota,screenWidth * 0.4, screenHeight * 0.93,40,BLACK);
+            DrawTextEx(archivos.fuente,mascota,mascotaPos,40.0f,2.0f,BLACK);
 
         EndDrawing();
     }

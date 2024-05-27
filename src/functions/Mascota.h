@@ -191,6 +191,35 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     int pesoCharacterCont=0;
     int padecimientosCharacterCont=0;
     
+    // Posicion de texto
+    Vector2 namePos;
+    namePos.x=c_nombre.x+10;
+    namePos.y=c_nombre.y+10;
+
+    Vector2 razaPos;
+    razaPos.x=c_raza.x + 10;
+    razaPos.y=c_raza.y + 10;
+
+    Vector2 diaPos;
+    diaPos.x=c_dia.x+10;
+    diaPos.y=c_dia.y+10;
+
+    Vector2 mesPos;
+    mesPos.x=c_mes.x+10;
+    mesPos.y=c_mes.y+10;
+    
+    Vector2 anioPos;
+    anioPos.x=c_anio.x+10;
+    anioPos.y=c_anio.y+10;
+
+    Vector2 pesoPos;
+    pesoPos.x=c_peso.x+10;
+    pesoPos.y=c_peso.y+10;
+
+    Vector2 padePos;
+    padePos.x=c_padecimientos.x+10;
+    padePos.y=c_padecimientos.y+10;
+
     // Bandera de ciclo
     bool band= false; 
 
@@ -235,8 +264,10 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
 
         // --------------- N O M B R E ---------------- //
-        DrawRectangleRec(c_nombre, YELLOW);
-        DrawText(name, c_nombre.x+10, c_nombre.y+10, 15, BLACK);
+        // Cuadro
+        DrawRectangleRec(c_nombre, archivos.Bloque1);
+        // Texto en pantalla
+        DrawTextEx(archivos.fuente,name,namePos,18,1,BLACK);
         
         // Colision con cuadro de texto de nombre
         if(CheckCollisionPointRec(lastClick,c_nombre))
@@ -266,8 +297,10 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
 
         // SE REPITE LO MISMO PARA CADA DATO INGRESADO DE LA MASCOTA:
         // ---------------- R A Z A ------------------- //
-        DrawRectangleRec(c_raza,RED);
-        DrawText(raza ,c_raza.x+10, c_raza.y+10, 15, BLACK);
+        // Cuadro
+        DrawRectangleRec(c_raza,archivos.Bloque1);
+        // Texto en pantalla
+        DrawTextEx(archivos.fuente,raza,razaPos,18,1,BLACK);
         
         if(CheckCollisionPointRec(lastClick,c_raza))
         {
@@ -293,8 +326,10 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
         
         // ----------------- D I A -------------------- //
-        DrawRectangleRec(c_dia, YELLOW);
-        DrawText(dia, c_dia.x+10, c_dia.y+10, 15, BLACK);
+        DrawRectangleRec(c_dia, archivos.Bloque1);
+
+        
+        DrawTextEx(archivos.fuente,dia,diaPos,18,1,BLACK);
         
         if(CheckCollisionPointRec(lastClick,c_dia))
         {
@@ -320,8 +355,9 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
 
         // ----------------- M E S -------------------- //
-        DrawRectangleRec(c_mes, YELLOW);
-        DrawText(mes, c_mes.x+10, c_mes.y+10, 15, BLACK);
+        DrawRectangleRec(c_mes, archivos.Bloque1);
+        
+        DrawTextEx(archivos.fuente,mes,mesPos,18,1,BLACK);
 
         if(CheckCollisionPointRec(lastClick,c_mes))
         {
@@ -347,8 +383,9 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
 
         // ---------------- A N I O ------------------- //
-        DrawRectangleRec(c_anio, YELLOW);
-        DrawText(anio, c_anio.x+10, c_anio.y+10, 15, BLACK);
+        DrawRectangleRec(c_anio, archivos.Bloque1);
+        
+        DrawTextEx(archivos.fuente,anio,anioPos,18,1,BLACK);
 
         if(CheckCollisionPointRec(lastClick,c_anio))
         {
@@ -374,8 +411,9 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
 
         // ---------------- P E S O ------------------- //
-        DrawRectangleRec(c_peso, YELLOW);
-        DrawText(peso, c_peso.x+10, c_peso.y+10, 15,BLACK);
+        DrawRectangleRec(c_peso, archivos.Bloque1);
+        
+        DrawTextEx(archivos.fuente,peso,pesoPos,18,1,BLACK);
 
         if(CheckCollisionPointRec(lastClick,c_peso))
         {
@@ -401,8 +439,9 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
 
         //------------Padecimientos-----------------//
-        DrawRectangleRec(c_padecimientos,GRAY);
-        DrawText(padecimientos,c_padecimientos.x+10,c_padecimientos.y+10,15,BLACK);
+        DrawRectangleRec(c_padecimientos,archivos.Bloque1);
+        
+        DrawTextEx(archivos.fuente,padecimientos,padePos,18,1,BLACK);
         
         if(CheckCollisionPointRec(lastClick,c_padecimientos))
         {
