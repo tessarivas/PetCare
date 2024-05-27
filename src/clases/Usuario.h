@@ -16,6 +16,7 @@ using std::to_string;
 #include "Cat.h"
 #include "Dog.h"
 
+
 class Usuario{
 protected:
     // ---Datos basicos--- //
