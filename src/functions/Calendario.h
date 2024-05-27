@@ -224,6 +224,10 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
 
             // Regresar
             DrawRectangleRec(Return,BLUE);
+
+            if(CheckCollisionPointRec(lastclick,Return)){
+                break;
+            }
             
             wi=0.05;
             hi=0.27;
@@ -328,7 +332,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                 }
             }
 
-
         EndDrawing();
     }
+    UnloadTexture(fondo);
 }

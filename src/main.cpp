@@ -11,8 +11,6 @@
 #include <utility> 
 
 #include "clases/Usuario.h"
-#include "clases/Dog.h"
-#include "clases/Cat.h"
 
 #include "functions/Calendario.h"
 #include "functions/Mascota.h"
@@ -37,6 +35,7 @@ typedef enum Pantalla{
     REGISTRAR_PERRO,
     REGISTRAR_GATO,
     AVATAR_PERRO,
+    AVATAR_GATO,
     MI_PERFIL,
     CALENDARIO,
 } Pantalla;
@@ -44,6 +43,15 @@ typedef enum Pantalla{
 /*
     La estructura de cargas esta en Images.h, y no hace falta incluirla aqui porque ya la estamos incluyendo en Mascota.h
     y al incluir mascota.h ya se incluyen las demas librerias papu
+*/
+
+/*
+    Nos hace falta
+    Cambiar las imagenes de fondo
+    Los avatares de perros y gatos
+    Validar que los avatares de personas
+    Cartilla medica
+    Hacer que el usuario guarde el dia, el titulo, y el asunto que guarde en el calendario
 */
 
 //------------------Load And Unload Content----------------------------------------//
@@ -78,7 +86,6 @@ int main(){
 
     // Mascota
     Dog perro;
-    Cat cat;
     
     /*1 = gato, 2 = perro*/
     int mascota_actual;
@@ -133,7 +140,7 @@ int main(){
                 DescargarContenido(CREAR_MASCOTA,fondo_actual);
                 if(mascota_actual == 1){
                     // Flata hacer una escena para los gatos
-                    pantalla_actual = REGISTRAR_PERRO;
+                    pantalla_actual = REGISTRAR_GATO;
                 }
                 else if(mascota_actual == 2){
                     pantalla_actual = REGISTRAR_PERRO;
@@ -141,6 +148,18 @@ int main(){
                     pantalla_actual = MIS_MASCOTAS;;
                 }
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                break;
+            }
+            case REGISTRAR_GATO:
+            {
+                perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
+                // Nueva escena
+                // Seria la de los gatos
+                pantalla_actual=AVATAR_GATO;
+                // Descargar y cargar
+                UnloadTexture(fondo_actual.FondoRegPerro);
+                // Cargamos la pantalla siguiente
+                fondo_actual.Background=LoadTexture("../assets/temp/MiGatoAvatares.png");
                 break;
             }
             case REGISTRAR_PERRO:
@@ -165,8 +184,19 @@ int main(){
                 fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerfil.png");
                 break;
             }
+            case AVATAR_GATO:
+            {
+                // cargamos la textura que selecciono el usuario
+                perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
+                
+                pantalla_actual=MI_PERFIL;
+
+                UnloadTexture(fondo_actual.Background);
+                break;
+            }
             case MI_PERFIL:
             {   
+                fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerfil.png");
                 pantalla_actual= MiPerfil(fondo_actual,ANCHO,ALTO,perro);
                 UnloadTexture(fondo_actual.Background);
                 break;
@@ -174,6 +204,8 @@ int main(){
             case CALENDARIO:
             {
                 DibujarCalendario(perro,ANCHO,ALTO);
+                pantalla_actual=MI_PERFIL;
+                
                 break;
             }
             default:
@@ -230,6 +262,12 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             break;
         }
         case REGISTRAR_PERRO:
+        {
+            archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
+            archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
+            archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
+        }
+        case REGISTRAR_GATO:
         {
             archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
@@ -493,22 +531,34 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
     calendario.width = screenWidth * 0.6;
     calendario.height=screenHeight * 0.18;
 
-
     // lo transformamos a cadena
     const char * mascota=perro.Nombre.c_str();
 
+    Vector2 Mouse;
+    Vector2 Click;
 
     while(select==false)
     {
         BeginDrawing();
+            Mouse=GetMousePosition();
+
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                Click=Mouse;
+            }
+            
             // Fondo
             DrawTextureEx(archivos.Background, archivos.Position,0.0f,1.0f,WHITE);
             
             DrawRectangleRec(info,RED);
+
             DrawRectangleRec(cartilla,BLUE);
+
             DrawRectangleRec(calendario,YELLOW);
             
-            
+            if(CheckCollisionPointRec(Click,calendario)){
+                return CALENDARIO;
+            }
+
             // avatar de perro
             DrawTextureEx(perro.Avatar,AvatarPos,0.0f,0.8f,WHITE);
             // Nombre del perro
@@ -516,6 +566,7 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
 
         EndDrawing();
     }
+    return CALENDARIO;
 }
 
 
