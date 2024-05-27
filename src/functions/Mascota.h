@@ -16,6 +16,8 @@
 // --------- Prototype ----------//
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
+Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
+void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight);
 
 // --------- Functions ----------- //
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
@@ -431,3 +433,180 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     Dog temp_dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
     return temp_dog;
 }
+
+void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
+    
+    /* Faltaria agregar una forma de agregar las mascotas registradas, y ver cual de ellas selecciona
+    Pero ya despues ;b*/
+    
+    Rectangle anadir;
+    anadir.width = screenWidth * 0.55;
+    anadir.height = screenHeight * 0.1;
+    anadir.x=(screenWidth/2) - (anadir.width/2);
+    anadir.y=screenHeight * 0.76;
+    
+    Vector2 Mouse;
+    Vector2 LastClick;
+
+    bool finish = false;
+
+    while (finish == false)
+    {
+        BeginDrawing();
+            // Posicion actual de mouse
+            Mouse= GetMousePosition();
+            
+            // Posicion del ultimo click
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                LastClick= Mouse;
+            }
+            
+            // Fondo
+            DrawTextureEx(archivos.FondoMisMascotas,archivos.Position,0.0f,1.0f,WHITE);
+            
+            // Boton de anadir
+            DrawTexture(archivos.BotonAnadir, anadir.x, anadir.y, WHITE);
+
+            // Verificar colision en boton añadir
+            if(CheckCollisionPointRec(LastClick, anadir)){
+                finish = true;
+            }
+            
+        EndDrawing();
+    }
+}
+
+Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight){
+    
+    /*
+        Maybe y la dejamos para el final
+
+        Esta funcion es para que el usuario seleccione un avatar para el perro, devolvera una variable que tenga cargada la textura 
+        de la mascota
+    */
+    
+    bool finish = false;
+
+    // HitBox De avatares
+    // 1 renglon------------------
+    Rectangle av1;
+    av1.x= screenWidth * 0.18;
+    av1.y= screenHeight * 0.32;
+    av1.width= screenWidth * 0.3;
+    av1.height= screenHeight * 0.13;
+    
+    Rectangle av2;
+    av2.x= screenWidth * 0.50;
+    av2.y= screenHeight * 0.32;
+    av2.width= screenWidth * 0.3;
+    av2.height= screenHeight * 0.13;
+    // 2 renglon------------------
+    Rectangle av3;
+    av3.x= screenWidth * 0.18;
+    av3.y= screenHeight * 0.46;
+    av3.width= screenWidth * 0.3;
+    av3.height= screenHeight * 0.13;
+    
+    Rectangle av4;
+    av4.x= screenWidth * 0.50;
+    av4.y= screenHeight * 0.46;
+    av4.width= screenWidth * 0.3;
+    av4.height= screenHeight * 0.13;
+    // 3 renglon------------------
+    Rectangle av5;
+    av5.x= screenWidth * 0.18;
+    av5.y= screenHeight * 0.60;
+    av5.width= screenWidth * 0.3;
+    av5.height= screenHeight * 0.13;
+    
+    Rectangle av6;
+    av6.x= screenWidth * 0.50;
+    av6.y= screenHeight * 0.60;
+    av6.width= screenWidth * 0.3;
+    av6.height= screenHeight * 0.13;
+
+    // 4 renglon------------------
+    Rectangle av7;
+    av7.x= screenWidth * 0.18;
+    av7.y= screenHeight * 0.74;
+    av7.width= screenWidth * 0.3;
+    av7.height= screenHeight * 0.13;
+    
+    Rectangle av8;
+    av8.x= screenWidth * 0.50;
+    av8.y= screenHeight * 0.74;
+    av8.width= screenWidth * 0.3;
+    av8.height= screenHeight * 0.13;
+
+    Vector2 Mouse;
+    Vector2 LastClick;
+
+    // Texturas
+    // Aqui la imagen
+    // -------------- CAMBIAR IMAGENES -------------------------- //
+    Texture2D av1_textura = LoadTexture("../assets/PetCare_avatares/1.png");
+    Texture2D av2_textura = LoadTexture("../assets/PetCare_avatares/2.png");
+    Texture2D av3_textura = LoadTexture("../assets/PetCare_avatares/3.png");
+
+    while(finish == false){
+        BeginDrawing();
+            Mouse= GetMousePosition();
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                LastClick=Mouse;
+            }
+
+            //Fondo
+            DrawTextureEx(archivos.Background, archivos.Position,0.0f,1.0f,WHITE);
+            // Avatares
+            //1er renglon
+            DrawRectangleRec(av1, RED);
+            DrawRectangleRec(av2, RED);
+            // 2do renglon
+            DrawRectangleRec(av3, BLUE);
+            DrawRectangleRec(av4, BLUE);
+            //3er renglon
+            DrawRectangleRec(av5, RED);
+            DrawRectangleRec(av6, RED);
+            //4to renglon
+            DrawRectangleRec(av7, BLUE);
+            DrawRectangleRec(av8, BLUE);
+
+            // Comprobacion de click en avatares
+            if(CheckCollisionPointRec(LastClick,av1)){
+                cout<<"selecciono el avatar 1"<<endl;
+                /*
+                    Unload texturas
+                */
+                return av1_textura;
+            }
+            if(CheckCollisionPointRec(LastClick,av2)){
+                cout<<"selecciono el avatar 2"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av3)){
+                cout<<"selecciono el avatar 3"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av4)){
+                cout<<"selecciono el avatar 4"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av5)){
+                cout<<"selecciono el avatar 5"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av6)){
+                cout<<"selecciono el avatar 6"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av7)){
+                cout<<"selecciono el avatar 7"<<endl;
+            }
+            if(CheckCollisionPointRec(LastClick,av8)){
+                cout<<"selecciono el avatar 8"<<endl;
+            }
+
+        EndDrawing();
+    }
+    // Descargamos las texturas antes de salir de la funcion.
+    UnloadTexture(av1_textura);
+    
+    // Esto solo pa que se quite el warning, al final nunca regresara este
+    return av1_textura;
+}
+

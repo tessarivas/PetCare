@@ -16,7 +16,6 @@
 // ------------------Prototype------------------ //
 void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
 
-
 // ------------------Funciones------------------ //
 // Dibujar papuCalendario
 void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
