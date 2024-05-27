@@ -34,6 +34,7 @@ typedef enum Pantalla{
     REGISTRAR_GATO,
     AVATAR_PERRO,
     MI_PERFIL,
+    CALENDARIO,
 } Pantalla;
 
 //----------------------Images----------------------------------------------------
@@ -88,6 +89,7 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWeidth,int scree
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 
 Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro);
+void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
 
 //-------------------------MAIN----------------------------------------------------//
 int main(){
@@ -99,7 +101,7 @@ int main(){
     SetWindowIcon(icono);
 
     // Iniciar pantallas
-    Pantalla pantalla_actual = MI_PERFIL;
+    Pantalla pantalla_actual = CALENDARIO;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
@@ -113,7 +115,7 @@ int main(){
     Dog perro;
     Cat cat;
     
-    /*0 = gato, 1 = perro*/
+    /*1 = gato, 2 = perro*/
     int mascota_actual;
 
     // PROGRAMA PRINCIPAL
@@ -165,7 +167,8 @@ int main(){
                 mascota_actual = DibujarCrearMascota(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(CREAR_MASCOTA,fondo_actual);
                 if(mascota_actual == 1){
-                    pantalla_actual = REGISTRAR_GATO;
+                    // Flata hacer una escena para los gatos
+                    pantalla_actual = REGISTRAR_PERRO;
                 }
                 else if(mascota_actual == 2){
                     pantalla_actual = REGISTRAR_PERRO;
@@ -183,7 +186,7 @@ int main(){
                 // Descargar y cargar
                 UnloadTexture(fondo_actual.FondoRegPerro);
                 // Cargamos la pantalla siguiente
-                fondo_actual.Background=LoadTexture("../assets/Temp/avataresDogo.png");
+                fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerroAvatar.png");
                 break;
             }
             case AVATAR_PERRO:
@@ -194,14 +197,18 @@ int main(){
                 pantalla_actual=MI_PERFIL;
 
                 UnloadTexture(fondo_actual.Background);
+                fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerfil.png");
                 break;
             }
             case MI_PERFIL:
             {   
-                //originalmente iria arriba pero por debugeo lo dejo aqui
-                fondo_actual.Background=LoadTexture("../assets/Temp/MiPerfil.png");
                 pantalla_actual= MiPerfil(fondo_actual,ANCHO,ALTO,perro);
                 UnloadTexture(fondo_actual.Background);
+                break;
+            }
+            case CALENDARIO:
+            {
+                DibujarCalendario(perro,ANCHO,ALTO);
                 break;
             }
             default:
@@ -618,7 +625,7 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     // Raza
     Rectangle c_raza;
     c_raza.x=screenWidth * 0.1;
-    c_raza.y=screenHeight * 0.4;
+    c_raza.y=screenHeight * 0.42;
     c_raza.width = screenWidth * 0.78;
     c_raza.height = 40;
     // --------------------------------------------- //
@@ -628,45 +635,45 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     Rectangle c_anio;
     // DIA
     c_dia.x=screenWidth * 0.1;
-    c_dia.y=screenHeight * 0.5;
+    c_dia.y=screenHeight * 0.53;
     c_dia.width= screenWidth * 0.25;
     c_dia.height = 40;
     // MES
     c_mes.x=screenWidth * 0.36;
-    c_mes.y=screenHeight * 0.5;
+    c_mes.y=screenHeight * 0.53;
     c_mes.width= screenWidth * 0.26;
     c_mes.height = 40;
     // AÑO
     c_anio.x=screenWidth * 0.63;
-    c_anio.y=screenHeight * 0.5;
+    c_anio.y=screenHeight * 0.53;
     c_anio.width= screenWidth * 0.25;
     c_anio.height = 40;
     // --------------------------------------------- //
     // PESO
     Rectangle c_peso;
     c_peso.x=screenWidth * 0.1;
-    c_peso.y=screenHeight * 0.6;
+    c_peso.y=screenHeight * 0.65;
     c_peso.width = screenWidth * 0.78;
     c_peso.height = 40;
     // --------------------------------------------- //
     // PADECIMIENTOS
     Rectangle c_padecimientos;
     c_padecimientos.x=screenWidth * 0.1;
-    c_padecimientos.y=screenHeight * 0.7;
+    c_padecimientos.y=screenHeight * 0.75;
     c_padecimientos.width = screenWidth * 0.78;
     c_padecimientos.height = 40;
     // --------------------------------------------- //
     // ADELANTE/SIGUIENTE
     Rectangle adelante;
-    adelante.x = 40;
-    adelante.y = 40;
+    adelante.x = screenWidth * 0.85;
+    adelante.y = screenHeight * 0.03;
     adelante.width = screenWidth * 0.1;
     adelante.height = screenHeight * 0.05;
     // --------------------------------------------- //
     // ATRAS
     Rectangle atras;
-    atras.y = 20;
-    atras.x = 20;
+    atras.y = screenWidth * 0.05;
+    atras.x = screenHeight * 0.03;
     atras.width = screenWidth * 0.1;
     atras.height = screenHeight * 0.05;
 
@@ -1013,7 +1020,10 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
 
     // Texturas
     // Aqui la imagen
+    // -------------- CAMBIAR IMAGENES -------------------------- //
     Texture2D av1_textura = LoadTexture("../assets/PetCare_avatares/1.png");
+    Texture2D av2_textura = LoadTexture("../assets/PetCare_avatares/2.png");
+    Texture2D av3_textura = LoadTexture("../assets/PetCare_avatares/3.png");
 
     while(finish == false){
         BeginDrawing();
@@ -1023,7 +1033,7 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
             }
 
             //Fondo
-            DrawTextureEx(archivos.Background, archivos.Position,0.0f,0.84f,WHITE);
+            DrawTextureEx(archivos.Background, archivos.Position,0.0f,1.0f,WHITE);
             // Avatares
             //1er renglon
             DrawRectangleRec(av1, RED);
@@ -1084,7 +1094,7 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
     // Posicion del avatar
     Vector2 AvatarPos;
     AvatarPos.x=screenWidth*0.2;
-    AvatarPos.y=screenHeight*0.92;
+    AvatarPos.y=screenHeight*0.91;
 
     Rectangle info;
     info.x=screenWidth * 0.2;
@@ -1113,7 +1123,7 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
     {
         BeginDrawing();
             // Fondo
-            DrawTextureEx(archivos.Background, archivos.Position,0.0f,0.85f,WHITE);
+            DrawTextureEx(archivos.Background, archivos.Position,0.0f,1.0f,WHITE);
             
             DrawRectangleRec(info,RED);
             DrawRectangleRec(cartilla,BLUE);
@@ -1123,8 +1133,413 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
             // avatar de perro
             DrawTextureEx(perro.Avatar,AvatarPos,0.0f,0.8f,WHITE);
             // Nombre del perro
-            DrawText(mascota,screenWidth * 0.4, screenHeight * 0.94,40,BLACK);
+            DrawText(mascota,screenWidth * 0.4, screenHeight * 0.93,40,BLACK);
 
         EndDrawing();
     }
 }
+
+// Calendario
+void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
+
+    // Fondo
+    Texture2D fondo = LoadTexture("../assets/Temp/calendario.png");
+    Vector2 fondoPos;
+    fondoPos.x=0;
+    fondoPos.y=0;
+
+    // Bandera de salida
+    bool finish=false;
+
+    //-------------------------Parte Superior------------------------------
+    // titulo de calendario
+    Rectangle TitleCalendario;
+    TitleCalendario.x=screenWidth * 0.03;
+    TitleCalendario.y=screenHeight * 0.03;
+    TitleCalendario.width=screenWidth * 0.94;
+    TitleCalendario.height=screenHeight * 0.07;
+
+    // Titulo de mes
+    Rectangle Mes;
+    Mes.x=screenWidth*0.03;
+    Mes.y=screenHeight * 0.13;
+    Mes.width = screenWidth * 0.94;
+    Mes.height = screenHeight * 0.03;
+
+    // boton de mes anterior
+    Rectangle PrevMonth;
+    PrevMonth.x=screenWidth*0.03;
+    PrevMonth.y=screenHeight*0.17;
+    PrevMonth.width=screenWidth*0.13;
+    PrevMonth.height=screenHeight*0.03;
+
+    // Boton de siguiente mes
+    Rectangle NextMonth;
+    NextMonth.x=screenWidth*0.84;
+    NextMonth.y=screenHeight*0.17;
+    NextMonth.width=screenWidth*0.13;
+    NextMonth.height=screenHeight*0.03;
+
+    // Bloque de calendario
+    Rectangle Calendario;
+    Calendario.x=screenWidth * 0.03;
+    Calendario.y=screenHeight*0.21;
+    Calendario.width= screenWidth *0.95;
+    Calendario.height= screenHeight * 0.70;
+
+    // ----------------Evento--------------------------
+    Rectangle titleEvent;
+    titleEvent.x=screenWidth*0.1;
+    titleEvent.y=screenHeight*0.61;
+    titleEvent.width=screenWidth*0.80;
+    titleEvent.height=screenHeight*0.07;
+
+    Rectangle descrEvent;
+    descrEvent.x=screenWidth*0.1;
+    descrEvent.y=screenHeight*0.69;
+    descrEvent.width=screenWidth*0.8;
+    descrEvent.height=screenHeight*0.19;
+
+    // Agregar evento
+    Rectangle Agregar;
+    Agregar.x=screenWidth * 0.23;
+    Agregar.y=screenHeight *0.84;
+    Agregar.width=screenWidth * 0.54;
+    Agregar.height=screenHeight * 0.08;
+
+    //-----------------SALIR--------------------
+    Rectangle Return;
+    Return.x=screenWidth*0.03;
+    Return.y=screenHeight * 0.93;
+    Return.width=screenWidth * 0.2;
+    Return.height = screenHeight * 0.05;
+
+    
+    //--------------------NUMERO DE DIAS-----------------------//
+    /*
+        13% de espacio entre el lado derecho
+        7% de espacio entre los cubos de hacia abajo
+    */
+
+    Rectangle day1;
+    day1.x=screenWidth*0.05;day1.y=screenHeight*0.272;
+    day1.width=screenWidth*0.12;day1.height=screenHeight*0.06;
+    
+    Rectangle day2;
+    day2.x=screenWidth*0.18;day2.y=screenHeight*0.272;
+    day2.width=screenWidth*0.12;day2.height=screenHeight*0.06;
+    
+    Rectangle day3;
+    day3.x=screenWidth*0.31;day3.y=screenHeight*0.272;
+    day3.width=screenWidth*0.12;day3.height=screenHeight*0.06;
+    
+    Rectangle day4;
+    day4.x=screenWidth*0.44;day4.y=screenHeight*0.272;
+    day4.width=screenWidth*0.12;day4.height=screenHeight*0.06;
+    
+    Rectangle day5;
+    day5.x=screenWidth*0.57;day5.y=screenHeight*0.272;
+    day5.width=screenWidth*0.12;day5.height=screenHeight*0.06;
+    
+    Rectangle day6;
+    day6.x=screenWidth*0.70;day6.y=screenHeight*0.272;
+    day6.width=screenWidth*0.12;day6.height=screenHeight*0.06;
+    
+    Rectangle day7;
+    day7.x=screenWidth*0.83;day7.y=screenHeight*0.272;
+    day7.width=screenWidth*0.12;day7.height=screenHeight*0.06;
+    
+    Rectangle day8;
+    day8.x=screenWidth*0.05;day8.y=screenHeight*0.34;
+    day8.width=screenWidth*0.12;day8.height=screenHeight*0.06;
+    
+    Rectangle day9;
+    day9.x=screenWidth*0.18;day9.y=screenHeight*0.34;
+    day9.width=screenWidth*0.12;day9.height=screenHeight*0.06;
+    
+    Rectangle day10;
+    day10.x=screenWidth*0.31;day10.y=screenHeight*0.34;
+    day10.width=screenWidth*0.12;day10.height=screenHeight*0.06;
+    
+    Rectangle day11;
+    day11.x=screenWidth*0.44;day11.y=screenHeight*0.34;
+    day11.width=screenWidth*0.12;day11.height=screenHeight*0.06;
+    
+    Rectangle day12;
+    day12.x=screenWidth*0.57;day12.y=screenHeight*0.34;
+    day12.width=screenWidth*0.12;day12.height=screenHeight*0.06;
+    
+    Rectangle day13;
+    day13.x=screenWidth*0.70;day13.y=screenHeight*0.34;
+    day13.width=screenWidth*0.12;day13.height=screenHeight*0.06;
+    
+    Rectangle day14;
+    day14.x=screenWidth*0.83;day14.y=screenHeight*0.34;
+    day14.width=screenWidth*0.12;day14.height=screenHeight*0.06;
+    
+    Rectangle day15;
+    day15.x=screenWidth*0.05;day15.y=screenHeight*0.41;
+    day15.width=screenWidth*0.12;day15.height=screenHeight*0.06;
+    
+    Rectangle day16;
+    day16.x=screenWidth*0.18;day16.y=screenHeight*0.41;
+    day16.width=screenWidth*0.12;day16.height=screenHeight*0.06;
+    
+    Rectangle day17;
+    day17.x=screenWidth*0.31;day17.y=screenHeight*0.41;
+    day17.width=screenWidth*0.12;day17.height=screenHeight*0.06;
+    
+    Rectangle day18;
+    day18.x=screenWidth*0.44;day18.y=screenHeight*0.41;
+    day18.width=screenWidth*0.12;day18.height=screenHeight*0.06;
+    
+    Rectangle day19;
+    day19.x=screenWidth*0.57;day19.y=screenHeight*0.41;
+    day19.width=screenWidth*0.12;day19.height=screenHeight*0.06;
+    
+    Rectangle day20;
+    day20.x=screenWidth*0.70;day20.y=screenHeight*0.41;
+    day20.width=screenWidth*0.12;day20.height=screenHeight*0.06;
+    
+    Rectangle day21;
+    day21.x=screenWidth*0.83;day21.y=screenHeight*0.41;
+    day21.width=screenWidth*0.12;day21.height=screenHeight*0.06;
+    
+    Rectangle day22;
+    day22.x=screenWidth*0.05;day22.y=screenHeight*0.48;
+    day22.width=screenWidth*0.12;day22.height=screenHeight*0.06;
+    
+    Rectangle day23;
+    day23.x=screenWidth*0.18;day23.y=screenHeight*0.48;
+    day23.width=screenWidth*0.12;day23.height=screenHeight*0.06;
+    
+    Rectangle day24;
+    day24.x=screenWidth*0.31;day24.y=screenHeight*0.48;
+    day24.width=screenWidth*0.12;day24.height=screenHeight*0.06;
+    
+    Rectangle day25;
+    day25.x=screenWidth*0.44;day25.y=screenHeight*0.48;
+    day25.width=screenWidth*0.12;day25.height=screenHeight*0.06;
+    
+    Rectangle day26;
+    day26.x=screenWidth*0.57;day26.y=screenHeight*0.48;
+    day26.width=screenWidth*0.12;day26.height=screenHeight*0.06;
+    
+    Rectangle day27;
+    day27.x=screenWidth*0.70;day27.y=screenHeight*0.48;
+    day27.width=screenWidth*0.12;day27.height=screenHeight*0.06;
+    
+    Rectangle day28;
+    day28.x=screenWidth*0.83;day28.y=screenHeight*0.48;
+    day28.width=screenWidth*0.12;day28.height=screenHeight*0.06;
+    
+    Rectangle day29;
+    day29.x=screenWidth*0.05;day29.y=screenHeight*0.55;
+    day29.width=screenWidth*0.12;day29.height=screenHeight*0.06;
+    
+    Rectangle day30;
+    day30.x=screenWidth*0.18;day30.y=screenHeight*0.55;
+    day30.width=screenWidth*0.12;day30.height=screenHeight*0.06;
+    
+    Rectangle day31;
+    day31.x=screenWidth*0.31;day31.y=screenHeight*0.55;
+    day31.width=screenWidth*0.12;day31.height=screenHeight*0.06;
+    //-------------------------------------------------------//
+
+    Vector2 Mouse;
+    Vector2 lastclick={0,0};
+
+    bool daySelected = false;
+
+    float wi=0.05;
+    float hi=0.27;
+    Rectangle test;
+    test.x=screenWidth*0.05;
+    test.y=screenHeight*0.27;
+    test.width=screenWidth*0.12;
+    test.height=screenHeight*0.06;
+
+    Vector2 Dia;
+
+    int DiaSeleccionado;
+
+    while(finish == false){
+        BeginDrawing();
+            Mouse = GetMousePosition();
+
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                lastclick=Mouse;
+            }
+
+            // Fondo
+            DrawTextureEx(fondo,fondoPos,0.0f,1.0f,WHITE);
+            
+            // Titulo de calendario
+            DrawRectangleRec(TitleCalendario,RED);
+            
+            // titulo de Mes
+            DrawRectangleRec(Mes,BLUE);
+
+            // Mes anterior
+            DrawRectangleRec(PrevMonth,RED);
+
+            // Siguiente mes
+            DrawRectangleRec(NextMonth,RED);
+
+            // Cuadro de Calendario
+            // DrawRectangleRec(Calendario,BLUE);
+
+            // ------DIAS DE LA SEMANA-----------//
+            DrawRectangleRec(day1,GRAY);
+            DrawRectangleRec(day2,GRAY);
+            DrawRectangleRec(day3,GRAY);
+            DrawRectangleRec(day4,GRAY);
+            DrawRectangleRec(day5,GRAY);
+            DrawRectangleRec(day6,GRAY);
+            DrawRectangleRec(day7,GRAY);
+
+            
+            DrawRectangleRec(day8,GRAY);
+            DrawRectangleRec(day9,GRAY);
+            DrawRectangleRec(day10,GRAY);
+            DrawRectangleRec(day11,GRAY);
+            DrawRectangleRec(day12,GRAY);
+            DrawRectangleRec(day13,GRAY);
+            DrawRectangleRec(day14,GRAY);
+            
+            
+            DrawRectangleRec(day15,GRAY);
+            DrawRectangleRec(day16,GRAY);
+            DrawRectangleRec(day17,GRAY);
+            DrawRectangleRec(day18,GRAY);
+            DrawRectangleRec(day19,GRAY);
+            DrawRectangleRec(day20,GRAY);
+            DrawRectangleRec(day21,GRAY);
+            DrawRectangleRec(day22,GRAY);
+            
+            DrawRectangleRec(day23,GRAY);
+            DrawRectangleRec(day24,GRAY);
+            DrawRectangleRec(day25,GRAY);
+            DrawRectangleRec(day26,GRAY);
+            DrawRectangleRec(day27,GRAY);
+            DrawRectangleRec(day28,GRAY);
+            DrawRectangleRec(day29,GRAY);
+            
+            DrawRectangleRec(day30,GRAY);
+            DrawRectangleRec(day31,GRAY);
+            
+            // Evento-------------------------
+            //titulo
+            DrawRectangleRec(titleEvent,YELLOW);
+            //Descripcion
+            DrawRectangleRec(descrEvent,YELLOW);
+
+            // Aqui el codigo de nuevo para agergar texto
+
+            // Agregar evento------------------
+            DrawRectangleRec(Agregar,RED);
+
+            // Regresar
+            DrawRectangleRec(Return,BLUE);
+            
+            wi=0.05;
+            hi=0.27;
+            test.x=screenWidth*0.05;
+            test.y=screenHeight*0.27;
+            
+
+            // Esta funcion me costo musho alv y tan simple que esta
+            for(int i=1;i<=32;i++)
+            {   
+                if(CheckCollisionPointRec(lastclick,test))
+                {
+                    daySelected=true;
+                    Dia=lastclick;
+                }
+                
+                DrawRectangleRec(test,RED);
+                
+                if(i==8){
+                    
+                    wi = 0.05;
+                    hi= hi + 0.07;
+                    test.y=screenHeight * hi;
+                }
+                    
+                if(i==15){
+                    wi=0.05;
+                    hi= hi + 0.07;
+                    test.y=screenHeight * hi;
+                }       
+                        
+                if(i==22){
+                    wi=0.05;
+                    hi= hi + 0.07;
+                    test.y=screenHeight * hi;
+                }
+
+                if(i==29){
+                    wi=0.05;
+                    hi= hi + 0.07;
+                    test.y=screenHeight * hi;
+                }
+
+                test.x=screenWidth * wi;
+                test.y=screenHeight * hi;
+                
+                wi=wi+0.13;
+
+            }
+
+            if(daySelected== true)
+            {
+                wi=0.05;
+                hi=0.27;
+                test.x=screenWidth*0.05;
+                test.y=screenHeight*0.27;
+                for(int i=1;i<=32;i++)
+                {   
+                    
+                    if(i==8){
+                        wi = 0.05;
+                        hi= hi + 0.07;
+                        test.y=screenHeight * hi;
+                    }
+                        
+                    if(i==15){
+                        wi=0.05;
+                        hi= hi + 0.07;
+                        test.y=screenHeight * hi;
+                    }       
+                            
+                    if(i==22){
+                        wi=0.05;
+                        hi= hi + 0.07;
+                        test.y=screenHeight * hi;
+                    }
+
+                    if(i==29){
+                        wi=0.05;
+                        hi= hi + 0.07;
+                        test.y=screenHeight * hi;
+                    }
+
+                    test.x=screenWidth * wi;
+                    test.y=screenHeight * hi;
+
+                    if(CheckCollisionPointRec(Dia,test)){
+                        DiaSeleccionado=i;
+                        cout<<"DIA "<< DiaSeleccionado<<endl;
+                    }
+                    
+                    wi=wi+0.13;
+                }
+            }
+
+
+        EndDrawing();
+    }
+
+}
+
+
