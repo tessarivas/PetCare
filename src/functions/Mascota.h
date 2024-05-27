@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <utility> 
 
-#include "../clases/Usuario.h"
 #include "Images.h"
 
 // --------- Prototype ----------//

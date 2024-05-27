@@ -13,7 +13,6 @@
 #include "../clases/Usuario.h"
 
 
-
 // ------------------Prototype------------------ //
 void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
 
@@ -154,16 +153,21 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             DrawTextureEx(fondo,fondoPos,0.0f,1.0f,WHITE);
             
             // Titulo de calendario
-            DrawRectangleRec(TitleCalendario,RED);
+            DrawRectangleRec(TitleCalendario,YELLOW);
+            Vector2 calPos;
+            calPos.x=TitleCalendario.x;
+            calPos.y=TitleCalendario.y;
+
+            // DrawTextEx()
             
             // titulo de Mes
-            DrawRectangleRec(Mes,BLUE);
+            DrawRectangleRec(Mes,YELLOW);
 
             // Mes anterior
-            DrawRectangleRec(PrevMonth,RED);
+            DrawRectangleRec(PrevMonth,YELLOW);
 
             // Siguiente mes
-            DrawRectangleRec(NextMonth,RED);
+            DrawRectangleRec(NextMonth,YELLOW);
 
             // Cuadro de Calendario
             // DrawRectangleRec(Calendario,BLUE);
