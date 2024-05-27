@@ -21,7 +21,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
 void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
 
     //------------------------- FONDO ------------------------------ //
-    Texture2D fondo = LoadTexture("../assets/Temp/calendario.png");
+    Texture2D fondo = LoadTexture("../assets/Temp/calendario.png"); 
     Vector2 fondoPos;
     fondoPos.x=0;
     fondoPos.y=0;
@@ -139,6 +139,28 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     desPos.x=desEvent.x+10;
     desPos.y=desEvent.y+10;
     
+    // ---------- Textos ----------- //
+    const char *txtCalendario = {"CALENDARIO"};
+    
+    //Texto
+    Vector2 calPos;
+    calPos.x=screenWidth * 0.2;
+    calPos.y=screenHeight * 0.04;
+
+    // ---------- MESES ----------- //
+
+    int numMonth=1;
+    int numDays=31;
+
+    char month[20][12]= {"ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"};
+
+    int textSize=MeasureText(month[numMonth-1],24);
+
+    // Texto
+    Vector2 monthPos;
+    monthPos.x=(screenWidth / 2) - (textSize/2);
+    monthPos.y=screenHeight *0.2;
+
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
     while(finish == false){
@@ -152,22 +174,69 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             // Fondo
             DrawTextureEx(fondo,fondoPos,0.0f,1.0f,WHITE);
             
-            // Titulo de calendario
+            // Cuadro de Titulo de calendario 
             DrawRectangleRec(TitleCalendario,YELLOW);
-            Vector2 calPos;
-            calPos.x=TitleCalendario.x;
-            calPos.y=TitleCalendario.y;
-
-            // DrawTextEx()
+            // Titulo
+            DrawTextEx(fuente,txtCalendario,calPos,50,1,BLACK);
             
-            // titulo de Mes
+            // ---------------------- MESES ---------------------- //
+            // Cuadro del titulo del mes
             DrawRectangleRec(Mes,YELLOW);
-
+            
             // Mes anterior
             DrawRectangleRec(PrevMonth,YELLOW);
+            if(CheckCollisionPointRec(lastclick,PrevMonth)){
+                if(numMonth > 1){
+                    numMonth--;
+                    lastclick={0,0};
+                }
+            }
 
             // Siguiente mes
             DrawRectangleRec(NextMonth,YELLOW);
+            if(CheckCollisionPointRec(lastclick,NextMonth)){
+                if(numMonth < 12){
+                    numMonth++;
+                    lastclick={0,0};
+                }
+            }
+            
+
+            // Par
+            if(numMonth % 2 == 0){
+                // Febrero
+                if(numMonth == 2){
+                    
+                    numDays=29;
+                }
+                else{
+                    // Agosto en adelante
+                    if(numMonth >=8){
+                        numDays=31;
+                    }
+                    else{
+                        // Junio y abril
+                        numDays = 30;
+                    }
+                }
+            }else{ // Impar
+                if(numMonth <=7){ 
+                    // Enero hasta julio,
+                    numDays=31;
+                }else{
+                    // Septiembre y noviembre
+                    numDays=30;
+                }
+            }
+
+            // Volver a centrar el texto
+            textSize=MeasureText(month[numMonth-1],24);
+
+            monthPos.x=((screenWidth - textSize ) / 2 ) +10;
+            monthPos.y=screenHeight *0.13;
+            
+            // Texto
+            DrawTextEx(fuente,month[numMonth-1],monthPos,24,1,BLACK);
 
             // Cuadro de Calendario
             // DrawRectangleRec(Calendario,BLUE);
@@ -265,8 +334,10 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                 Una vez detecte que selecciono un cuadro que represente un dia, cambiara la bandera de daySelected a true
                 y en otro ciclo, buscara en que ubicacion dio el click y que dia representa esa ubicacion, guardando el dia en
                 diaSeleccionado
+
+                Actualizacion, cambie a numDays +1 pq me da wba cambiar todo el codigo y para que dibuje un por cada dia del mes
             */
-            for(int i=1;i<=32;i++)
+            for(int i=1;i<=numDays+1;i++)
             {   
                 if(CheckCollisionPointRec(lastclick,test))
                 {
@@ -313,7 +384,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                 hi=0.27;
                 test.x=screenWidth*0.05;
                 test.y=screenHeight*0.27;
-                for(int i=1;i<=32;i++)
+                for(int i=1;i<=numDays+1;i++)
                 {   
                     
                     if(i==8){
