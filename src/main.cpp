@@ -212,6 +212,7 @@ int main(){
             case CALENDARIO:
             {
                 DibujarCalendario(&event,ANCHO,ALTO);
+                cout<< "aaaaaaaaaaaaa"<<endl;
                 cout<<event->title<<endl;
                 pantalla_actual=MI_PERFIL;
                 

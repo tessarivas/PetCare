@@ -348,7 +348,9 @@ void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight)
                 new_event=true;
                 tempTitle=string() + title;
                 tempDescription=string() + des;
+                cout<<"punto1"<<endl;
                 addEvent(event,DiaSeleccionado,numMonth,tempTitle,tempDescription);
+                cout<<"punto2"<<endl;
                 break;
             }
 
