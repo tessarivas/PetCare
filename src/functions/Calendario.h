@@ -175,9 +175,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
     bool new_event=false;
 
     // Evento
-    struct Evento *temp=nullptr;
-
-    string tempTitle,tempDescription;
+    struct Evento *temp=(struct Evento*)malloc(sizeof(struct Evento));
 
 
     while(finish == false){
@@ -345,19 +343,22 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
             DrawTextEx(fuente,"Agregar",addPos,44,2,BLACK);
 
             if(CheckCollisionPointRec(lastclick,Agregar)){
-                cout<<"AAlv"<<endl;
+                cout<<"AAl"<<endl;
                 new_event=true;
-                tempTitle=string() + title;
-                tempDescription=string() + des;
-
-                // temp->day=DiaSeleccionado;
-                // temp->month=numMonth;
-                // temp->title=tempTitle;
-                // temp->description=tempDescription;
-                // temp->next=nullptr;
-                // temp->prev=nullptr;
-
                 
+
+                temp->day=DiaSeleccionado;
+                cout<<"Paso"<<endl;
+                temp->month=numMonth;
+                cout<<"Paso1"<<endl;
+                strcpy(temp->title,title);
+                cout<<"Paso2"<<endl;
+                strcpy(temp->description,des);
+                cout<<"Paso3"<<endl;
+                temp->next=nullptr;
+                cout<<"Paso4"<<endl;
+                temp->prev=nullptr;
+                cout<<"Paso5"<<endl;
         
                 return temp;
                 break;
