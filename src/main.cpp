@@ -213,18 +213,21 @@ int main(){
             case CALENDARIO:
             {
                 tempEvent = DibujarCalendario(ANCHO,ALTO);
-                    cout<<"Punto0"<< endl;
+            
+                int tempDia=tempEvent->day;
+                int tempMonth=tempEvent->month;
                 
-                    int tempDia=tempEvent->day;
-                    int tempMonth=tempEvent->month;
-                    string tempTitle=tempEvent->title;
-                    string tempDesc=tempEvent->description;
-                    cout<<"Punto1"<< endl;
-                    addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
-                    cout<<"paso "<<event->title<<endl;
+                char tempTitle[20];
+                strcpy(tempTitle,tempEvent->title);
+                
+                char tempDesc[50];
+                strcpy(tempDesc,tempEvent->description);
+                    
+                addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
+                cout<<"Titulo :"<<event->title<<endl;
+                cout<<"Descripcion :"<<event->description<<endl;
                 
                 pantalla_actual=MI_PERFIL;
-                
                 break;
             }
             default:

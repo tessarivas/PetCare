@@ -13,18 +13,20 @@ struct Evento{
 struct Evento * createNodo (int day,int month,string title, string description);
 void addEvent(struct Evento **event, int day, int month, string title, string description);
 
-struct Evento * createNodo (int day,int month,string title, string description){
-    // struct Evento *nodo = (struct Evento*)malloc(sizeof(struct Evento));
-    // nodo->day=day;
-    // nodo->month=month;
-    // nodo->title=title;
-    // nodo->description=description;
-    // nodo->next=nullptr;
-    // nodo->prev=nullptr;
-    // return nodo;
+struct Evento * createNodo (int day,int month,char title[], char description[]){
+    struct Evento *nodo = (struct Evento*)malloc(sizeof(struct Evento));
+    nodo->day=day;
+    nodo->month=month;
+    
+    strcpy(nodo->title,title);
+    strcpy(nodo->description,description);
+    
+    nodo->next=nullptr;
+    nodo->prev=nullptr;
+    return nodo;
 }
 
-void addEvent(struct Evento **event, int day, int month, string title, string description){
+void addEvent(struct Evento **event, int day, int month, char title[], char description[]){
     struct Evento *nodo = createNodo(day,month,title,description);
     if (*event == nullptr){
         *event = nodo;
