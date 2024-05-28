@@ -14,6 +14,7 @@ using std::string;
 using std::to_string;
 
 #include "Dog.h"
+#include "Eventos.h"
 #include "../functions/Calendario.h"
 
 
