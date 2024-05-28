@@ -89,7 +89,7 @@ int main(){
     srand(time(NULL));
     // Usuario
     Usuario user; // Usuario actual
-    string tempName; // Nombre para copiar y pegar en el constructor de user
+    string tempName; // Nombre para copiar y pegar en el constructor de use
 
     // Mascota
     Dog perro;
