@@ -41,12 +41,17 @@ void addEvent(struct Evento **event, int day, int month, char title[], char desc
     }
 }
 
+void liberar(struct Evento *event){
+    free(event);
+}
+
+
 void pri (struct Evento *head)
 {
     struct Evento *temp = head;
     while(temp!=NULL)
     {
-        cout<<temp->day<<endl;
+        cout<<temp->day<<" "<<temp->title<<" "<<temp->description<<" "<<endl;
         temp=temp->next;
     }
 }

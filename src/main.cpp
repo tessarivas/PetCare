@@ -84,7 +84,6 @@ int main(){
 
     // Eventos
     Evento *event=nullptr;
-    Evento *tempEvent=nullptr;
 
     // Variables
     srand(time(NULL));
@@ -212,9 +211,15 @@ int main(){
             }
             case CALENDARIO:
             {
+                // Evento temporal
+                Evento *tempEvent=nullptr;
+
+                // Carga y descarga en la propia funcion
                 tempEvent = DibujarCalendario(ANCHO,ALTO);
-            
+
+                // Dia temporal para transferir el dia a la estructura
                 int tempDia=tempEvent->day;
+                // Dia temporal para transferir el mes a la estructura
                 int tempMonth=tempEvent->month;
                 
                 char tempTitle[20];
@@ -222,10 +227,11 @@ int main(){
                 
                 char tempDesc[50];
                 strcpy(tempDesc,tempEvent->description);
-                    
+
+                // Agregar el evento nuevo a la lista de eventos    
                 addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
-                cout<<"Titulo :"<<event->title<<endl;
-                cout<<"Descripcion :"<<event->description<<endl;
+                
+                pri(event);
                 
                 pantalla_actual=MI_PERFIL;
                 break;
@@ -242,6 +248,8 @@ int main(){
 
     CloseWindow();
 
+    free(event);
+    
     return 0;
 }
 

@@ -343,22 +343,16 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
             DrawTextEx(fuente,"Agregar",addPos,44,2,BLACK);
 
             if(CheckCollisionPointRec(lastclick,Agregar)){
-                cout<<"AAl"<<endl;
                 new_event=true;
                 
-
                 temp->day=DiaSeleccionado;
-                cout<<"Paso"<<endl;
                 temp->month=numMonth;
-                cout<<"Paso1"<<endl;
+                
                 strcpy(temp->title,title);
-                cout<<"Paso2"<<endl;
                 strcpy(temp->description,des);
-                cout<<"Paso3"<<endl;
+
                 temp->next=nullptr;
-                cout<<"Paso4"<<endl;
                 temp->prev=nullptr;
-                cout<<"Paso5"<<endl;
         
                 return temp;
                 break;
