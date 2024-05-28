@@ -15,11 +15,11 @@ using std::to_string;
 #include "../clases/Usuario.h"
 
 // ------------------Prototype------------------ //
-void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight);
+Evento *DibujarCalendario(int screenWidth, int screenHeight);
 
 // ------------------Funciones------------------ //
 // Dibujar papuCalendario
-void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight){
+Evento *DibujarCalendario(int screenWidth, int screenHeight){
 
     //------------------------- FONDO ------------------------------ //
     Texture2D fondo = LoadTexture("../assets/Temp/calendario.png"); 
@@ -175,7 +175,7 @@ void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight)
     bool new_event=false;
 
     // Evento
-    struct Evento *temp=*event;
+    struct Evento *temp=nullptr;
 
     string tempTitle,tempDescription;
 
@@ -345,12 +345,21 @@ void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight)
             DrawTextEx(fuente,"Agregar",addPos,44,2,BLACK);
 
             if(CheckCollisionPointRec(lastclick,Agregar)){
+                cout<<"AAlv"<<endl;
                 new_event=true;
                 tempTitle=string() + title;
                 tempDescription=string() + des;
-                cout<<"punto1"<<endl;
-                addEvent(event,DiaSeleccionado,numMonth,tempTitle,tempDescription);
-                cout<<"punto2"<<endl;
+
+                // temp->day=DiaSeleccionado;
+                // temp->month=numMonth;
+                // temp->title=tempTitle;
+                // temp->description=tempDescription;
+                // temp->next=nullptr;
+                // temp->prev=nullptr;
+
+                
+        
+                return temp;
                 break;
             }
 
@@ -469,5 +478,4 @@ void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight)
         EndDrawing();
     }
     UnloadTexture(fondo);
-    
 }

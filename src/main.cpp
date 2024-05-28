@@ -84,6 +84,7 @@ int main(){
 
     // Eventos
     Evento *event=nullptr;
+    Evento *tempEvent=nullptr;
 
     // Variables
     srand(time(NULL));
@@ -211,9 +212,17 @@ int main(){
             }
             case CALENDARIO:
             {
-                DibujarCalendario(&event,ANCHO,ALTO);
-                cout<< "aaaaaaaaaaaaa"<<endl;
-                cout<<event->title<<endl;
+                tempEvent = DibujarCalendario(ANCHO,ALTO);
+                    cout<<"Punto0"<< endl;
+                
+                    int tempDia=tempEvent->day;
+                    int tempMonth=tempEvent->month;
+                    string tempTitle=tempEvent->title;
+                    string tempDesc=tempEvent->description;
+                    cout<<"Punto1"<< endl;
+                    addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
+                    cout<<"paso "<<event->title<<endl;
+                
                 pantalla_actual=MI_PERFIL;
                 
                 break;
