@@ -34,19 +34,11 @@ protected:
     // Contacto
     string Telefono="";
     int FotoPerfil[6]; // Todavia falta saber como subir una foto personalizada
-    
 public:
     // Constructores
     Usuario();
     Usuario(string nombre, string email,string passwoard,string telefono);
     void DefineName(string name);
-    
-    // // Acciones respecto a la cuenta
-    // virtual void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono);
-    // virtual void IniciarSesion(string Email,string Contrasenia);
-    // virtual void RecuperarContr(string Email);
-    // bool CerrarSesion();
-    // void EliminarCuenta();
     
     // Id
     virtual string GenID ();
@@ -89,23 +81,3 @@ Usuario::Usuario(string nombre, string email,string passwoard,string telefono){
     this->Passwoard=passwoard;
     this->Telefono=telefono;
 }
-
-// void Registrarse(string Nombre, string Email, string Contrasenia, string Telefono){
-
-// }
-
-// void IniciarSesion(string Email,string Contrasenia){
-
-// }
-
-// void RecuperarContr(string Email){
-
-// }
-
-// bool CerrarSesion(){
-//     return false;
-// }
-
-// void EliminarCuenta(){
-
-// }

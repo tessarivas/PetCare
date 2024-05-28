@@ -10,15 +10,16 @@
 #include <cstdlib>
 #include <utility> 
 
+using std::to_string;
+
 #include "../clases/Usuario.h"
 
-
 // ------------------Prototype------------------ //
-void DibujarCalendario(Dog perro, int screenWidth, int screenHeight);
+void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight);
 
 // ------------------Funciones------------------ //
 // Dibujar papuCalendario
-void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
+void DibujarCalendario(struct Evento **event, int screenWidth, int screenHeight){
 
     //------------------------- FONDO ------------------------------ //
     Texture2D fondo = LoadTexture("../assets/Temp/calendario.png"); 
@@ -169,6 +170,15 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     Vector2 Mouse;
     // Donde hizo click
     Vector2 lastclick={0,0};
+
+    // Bandera de llenado
+    bool new_event=false;
+
+    // Evento
+    struct Evento *temp=*event;
+
+    string tempTitle,tempDescription;
+
 
     while(finish == false){
         BeginDrawing();
@@ -335,6 +345,10 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             DrawTextEx(fuente,"Agregar",addPos,44,2,BLACK);
 
             if(CheckCollisionPointRec(lastclick,Agregar)){
+                new_event=true;
+                tempTitle=string() + title;
+                tempDescription=string() + des;
+                addEvent(event,DiaSeleccionado,numMonth,tempTitle,tempDescription);
                 break;
             }
 
@@ -449,8 +463,9 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                     wi=wi+0.13;
                 }
             }
-
+        
         EndDrawing();
     }
     UnloadTexture(fondo);
+    
 }

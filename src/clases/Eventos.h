@@ -2,28 +2,49 @@
 
 #include "Usuario.h"
 
-class Eventos{
-public:
+struct Evento{
     int day;
-    string title_event;
-    string decription;
-
-    Eventos * next;
-    Eventos * prev;
-
-    Eventos();
-
-    void add_event(int day, string title,string description);
+    int month;
+    string title;
+    string description;
+    struct Evento *next, *prev;
 };
 
-void Eventos::add_event(int day, string title, string description){
-    this->day=day;
-    this->title_event=title;
-    this->decription=description;
+struct Evento * createNodo (int day,int month,string title, string description);
+void addEvent(struct Evento **event, int day, int month, string title, string description);
+
+struct Evento * createNodo (int day,int month,string title, string description){
+    struct Evento *nodo = (struct Evento*)malloc(sizeof(struct Evento));
+    nodo->day=day;
+    nodo->month=month;
+    nodo->title=title;
+    nodo->description=description;
+    nodo->next=nullptr;
+    nodo->prev=nullptr;
+    return nodo;
 }
 
-Eventos::Eventos(){
-    this->day=1;
-    this->title_event = "Evento de prueba";
-    this->decription = "Ahi vaaa avr";
+void addEvent(struct Evento **event, int day, int month, string title, string description){
+    struct Evento *nodo = createNodo(day,month,title,description);
+    if (*event == nullptr){
+        *event = nodo;
+    }
+    else{
+        struct Evento *temp=*event;
+        while(temp->next !=nullptr){
+            temp=temp->next;
+        }
+        temp->next=nodo;
+        nodo->prev=temp;
+    }
+}
+
+void pri (struct Evento *head)
+{
+    struct Evento *temp = head;
+    while(temp!=NULL)
+    {
+        cout<<temp->day<<endl;
+        temp=temp->next;
+    }
 }

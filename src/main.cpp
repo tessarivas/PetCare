@@ -22,7 +22,7 @@ using std::pair;
 
 // DEFINICIONES
 #define ANCHO 414
-#define ALTO 896
+#define ALTO 700
 
 //---------------------Escenarios------------------------------------------------
 typedef enum Pantalla{
@@ -78,12 +78,12 @@ int main(){
     SetWindowIcon(icono);
 
     // Iniciar pantallas
-    Pantalla pantalla_actual = CREAR_DUENO;
+    Pantalla pantalla_actual = CALENDARIO;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
-    // Fuente
-    
+    // Eventos
+    Evento *event=nullptr;
 
     // Variables
     srand(time(NULL));
@@ -211,7 +211,8 @@ int main(){
             }
             case CALENDARIO:
             {
-                DibujarCalendario(perro,ANCHO,ALTO);
+                DibujarCalendario(&event,ANCHO,ALTO);
+                cout<<event->title<<endl;
                 pantalla_actual=MI_PERFIL;
                 
                 break;
