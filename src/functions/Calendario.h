@@ -47,16 +47,16 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     // boton de mes anterior
     Rectangle PrevMonth;
     PrevMonth.x=screenWidth*0.03;
-    PrevMonth.y=screenHeight*0.17;
-    PrevMonth.width=screenWidth*0.13;
-    PrevMonth.height=screenHeight*0.03;
+    PrevMonth.y=screenHeight*0.16;
+    PrevMonth.width=screenWidth*0.10;
+    PrevMonth.height=screenHeight*0.043;
 
     // Boton de siguiente mes
     Rectangle NextMonth;
-    NextMonth.x=screenWidth*0.84;
-    NextMonth.y=screenHeight*0.17;
-    NextMonth.width=screenWidth*0.13;
-    NextMonth.height=screenHeight*0.03;
+    NextMonth.x=screenWidth*0.86;
+    NextMonth.y=screenHeight*0.16;
+    NextMonth.width=screenWidth*0.10;
+    NextMonth.height=screenHeight*0.043;
 
     // Bloque de calendario
     Rectangle Calendario;
@@ -68,20 +68,20 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     // ----------------Evento--------------------------
     Rectangle titleEvent;
     titleEvent.x=screenWidth*0.1;
-    titleEvent.y=screenHeight*0.61;
+    titleEvent.y=screenHeight*0.63;
     titleEvent.width=screenWidth*0.80;
     titleEvent.height=screenHeight*0.07;
 
     Rectangle desEvent;
     desEvent.x=screenWidth*0.1;
-    desEvent.y=screenHeight*0.69;
+    desEvent.y=screenHeight*0.71;
     desEvent.width=screenWidth*0.8;
     desEvent.height=screenHeight*0.19;
 
     // Agregar evento
     Rectangle Agregar;
     Agregar.x=screenWidth * 0.23;
-    Agregar.y=screenHeight *0.84;
+    Agregar.y=screenHeight *0.87;
     Agregar.width=screenWidth * 0.54;
     Agregar.height=screenHeight * 0.08;
 
@@ -89,7 +89,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
     Rectangle Return;
     Return.x=screenWidth*0.03;
     Return.y=screenHeight * 0.93;
-    Return.width=screenWidth * 0.2;
+    Return.width=screenWidth * 0.1;
     Return.height = screenHeight * 0.05;
 
     
@@ -98,29 +98,24 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
         13% de espacio entre el lado derecho
         7% de espacio entre los cubos de hacia abajo
     */
-
     
     //-------------------------------------------------------//
 
-    // Posicion del mouse
-    Vector2 Mouse;
-    // Donde hizo click
-    Vector2 lastclick={0,0};
+    //------------CUADROS DE LOS DIAS-----------//
+    float wi=0.05;
+    float hi=0.27;
+    
+    Rectangle test;
+    test.x=screenWidth*0.05;
+    test.y=screenHeight*0.27;
+    test.width=screenWidth*0.12;
+    test.height=screenHeight*0.06;
 
     // Slecciono un dia?
     bool daySelected = false;
     
     // El dia que selecciono
     int DiaSeleccionado;
-
-    //------------CUADROS DE LOS DIAS-----------//
-    float wi=0.05;
-    float hi=0.27;
-    Rectangle test;
-    test.x=screenWidth*0.05;
-    test.y=screenHeight*0.27;
-    test.width=screenWidth*0.12;
-    test.height=screenHeight*0.06;
 
     // ---------- Textos ----------- //
     const int MaxCharacter=20;
@@ -156,12 +151,24 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
 
     int textSize=MeasureText(month[numMonth-1],24);
 
-    // Texto
     Vector2 monthPos;
     monthPos.x=(screenWidth / 2) - (textSize/2);
     monthPos.y=screenHeight *0.2;
 
+    // ---------- texto y botones ----------- //
+
+    Texture2D nextm= LoadTexture("../assets/PetCare_BotonAdelante.png");
+    
+    Texture2D prevM= LoadTexture("../assets/PetCare_BotonAtras.png");
+
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+
+    // ---------- Extras ----------- //
+
+    // Posicion del mouse
+    Vector2 Mouse;
+    // Donde hizo click
+    Vector2 lastclick={0,0};
 
     while(finish == false){
         BeginDrawing();
@@ -183,7 +190,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             // Cuadro del titulo del mes
             DrawRectangleRec(Mes,YELLOW);
             
-            // Mes anterior
+            // ------------Mes Anterior----------- // 
             DrawRectangleRec(PrevMonth,YELLOW);
             if(CheckCollisionPointRec(lastclick,PrevMonth)){
                 if(numMonth > 1){
@@ -192,7 +199,11 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                 }
             }
 
-            // Siguiente mes
+            DrawTexture(prevM,PrevMonth.x,PrevMonth.y,WHITE);
+
+            // -----------Siguiente Mes----------- // 
+            
+            //Hitbox
             DrawRectangleRec(NextMonth,YELLOW);
             if(CheckCollisionPointRec(lastclick,NextMonth)){
                 if(numMonth < 12){
@@ -200,6 +211,8 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
                     lastclick={0,0};
                 }
             }
+            // Boton
+            DrawTexture(nextm,NextMonth.x,NextMonth.y,WHITE);
             
 
             // Par
@@ -239,7 +252,7 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             DrawTextEx(fuente,month[numMonth-1],monthPos,24,1,BLACK);
 
             // Cuadro de Calendario
-            // DrawRectangleRec(Calendario,BLUE);
+            DrawRectangleRec(Calendario,BLUE);
             
             
             // Evento-------------------------
@@ -310,9 +323,24 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             
             // Agregar evento
             DrawRectangleRec(Agregar,RED);
+            
+            const char *add={"AGREGAR"};
+
+            int addSize=MeasureText(add,44);
+
+            Vector2 addPos;
+            addPos.x=Agregar.x + 43;
+            addPos.y=Agregar.y + 10;
+
+            DrawTextEx(fuente,"Agregar",addPos,44,2,BLACK);
+
+            if(CheckCollisionPointRec(lastclick,Agregar)){
+                break;
+            }
 
             // Regresar
             DrawRectangleRec(Return,BLUE);
+            DrawTexture(prevM,Return.x+2,Return.y+2,WHITE);
 
             if(CheckCollisionPointRec(lastclick,Return)){
                 break;
@@ -322,7 +350,6 @@ void DibujarCalendario(Dog perro, int screenWidth, int screenHeight){
             hi=0.27;
             test.x=screenWidth*0.05;
             test.y=screenHeight*0.27;
-            
 
             // Esta funcion me costo musho alv y tan simple que esta
             /*
