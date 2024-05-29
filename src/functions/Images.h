@@ -33,21 +33,43 @@ typedef struct Cargas{
     Texture2D BotonGato;
     // REGISTRAR PERRO
     Texture2D FondoRegPerro;
+    Texture2D FondoAvatarPerro;
+    Texture2D FondoAvatarGato;
     Texture2D BotonAdelante;
+    Texture2D PERRO1;
+    Texture2D PERRO2;
+    Texture2D PERRO3;
+    Texture2D PERRO4;
+    Texture2D PERRO5;
+    Texture2D PERRO6;
+    Texture2D PERRO7;
+    Texture2D PERRO8;
     // REGISTRAR GATO
     Texture2D FondoRegGato;
-    // EXTRAS
+    Texture2D BotonMas;
+    Texture2D GATO1;
+    Texture2D GATO2;
+    Texture2D GATO3;
+    Texture2D GATO4;
+    Texture2D GATO5;
+    Texture2D GATO6;
+    Texture2D GATO7;
+    Texture2D GATO8;
+    // PERFIL MASCOTA
+    Texture2D BotonMiInfo;
+    Texture2D BotonCartilla;
+    Texture2D BotonCalendario;
+    // CALENDARIO
+    Texture2D FondoCalendario;
+    Texture2D BotonAtrasAzul;
+    Texture2D BotonAdelanteAzul;
     
     // Fondo predeteminado
     Texture2D Background;
-    
     // Posicion predeteminada
     Vector2 Position = { 0.0f, 0.0f };
-    
     // Fuente
     Font fuente;
-    
     // Color de los bloques de texto
     Color Bloque1={245,246,243,255};
-
 } Cargas;

@@ -523,128 +523,56 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
         de la mascota
     */
     
-    bool finish = false;
+    int avatarSeleccionado = -1;
 
-    // HitBox De avatares
-    // 1 renglon------------------
-    Rectangle av1;
-    av1.x= screenWidth * 0.18;
-    av1.y= screenHeight * 0.32;
-    av1.width= screenWidth * 0.3;
-    av1.height= screenHeight * 0.13;
-    
-    Rectangle av2;
-    av2.x= screenWidth * 0.50;
-    av2.y= screenHeight * 0.32;
-    av2.width= screenWidth * 0.3;
-    av2.height= screenHeight * 0.13;
-    // 2 renglon------------------
-    Rectangle av3;
-    av3.x= screenWidth * 0.18;
-    av3.y= screenHeight * 0.46;
-    av3.width= screenWidth * 0.3;
-    av3.height= screenHeight * 0.13;
-    
-    Rectangle av4;
-    av4.x= screenWidth * 0.50;
-    av4.y= screenHeight * 0.46;
-    av4.width= screenWidth * 0.3;
-    av4.height= screenHeight * 0.13;
-    // 3 renglon------------------
-    Rectangle av5;
-    av5.x= screenWidth * 0.18;
-    av5.y= screenHeight * 0.60;
-    av5.width= screenWidth * 0.3;
-    av5.height= screenHeight * 0.13;
-    
-    Rectangle av6;
-    av6.x= screenWidth * 0.50;
-    av6.y= screenHeight * 0.60;
-    av6.width= screenWidth * 0.3;
-    av6.height= screenHeight * 0.13;
+    Rectangle AvatarPerro[8];
+    Texture2D avatarPerroTextura[8] = { archivos.PERRO1, archivos.PERRO2, archivos.PERRO3, archivos.PERRO4, archivos.PERRO5, archivos.PERRO6, archivos.PERRO7, archivos.PERRO8};
 
-    // 4 renglon------------------
-    Rectangle av7;
-    av7.x= screenWidth * 0.18;
-    av7.y= screenHeight * 0.74;
-    av7.width= screenWidth * 0.3;
-    av7.height= screenHeight * 0.13;
-    
-    Rectangle av8;
-    av8.x= screenWidth * 0.50;
-    av8.y= screenHeight * 0.74;
-    av8.width= screenWidth * 0.3;
-    av8.height= screenHeight * 0.13;
+    // Definir posiciones de los avatares
+    for(int i = 0; i < 8; i++){
+        AvatarPerro[i].x = screenWidth * ((i % 2 == 0) ? 0.18f : 0.50f);
+        AvatarPerro[i].y = screenHeight * (0.32f + (0.14f * (i / 2)));
+        AvatarPerro[i].width = screenWidth * 0.3f;
+        AvatarPerro[i].height = screenHeight * 0.13f;
+    }
 
     Vector2 Mouse;
     Vector2 LastClick;
 
-    // Texturas
-    // Aqui la imagen
-    // -------------- CAMBIAR IMAGENES -------------------------- //
-    Texture2D av1_textura = LoadTexture("../assets/PetCare_avatares/1.png");
-    Texture2D av2_textura = LoadTexture("../assets/PetCare_avatares/2.png");
-    Texture2D av3_textura = LoadTexture("../assets/PetCare_avatares/3.png");
-
-    while(finish == false){
+    // MIENTRAS QUE NO SE HAYA SELECCIONADO NINGUN AVATAR
+    while (avatarSeleccionado == -1){
         BeginDrawing();
-            Mouse= GetMousePosition();
-            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                LastClick=Mouse;
-            }
+        ClearBackground(RAYWHITE);
 
-            //Fondo
-            DrawTextureEx(archivos.Background, archivos.Position,0.0f,1.0f,WHITE);
-            // Avatares
-            //1er renglon
-            DrawRectangleRec(av1, RED);
-            DrawRectangleRec(av2, RED);
-            // 2do renglon
-            DrawRectangleRec(av3, BLUE);
-            DrawRectangleRec(av4, BLUE);
-            //3er renglon
-            DrawRectangleRec(av5, RED);
-            DrawRectangleRec(av6, RED);
-            //4to renglon
-            DrawRectangleRec(av7, BLUE);
-            DrawRectangleRec(av8, BLUE);
+        // OBTENER POSICION DEL MOUSE
+        Mouse = GetMousePosition();
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            LastClick = Mouse;
+        }
 
-            // Comprobacion de click en avatares
-            if(CheckCollisionPointRec(LastClick,av1)){
-                cout<<"selecciono el avatar 1"<<endl;
-                /*
-                    Unload texturas
-                */
-                return av1_textura;
+        // FONDO DE LA PANTALLA
+        DrawTextureEx(archivos.Background, archivos.Position,0.0f,1.0f,WHITE);
+
+        // VERIFICAR EL CLICK EN EL AVATAR
+        for(int i = 0; i < 8; i++){
+            if (CheckCollisionPointRec(LastClick, AvatarPerro[i])){
+                avatarSeleccionado = i;
+                break;
             }
-            if(CheckCollisionPointRec(LastClick,av2)){
-                cout<<"selecciono el avatar 2"<<endl;
+        }
+
+        // DIBUJAR AVATAR Y BORDE DEL QUE SELECCIONEN
+        for(int i = 0; i < 8; i++){
+            DrawTextureEx(avatarPerroTextura[i], { AvatarPerro[i].x, AvatarPerro[i].y }, 0.0f, 1.0f, WHITE);
+            if (avatarSeleccionado == i){
+                DrawRectangleLinesEx(AvatarPerro[i], 8, GREEN);
             }
-            if(CheckCollisionPointRec(LastClick,av3)){
-                cout<<"selecciono el avatar 3"<<endl;
-            }
-            if(CheckCollisionPointRec(LastClick,av4)){
-                cout<<"selecciono el avatar 4"<<endl;
-            }
-            if(CheckCollisionPointRec(LastClick,av5)){
-                cout<<"selecciono el avatar 5"<<endl;
-            }
-            if(CheckCollisionPointRec(LastClick,av6)){
-                cout<<"selecciono el avatar 6"<<endl;
-            }
-            if(CheckCollisionPointRec(LastClick,av7)){
-                cout<<"selecciono el avatar 7"<<endl;
-            }
-            if(CheckCollisionPointRec(LastClick,av8)){
-                cout<<"selecciono el avatar 8"<<endl;
-            }
+        }
 
         EndDrawing();
     }
-    // Descargamos las texturas antes de salir de la funcion.
-    UnloadTexture(av1_textura);
-    
-    // Esto solo pa que se quite el warning, al final nunca regresara este
-    return av1_textura;
+
+    // Retornar la textura del avatar seleccionado
+    return avatarPerroTextura[avatarSeleccionado];
 }
 
