@@ -505,19 +505,22 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     }
 
     /*
-        Separacion de 5% de la pantalla (arriba y abajo)
+        Separacion de 3% de la pantalla (arriba y abajo)
     */
 
-    // Eventos registrados
-    Rectangle eventos;
-    eventos.width=screenWidth*0.7;
-    eventos.height=screenHeight*0.1;
-    eventos.x=(screenWidth - eventos.width)/2;
-    eventos.y=screenHeight * 0.32;
+    // Cuadro de eventos registrados
+    Rectangle c_eventos;
+    c_eventos.width=screenWidth*0.7;
+    c_eventos.height=screenHeight*0.1;
+    c_eventos.x=(screenWidth - c_eventos.width)/2;
+    c_eventos.y=screenHeight * 0.32;
+
+    // Posicion del texto del evento
+    Vector2 text_events;
+    text_events.x=c_eventos.x +10;
+    text_events.y=c_eventos.y+10;
 
     cout << count_events<<endl;
-
-    bool impresos=false;
 
     Rectangle salir;
     salir.width=screenWidth*0.1;
@@ -527,6 +530,8 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
 
     Vector2 Mouse;
     Vector2 click;
+
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
     while(finish == false){
         BeginDrawing();
@@ -541,13 +546,30 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
             DrawRectangleRec(title,YELLOW);
             DrawRectangleRec(c_events,YELLOW);
             
-            eventos.y=screenHeight * 0.32;
-            for (int i =0;i<=count_events;i++){
-                DrawRectangleRec(eventos,RED);
+            // c_eventos.y=screenHeight * 0.32;
+            // for (int i =0;i<=count_events;i++){
+            //     DrawRectangleRec(c_eventos,RED);
 
-                eventos.y+=screenHeight* 0.13;
+            //     c_eventos.y+=screenHeight* 0.13;
 
-                impresos=true;
+            // }
+
+            temp=events;
+            c_eventos.y=screenHeight * 0.32;
+            text_events.y=c_eventos.y+10;
+            while(temp != nullptr){
+                // Dibujamos el cuadro
+                DrawRectangleRec(c_eventos,RED);
+                // Dibujamos el texto
+                DrawText(temp->title,text_events.x,text_events.y,24,BLACK);
+
+                // Sumamos un 3% hacia abajo, es 13 pq le sumo el ancho del cuadro mas 3
+                c_eventos.y+=screenHeight* 0.13;
+                // Igual con el texto
+                text_events.y=c_eventos.y+10;
+
+                // Pasamos al siguiente temp
+                temp=temp->next;
             }
 
             DrawRectangleRec(salir,BLUE);

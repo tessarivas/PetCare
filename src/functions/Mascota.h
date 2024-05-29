@@ -237,14 +237,14 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         }
 
         // Boton atras
-        DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
-        /*
-        // Verificar si se presiono atras
-        if(CheckCollisionPointRec(LastClick, atras)){
-            regresar = true;
-            break;
-        }
-        */
+        // DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
+        
+        //Verificar si se presiono atras
+        // if(CheckCollisionPointRec(lastClick, atras)){
+        //     return true;
+        //     break;
+        // }
+        
 
         // Verificar que se hayan llenado los campos para avanzar adelante
         DrawTexture(archivos.BotonAdelante, adelante.x, adelante.y, WHITE);
