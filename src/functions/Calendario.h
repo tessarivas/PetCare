@@ -558,5 +558,6 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
             
         EndDrawing();
     }
+    
 
 }

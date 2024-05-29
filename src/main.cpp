@@ -151,30 +151,37 @@ int main(){
                 } else{
                     pantalla_actual = MIS_MASCOTAS;;
                 }
-                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case REGISTRAR_GATO:
             {
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
+                
+                //Descargamos las pantallas
+                DescargarContenido(pantalla_actual,fondo_actual);
+                
                 // Nueva escena
-                // Seria la de los gatos
                 pantalla_actual=AVATAR_GATO;
-                // Descargar y cargar
-                UnloadTexture(fondo_actual.FondoRegPerro);
+
                 // Cargamos la pantalla siguiente
-                fondo_actual.Background=LoadTexture("../assets/temp/MiGatoAvatares.png");
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case REGISTRAR_PERRO:
             {
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-                // Nueva escena
-                pantalla_actual = AVATAR_PERRO;
+                
                 // Descargar y cargar
                 UnloadTexture(fondo_actual.FondoRegPerro);
+                
+                // Nueva escena
+                pantalla_actual = AVATAR_PERRO;
+                
                 // Cargamos la pantalla siguiente
-                fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerroAvatar.png");
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case AVATAR_PERRO:
@@ -185,6 +192,7 @@ int main(){
                 pantalla_actual=MI_PERFIL;
 
                 UnloadTexture(fondo_actual.Background);
+                
                 fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerfil.png");
                 break;
             }
@@ -193,15 +201,17 @@ int main(){
                 // cargamos la textura que selecciono el usuario
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
                 
-                pantalla_actual=MI_PERFIL;
-
                 UnloadTexture(fondo_actual.Background);
+                
+                pantalla_actual=MI_PERFIL;
                 break;
             }
             case MI_PERFIL:
             {   
-                fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerfil.png");
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+
                 pantalla_actual= MiPerfil(fondo_actual,ANCHO,ALTO,perro);
+                
                 UnloadTexture(fondo_actual.Background);
                 break;
             }
@@ -234,7 +244,7 @@ int main(){
                 else{
                     // No escribio ningun evento
                 }
-                    DibujarEventos(event,ANCHO,ALTO);
+                DibujarEventos(event,ANCHO,ALTO);
                 
                 pantalla_actual=MI_PERFIL;
                 break;
@@ -299,16 +309,18 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
+            break;
         }
         case REGISTRAR_GATO:
         {
             archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
+            break;
         }
         case AVATAR_PERRO:
         {
-            archivos.FondoAvatarPerro = LoadTexture("../assets/PetCare_MiPerroAvatar.png");
+            archivos.Background = LoadTexture("../assets/PetCare_MiPerroAvatar.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonMas = LoadTexture("../assets/PetCare_BotonMas.png");
             archivos.PERRO1 = LoadTexture("../assets/PetCare_Perros/1.png");
@@ -319,20 +331,22 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.PERRO6 = LoadTexture("../assets/PetCare_Perros/6.png");
             archivos.PERRO7 = LoadTexture("../assets/PetCare_Perros/7.png");
             archivos.PERRO8 = LoadTexture("../assets/PetCare_Perros/8.png");
+            break;
         }
         case AVATAR_GATO:
         {
-            archivos.FondoAvatarGato = LoadTexture("../assets/PetCare_MiGatoAvatar.png");
+            archivos.Background = LoadTexture("../assets/PetCare_MiGatoAvatar.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonMas = LoadTexture("../assets/PetCare_BotonMas.png");
-            archivos.GATO1 = LoadTexture("../assets/PetCare_Gatos/1.png");
-            archivos.GATO2 = LoadTexture("../assets/PetCare_Gatos/2.png");
-            archivos.GATO3 = LoadTexture("../assets/PetCare_Gatos/3.png");
-            archivos.GATO4 = LoadTexture("../assets/PetCare_Gatos/4.png");
-            archivos.GATO5 = LoadTexture("../assets/PetCare_Gatos/5.png");
-            archivos.GATO6 = LoadTexture("../assets/PetCare_Gatos/6.png");
-            archivos.GATO7 = LoadTexture("../assets/PetCare_Gatos/7.png");
-            archivos.GATO8 = LoadTexture("../assets/PetCare_Gatos/8.png");
+            archivos.PERRO1 = LoadTexture("../assets/PetCare_Gatos/1.png");
+            archivos.PERRO2 = LoadTexture("../assets/PetCare_Gatos/2.png");
+            archivos.PERRO3 = LoadTexture("../assets/PetCare_Gatos/3.png");
+            archivos.PERRO4 = LoadTexture("../assets/PetCare_Gatos/4.png");
+            archivos.PERRO5 = LoadTexture("../assets/PetCare_Gatos/5.png");
+            archivos.PERRO6 = LoadTexture("../assets/PetCare_Gatos/6.png");
+            archivos.PERRO7 = LoadTexture("../assets/PetCare_Gatos/7.png");
+            archivos.PERRO8 = LoadTexture("../assets/PetCare_Gatos/8.png");
+            break;
         }
         case MI_PERFIL:
         {
@@ -341,6 +355,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.BotonMiInfo = LoadTexture("../assets/PetCare_BotonMiInfo.png");
             archivos.BotonCartilla = LoadTexture("../assets/PetCare_BotonCartillaMedica.png");
             archivos.BotonCalendario = LoadTexture("../assets/PetCare_BotonCalendario.png");
+            break;
         }
         case CALENDARIO:
         {
@@ -349,6 +364,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.BotonAdelanteAzul = LoadTexture("../assets/PetCare_BotonAdelanteAzul.png");
             archivos.BotonAtrasAzul = LoadTexture("../assets/PetCare_BotonAtrasAzul.png");
             archivos.BotonAnadir = LoadTexture("../assets/PetCare_BotonAnadir.png");
+            break;
         }
         default:
         break;
@@ -372,7 +388,6 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.Avatar4);
         UnloadTexture(archivos.Avatar5);
         UnloadTexture(archivos.Avatar6);
-        UnloadFont(archivos.fuente);
     }
     if(pantalla_actual == MIS_MASCOTAS){
         UnloadTexture(archivos.FondoMisMascotas);
@@ -411,14 +426,14 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.FondoAvatarGato);
         UnloadTexture(archivos.BotonAtras);
         UnloadTexture(archivos.BotonMas);
-        UnloadTexture(archivos.GATO1);
-        UnloadTexture(archivos.GATO2);
-        UnloadTexture(archivos.GATO3);
-        UnloadTexture(archivos.GATO4);
-        UnloadTexture(archivos.GATO5);
-        UnloadTexture(archivos.GATO6);
-        UnloadTexture(archivos.GATO7);
-        UnloadTexture(archivos.GATO8);
+        UnloadTexture(archivos.PERRO1);
+        UnloadTexture(archivos.PERRO2);
+        UnloadTexture(archivos.PERRO3);
+        UnloadTexture(archivos.PERRO4);
+        UnloadTexture(archivos.PERRO5);
+        UnloadTexture(archivos.PERRO6);
+        UnloadTexture(archivos.PERRO7);
+        UnloadTexture(archivos.PERRO8);
     }
     if(pantalla_actual == MI_PERFIL){
         UnloadTexture(archivos.FondoMisMascotas);
