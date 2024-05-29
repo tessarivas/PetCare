@@ -11,7 +11,7 @@ struct Evento{
 };
 
 // ------------------- Prototype ------------------- //
-struct Evento * createNodo (int day,int month,string title, string description);
+struct Evento * createNodo (int day,int month,char title[], char description[]);
 void addEvent(struct Evento **event, int day, int month, char title[], char description[]);
 void liberar(struct Evento *event);
 void pri (struct Evento *head);
