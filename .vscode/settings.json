@@ -103,6 +103,7 @@
     "streambuf": "cpp",
     "cinttypes": "cpp",
     "typeinfo": "cpp",
-    "xstring": "cpp"
+    "xstring": "cpp",
+    "xiosbase": "cpp"
   }
 }

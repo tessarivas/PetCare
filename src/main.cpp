@@ -22,7 +22,7 @@ using std::pair;
 
 // DEFINICIONES
 #define ANCHO 414
-#define ALTO 700
+#define ALTO 896
 
 //---------------------Escenarios------------------------------------------------
 typedef enum Pantalla{
@@ -368,21 +368,23 @@ int DibujarInicio(Cargas archivos) {
 }
 
 // ------------- Registrar Perfil--------------- //
-pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight){
+pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight)
+{
     const int MaxCharacter=20;
+
     int CharacterCont=0;
-    
+    int tamano_fondo = GetScreenWidth(); // Obtener el tmaño del fondo
+    int avatarSeleccionado = -1; // Avatar seleccionado
+
     char name[MaxCharacter+1] = "";
-    string nombre;
-    
+
     bool regresar = false; // Para boton atras
     bool band = false; // Para boton listo
+
+    string nombre;
     
     Vector2 Mouse; // Posicion actual de mouse
     Vector2 LastClick; // Posicion del ultimo click
-
-    int tamano_fondo = GetScreenWidth();
-    // Color color_fondo_texto = { 251, 247, 235, 255 }; //Color de fondo
 
     // Boton atras
     Rectangle atras;
@@ -413,41 +415,40 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
     c_avatares.height=225;
 
     // HitBox de avatares
-    Rectangle av1;
-    av1.x=screenWidth * 0.13;
-    av1.y=screenHeight * 0.49;
-    av1.width = screenWidth * 0.2;
-    av1.height = screenHeight * 0.1;
+    Rectangle Avatar[6];
 
-    Rectangle av2;
-    av2.x=screenWidth * 0.40;
-    av2.y=screenHeight * 0.49;
-    av2.width = screenWidth * 0.2;
-    av2.height = screenHeight * 0.1;
+    Avatar[0].x=screenWidth * 0.15;
+    Avatar[0].y=screenHeight * 0.50;
+    Avatar[0].width = screenWidth * 0.2;
+    Avatar[0].height = screenHeight * 0.1;
 
-    Rectangle av3;
-    av3.x=screenWidth * 0.67;
-    av3.y=screenHeight * 0.49;
-    av3.width = screenWidth * 0.2;
-    av3.height = screenHeight * 0.1;
+    Avatar[1].x=screenWidth * 0.40;
+    Avatar[1].y=screenHeight * 0.50;
+    Avatar[1].width = screenWidth * 0.2;
+    Avatar[1].height = screenHeight * 0.1;
 
-    Rectangle av4;
-    av4.x=screenWidth * 0.13;
-    av4.y=screenHeight * 0.62;
-    av4.width = screenWidth * 0.2;
-    av4.height = screenHeight * 0.1;
+    Avatar[2].x=screenWidth * 0.66;
+    Avatar[2].y=screenHeight * 0.50;
+    Avatar[2].width = screenWidth * 0.2;
+    Avatar[2].height = screenHeight * 0.1;
 
-    Rectangle av5;
-    av5.x=screenWidth * 0.40;
-    av5.y=screenHeight * 0.62;
-    av5.width = screenWidth * 0.2;
-    av5.height = screenHeight * 0.1;
+    Avatar[3].x=screenWidth * 0.15;
+    Avatar[3].y=screenHeight * 0.62;
+    Avatar[3].width = screenWidth * 0.2;
+    Avatar[3].height = screenHeight * 0.1;
 
-    Rectangle av6;
-    av6.x=screenWidth * 0.67;
-    av6.y=screenHeight * 0.62;
-    av6.width = screenWidth * 0.2;
-    av6.height = screenHeight * 0.1;
+    Avatar[4].x=screenWidth * 0.40;
+    Avatar[4].y=screenHeight * 0.62;
+    Avatar[4].width = screenWidth * 0.2;
+    Avatar[4].height = screenHeight * 0.1;
+
+    Avatar[5].x=screenWidth * 0.66;
+    Avatar[5].y=screenHeight * 0.62;
+    Avatar[5].width = screenWidth * 0.2;
+    Avatar[5].height = screenHeight * 0.1;
+
+    // Textura de cada avatar
+    Texture2D avataresTexturas[6] = { archivos.Avatar1, archivos.Avatar2, archivos.Avatar3, archivos.Avatar4, archivos.Avatar5, archivos.Avatar6 };
     
     do{
         BeginDrawing();
@@ -470,9 +471,6 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
 
         //Rectangulo de avatares
         DrawRectangleRec(c_avatares, YELLOW);
-        // float rectX = (tamano_fondo - 320.0f) / 2;
-        // DrawRectangle(rectX, 320.0f, 320.0f, 70.0f, color_fondo_texto); // RECTANGULO NOMBRE
-        // DrawRectangle(rectX, 430.0f, 320.0f, 300.0f, color_fondo_texto); // RECTANGULO AVATAR
 
         int key = GetCharPressed(); // Tecla presionada
 
@@ -498,13 +496,21 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
             }
         }
 
-        // HitBox de avatares
-        DrawTextureEx(archivos.Avatar1, { av1.x, av1.y }, 0.0f, 1.0f, WHITE);
-        DrawTextureEx(archivos.Avatar2, { av2.x, av2.y }, 0.0f, 1.0f, WHITE);
-        DrawTextureEx(archivos.Avatar3, { av3.x, av3.y }, 0.0f, 1.0f, WHITE);
-        DrawTextureEx(archivos.Avatar4, { av4.x, av4.y }, 0.0f, 1.0f, WHITE);
-        DrawTextureEx(archivos.Avatar5, { av5.x, av5.y }, 0.0f, 1.0f, WHITE);
-        DrawTextureEx(archivos.Avatar6, { av6.x, av6.y }, 0.0f, 1.0f, WHITE);
+        // Verificar si se hizo clic en algun avatar
+        for (int i = 0; i < 6; i++) {
+            if (CheckCollisionPointRec(LastClick, Avatar[i])){
+                avatarSeleccionado = i;
+            }
+        }
+
+        // Dibujar los avatares y bordes si están seleccionados
+        for (int i = 0; i < 6; i++){
+            if (avatarSeleccionado == i){
+                // Dibujar borde de color si esta seleccionado
+                DrawRectangleLinesEx(Avatar[i], 8, GREEN);
+            }
+            DrawTextureEx(avataresTexturas[i], { Avatar[i].x, Avatar[i].y }, 0.0f, 1.0f, WHITE);
+        }
 
         // Boton atras
         DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
@@ -602,5 +608,3 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro){
     }
     return CALENDARIO;
 }
-
-
