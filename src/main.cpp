@@ -78,7 +78,7 @@ int main(){
     SetWindowIcon(icono);
 
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = CREAR_MASCOTA;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
@@ -217,21 +217,28 @@ int main(){
                 // Carga y descarga en la propia funcion
                 tempEvent = DibujarCalendario(ANCHO,ALTO);
 
-                // Dia temporal para transferir el dia a la estructura
-                int tempDia=tempEvent->day;
-                // Dia temporal para transferir el mes a la estructura
-                int tempMonth=tempEvent->month;
-                
-                char tempTitle[20];
-                strcpy(tempTitle,tempEvent->title);
-                
-                char tempDesc[50];
-                strcpy(tempDesc,tempEvent->description);
+                if(tempEvent !=nullptr){
+                    // Escribio eventos
+                    // Dia temporal para transferir el dia a la estructura
+                    int tempDia=tempEvent->day;
+                    // Dia temporal para transferir el mes a la estructura
+                    int tempMonth=tempEvent->month;
+                    
+                    char tempTitle[20];
+                    strcpy(tempTitle,tempEvent->title);
+                    
+                    char tempDesc[50];
+                    strcpy(tempDesc,tempEvent->description);
 
-                // Agregar el evento nuevo a la lista de eventos    
-                addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
-                
-                pri(event);
+                    // Agregar el evento nuevo a la lista de eventos    
+                    addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
+                    
+                    pri(event);
+                }
+                else{
+                    // No escribio ningun evento
+                }
+                    DibujarEventos(event,ANCHO,ALTO);
                 
                 pantalla_actual=MI_PERFIL;
                 break;

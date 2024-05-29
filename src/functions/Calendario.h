@@ -16,7 +16,7 @@ using std::to_string;
 
 // ------------------Prototype------------------ //
 Evento *DibujarCalendario(int screenWidth, int screenHeight);
-
+void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight);
 // ------------------Funciones------------------ //
 // Dibujar papuCalendario
 Evento *DibujarCalendario(int screenWidth, int screenHeight){
@@ -175,7 +175,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
     bool new_event=false;
 
     // Evento
-    struct Evento *temp=(struct Evento*)malloc(sizeof(struct Evento));
+    struct Evento *temp=nullptr;
 
 
     while(finish == false){
@@ -344,6 +344,8 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
 
             if(CheckCollisionPointRec(lastclick,Agregar)){
                 new_event=true;
+
+                temp=(struct Evento*)malloc(sizeof(struct Evento));
                 
                 temp->day=DiaSeleccionado;
                 temp->month=numMonth;
@@ -353,8 +355,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
 
                 temp->next=nullptr;
                 temp->prev=nullptr;
-        
-                return temp;
+
                 break;
             }
 
@@ -363,6 +364,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
             DrawTexture(prevM,Return.x+2,Return.y+2,WHITE);
 
             if(CheckCollisionPointRec(lastclick,Return)){
+                
                 break;
             }
             
@@ -473,4 +475,88 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
         EndDrawing();
     }
     UnloadTexture(fondo);
+    return temp;
+}
+
+void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
+    bool finish = false;
+
+    // Titulo de la pantalla
+    Rectangle title;
+    title.width = screenWidth *0.8;
+    title.height = screenHeight *0.1;
+    title.x=(screenWidth - title.width) / 2;
+    title.y= screenHeight*0.1;
+
+    // Cuadro donde se imprimiran los eventos
+    Rectangle c_events;
+    c_events.x=screenWidth*0.1;
+    c_events.y=screenHeight*0.3;
+    c_events.width=screenWidth*0.8;
+    c_events.height=screenHeight*0.6;
+    
+    // Cantidad de eventos a imprimir
+    int count_events=0;
+
+    struct Evento *temp=events;
+    while(temp->next!=nullptr){
+        count_events++;
+        temp=temp->next;
+    }
+
+    /*
+        Separacion de 5% de la pantalla (arriba y abajo)
+    */
+
+    // Eventos registrados
+    Rectangle eventos;
+    eventos.width=screenWidth*0.7;
+    eventos.height=screenHeight*0.1;
+    eventos.x=(screenWidth - eventos.width)/2;
+    eventos.y=screenHeight * 0.32;
+
+    cout << count_events<<endl;
+
+    bool impresos=false;
+
+    Rectangle salir;
+    salir.width=screenWidth*0.1;
+    salir.height=screenHeight*0.05;
+    salir.x=screenWidth*0.05;
+    salir.y=screenHeight*0.9;
+
+    Vector2 Mouse;
+    Vector2 click;
+
+    while(finish == false){
+        BeginDrawing();
+            
+            Mouse=GetMousePosition();
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                click=Mouse;
+            }
+
+
+            ClearBackground(WHITE);
+            DrawRectangleRec(title,YELLOW);
+            DrawRectangleRec(c_events,YELLOW);
+            
+            eventos.y=screenHeight * 0.32;
+            for (int i =0;i<=count_events;i++){
+                DrawRectangleRec(eventos,RED);
+
+                eventos.y+=screenHeight* 0.13;
+
+                impresos=true;
+            }
+
+            DrawRectangleRec(salir,BLUE);
+
+            if(CheckCollisionPointRec(click,salir)){
+                break;
+            }
+            
+        EndDrawing();
+    }
+
 }

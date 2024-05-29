@@ -10,8 +10,13 @@ struct Evento{
     struct Evento *next, *prev;
 };
 
+// ------------------- Prototype ------------------- //
 struct Evento * createNodo (int day,int month,string title, string description);
-void addEvent(struct Evento **event, int day, int month, string title, string description);
+void addEvent(struct Evento **event, int day, int month, char title[], char description[]);
+void liberar(struct Evento *event);
+void pri (struct Evento *head);
+
+// ------------------- Functions ------------------- //
 
 struct Evento * createNodo (int day,int month,char title[], char description[]){
     struct Evento *nodo = (struct Evento*)malloc(sizeof(struct Evento));
@@ -44,7 +49,6 @@ void addEvent(struct Evento **event, int day, int month, char title[], char desc
 void liberar(struct Evento *event){
     free(event);
 }
-
 
 void pri (struct Evento *head)
 {
