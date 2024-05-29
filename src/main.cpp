@@ -240,11 +240,11 @@ int main(){
                     addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
                     
                     pri(event);
+                    DibujarEventos(event,ANCHO,ALTO);
                 }
                 else{
                     // No escribio ningun evento
                 }
-                DibujarEventos(event,ANCHO,ALTO);
                 
                 pantalla_actual=MI_PERFIL;
                 break;
