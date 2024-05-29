@@ -9,7 +9,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <utility> 
-
+// comentario
 #include "clases/Usuario.h"
 
 #include "functions/Mascota.h"
@@ -89,7 +89,7 @@ int main(){
     srand(time(NULL));
     // Usuario
     Usuario user; // Usuario actual
-    string tempName; // Nombre para copiar y pegar en el constructor de use
+    string tempName; // Nombre para copiar y pegar en el constructor de user
 
     // Mascota
     Dog perro;
