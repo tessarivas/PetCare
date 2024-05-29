@@ -74,7 +74,7 @@ int main(){
     SetWindowIcon(icono);
 
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = REGISTRAR_PERRO;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
@@ -151,12 +151,11 @@ int main(){
                 } else{
                     pantalla_actual = MIS_MASCOTAS;;
                 }
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case REGISTRAR_GATO:
             {
-                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
-                
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
                 
                 //Descargamos las pantallas
@@ -193,7 +192,7 @@ int main(){
 
                 UnloadTexture(fondo_actual.Background);
                 
-                fondo_actual.Background=LoadTexture("../assets/PetCare_MiPerfil.png");
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case AVATAR_GATO:
@@ -204,6 +203,8 @@ int main(){
                 UnloadTexture(fondo_actual.Background);
                 
                 pantalla_actual=MI_PERFIL;
+
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case MI_PERFIL:
@@ -712,3 +713,4 @@ Pantalla MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro)
     }
     return CALENDARIO;
 }
+

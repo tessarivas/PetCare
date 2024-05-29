@@ -120,10 +120,11 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
 
     // ---------- Textos ----------- //
     const int MaxCharacter=20;
+    const int MaxCharacterDesc=25;
     char title[MaxCharacter+1]={""};
     int titleCharacterCont=0;
 
-    char des[MaxCharacter+1]={""};
+    char des[MaxCharacterDesc+1]={""};
     int desCharacterCont=0;
 
     // ---------- Posicion de textos ----------- //
@@ -303,7 +304,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight){
                     // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada, nada = 0
                     while (key > 0)
                     {
-                        if ((key >= 32) && (key <= 122) && (desCharacterCont <MaxCharacter)) // Solo caracteres entre el 32 y 125
+                        if ((key >= 32) && (key <= 122) && (desCharacterCont <MaxCharacterDesc)) // Solo caracteres entre el 32 y 125
                         {
                             des[desCharacterCont] = (char)key; // Transformar el caracter de codigo ascii a caracter
                             des[desCharacterCont+1] = '\0'; // Agregar caracter nulo al final de la cadena
@@ -505,28 +506,54 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     }
 
     /*
-        Separacion de 5% de la pantalla (arriba y abajo)
+        Separacion de 3% de la pantalla (arriba y abajo)
     */
 
-    // Eventos registrados
-    Rectangle eventos;
-    eventos.width=screenWidth*0.7;
-    eventos.height=screenHeight*0.1;
-    eventos.x=(screenWidth - eventos.width)/2;
-    eventos.y=screenHeight * 0.32;
+    // Cuadro de eventos registrados
+    Rectangle c_eventos;
+    c_eventos.width=screenWidth*0.7;
+    c_eventos.height=screenHeight*0.1;
+    c_eventos.x=(screenWidth - c_eventos.width)/2;
+    c_eventos.y=screenHeight * 0.32;
 
-    cout << count_events<<endl;
+    // Posicion del titulo
+    Vector2 text_events;
+    text_events.x=c_eventos.x +10;
+    text_events.y=c_eventos.y+10;
+    
+    // Posicion del dia
+    Vector2 dia_text;
+    dia_text.x=c_eventos.x +10;
+    dia_text.y=c_eventos.y;
+    
+    // Posicion de la descripcion
+    Vector2 desc_text;
+    desc_text.x=c_eventos.x;
+    desc_text.y=c_eventos.y+10;
 
-    bool impresos=false;
-
+    // Boton de salir
     Rectangle salir;
     salir.width=screenWidth*0.1;
     salir.height=screenHeight*0.05;
     salir.x=screenWidth*0.05;
     salir.y=screenHeight*0.9;
 
+    // Mouse y click
     Vector2 Mouse;
     Vector2 click;
+
+    // Tamaño del texto en pixeles
+    int textSize;
+
+    // Recursos
+    Texture2D Boton_atras = LoadTexture("../assets/PetCare_BotonAtrasAzul.png");
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Color BlancoOscuro={245,246,243,255};
+
+    // temporales extra
+    char tempDay[20];
+    int diaTemp=0;
+    
 
     while(finish == false){
         BeginDrawing();
@@ -536,18 +563,59 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
                 click=Mouse;
             }
 
-
+            // Limpiamos el fondo
             ClearBackground(WHITE);
+            
+            // Dibujamos el cuadro del titulo
             DrawRectangleRec(title,YELLOW);
+
+            // Dibujamos el cuado donde se presentaran los eventos
             DrawRectangleRec(c_events,YELLOW);
             
-            eventos.y=screenHeight * 0.32;
-            for (int i =0;i<=count_events;i++){
-                DrawRectangleRec(eventos,RED);
+            // Reinicamos los valores
+            temp=events;
+            c_eventos.y=screenHeight * 0.32;
+            text_events.y=c_eventos.y+10;
+            
+            while(temp != nullptr){
+                // Dibujamos el cuadro
+                DrawRectangleRec(c_eventos,BlancoOscuro);
+                // Dibujamos el texto
+                // titulo
+                    DrawTextEx(fuente,temp->title,text_events,32,1,BLACK);
+                // Dia
+                    textSize=MeasureText(temp->title,32);
+                    
+                    dia_text.x=text_events.x + textSize + 8;
+                    dia_text.y=text_events.y;
+                    
+                    diaTemp=dia_text.x;
+                    
+                    // Pasamos el dia que originalmente es int, a char
+                    // origen, destino, en decimal (puede ser 16 para hexadecimal)
+                    itoa(temp->day,tempDay,10);
 
-                eventos.y+=screenHeight* 0.13;
+                    DrawTextEx(fuente,"Dia: ",dia_text,32,1,BLACK);
 
-                impresos=true;
+                    dia_text.x=dia_text.x+60;
+
+                    DrawTextEx(fuente,tempDay,dia_text,32,1,BLACK);
+
+                    dia_text.x=diaTemp;
+                
+                // Descripcion
+                    desc_text.x=text_events.x;
+                    desc_text.y=text_events.y+34;
+
+                    DrawTextEx(fuente,temp->description,desc_text,20,1,BLACK);
+
+                // Sumamos un 3% hacia abajo, es 13 pq le sumo el ancho del cuadro mas 3
+                c_eventos.y+=screenHeight* 0.13;
+                // Igual con el texto
+                text_events.y=c_eventos.y+10;
+
+                // Pasamos al siguiente temp
+                temp=temp->next;
             }
 
             DrawRectangleRec(salir,BLUE);
@@ -558,6 +626,6 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
             
         EndDrawing();
     }
-    
+    UnloadFont(fuente);
 
 }
