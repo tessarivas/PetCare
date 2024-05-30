@@ -170,7 +170,7 @@ int main()
             case AVATAR_GATO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                DescargarContenido(pantalla_actual,fondo_actual);
+                // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -178,7 +178,7 @@ int main()
             case AVATAR_PERRO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                DescargarContenido(pantalla_actual,fondo_actual);
+                // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
