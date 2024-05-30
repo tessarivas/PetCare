@@ -44,13 +44,14 @@ Evento *DibujarCartillaMedica(int screenWidth, int screenHeight)
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
+
         Mouse = GetMousePosition();
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             LastClick = Mouse;
         }
 
         // FONDO Y BOTONES
-        DrawTextureEx(fondo,fondoPos,0.0f,1.0f,WHITE); 
+        DrawTextureEx(fondo,fondoPos, 0.0f, 1.0f, WHITE); 
 
         EndDrawing();
     } while(regresar == false);
