@@ -12,13 +12,13 @@
 
 #include "Images.h"
 
-// --------- DECLARACION ----------//
+// --------- Prototype ----------//
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
-Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
+Dog *RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
 void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight);
 
-// --------- FUNCIONES ----------- //
+// --------- Functions ----------- //
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     //--------------Botones----------------//
     // Boton atras
@@ -94,7 +94,7 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     return 0;
 }
 
-Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
+Dog *RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     // Nombre
     Rectangle c_nombre;
     c_nombre.x=screenWidth * 0.1; // 10% de espacio entre el borde de la izquierda
@@ -468,8 +468,12 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         EndDrawing();
     } while (band == false);
 
-    Dog temp_dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
-    return temp_dog;
+    cout<<"entro"<<endl;
+    Dog *temp;
+    temp->RegistrarNuevaMascota(temp,temp_name,temp_raza,temp_dia,temp_mes,temp_anio,temp_peso,temp_padecimientos);
+    cout<<"salio"<<endl;
+    return temp;
+    
 }
 
 void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
@@ -514,8 +518,15 @@ void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
     }
 }
 
-Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight)
-{
+Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight){
+    
+    /*
+        Maybe y la dejamos para el final
+
+        Esta funcion es para que el usuario seleccione un avatar para el perro, devolvera una variable que tenga cargada la textura 
+        de la mascota
+    */
+    
     int avatarSeleccionado = -1;
 
     Rectangle AvatarPerro[8];
@@ -523,7 +534,7 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
 
     // Definir posiciones de los avatares
     for(int i = 0; i < 8; i++){
-        AvatarPerro[i].x = screenWidth * ((i % 2 == 0) ? 0.18f : 0.60f);
+        AvatarPerro[i].x = screenWidth * ((i % 2 == 0) ? 0.18f : 0.50f);
         AvatarPerro[i].y = screenHeight * (0.32f + (0.14f * (i / 2)));
         AvatarPerro[i].width = screenWidth * 0.3f;
         AvatarPerro[i].height = screenHeight * 0.13f;
@@ -565,6 +576,8 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
         EndDrawing();
     }
 
+    cout<<"ciclado"<<endl;
     // Retornar la textura del avatar seleccionado
     return avatarPerroTextura[avatarSeleccionado];
 }
+
