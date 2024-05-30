@@ -185,6 +185,7 @@ int main()
             }
             case MI_PERFIL:
             {   
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 auto[nuevaPantalla, regresar] = MiPerfil(fondo_actual, ANCHO, ALTO, perro);
                 if(regresar){
                     // VOLVER PANTALLA ANTERIOR (Saltandome lo de la creacion)
@@ -222,7 +223,7 @@ int main()
                     strcpy(tempDesc,tempEvent->description);
 
                     // Agregar el evento nuevo a la lista de eventos    
-                    addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
+                    addEvent(&event,tempDia,tempMes,tempTitle,tempDesc);
                 }
                 else{
                     // No escribio ningun evento
