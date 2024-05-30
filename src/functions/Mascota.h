@@ -12,13 +12,13 @@
 
 #include "Images.h"
 
-// --------- Prototype ----------//
+// --------- DECLARACION ----------//
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
 void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight);
 
-// --------- Functions ----------- //
+// --------- FUNCIONES ----------- //
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     //--------------Botones----------------//
     // Boton atras
@@ -514,15 +514,8 @@ void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
     }
 }
 
-Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight){
-    
-    /*
-        Maybe y la dejamos para el final
-
-        Esta funcion es para que el usuario seleccione un avatar para el perro, devolvera una variable que tenga cargada la textura 
-        de la mascota
-    */
-    
+Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight)
+{
     int avatarSeleccionado = -1;
 
     Rectangle AvatarPerro[8];
@@ -530,7 +523,7 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
 
     // Definir posiciones de los avatares
     for(int i = 0; i < 8; i++){
-        AvatarPerro[i].x = screenWidth * ((i % 2 == 0) ? 0.18f : 0.50f);
+        AvatarPerro[i].x = screenWidth * ((i % 2 == 0) ? 0.18f : 0.60f);
         AvatarPerro[i].y = screenHeight * (0.32f + (0.14f * (i / 2)));
         AvatarPerro[i].width = screenWidth * 0.3f;
         AvatarPerro[i].height = screenHeight * 0.13f;
@@ -575,4 +568,3 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
     // Retornar la textura del avatar seleccionado
     return avatarPerroTextura[avatarSeleccionado];
 }
-

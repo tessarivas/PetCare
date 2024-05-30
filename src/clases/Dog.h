@@ -1,8 +1,8 @@
 #pragma once
-
 #include "Usuario.h"
 
-class Dog{
+class Dog
+{
 public:
     // Datos basicos
     string Nombre;
@@ -17,6 +17,7 @@ public:
     float Peso;
     string Padecimientos;
     Texture2D Avatar;
+
     //Los padecimientos podemos hacerlo en una estructura de datos para poder poner mas de uno, pero eso ya despues :b
 
     //Constructor
@@ -34,7 +35,6 @@ public:
 
     // Define
     void DefineAvatar(Texture2D textura);
-
 };
 
 //--------------------Funciones----------------------//
@@ -69,5 +69,5 @@ string Dog::getRaza(){
 }
 
 void Dog::DefineAvatar(Texture2D textura){
-    this->Avatar=textura;
+    this->Avatar = textura;
 }

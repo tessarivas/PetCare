@@ -56,6 +56,7 @@ typedef struct Cargas{
     Texture2D GATO7;
     Texture2D GATO8;
     // PERFIL MASCOTA
+    Texture2D FondoMiMascota;
     Texture2D BotonMiInfo;
     Texture2D BotonCartilla;
     Texture2D BotonCalendario;
