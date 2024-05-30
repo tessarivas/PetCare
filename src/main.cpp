@@ -218,11 +218,12 @@ int main(){
             }
             case CALENDARIO:
             {
+                // Los arvchivos los cargo en la misma funcion porque me da problemas de redefinicion
                 // Evento temporal
                 Evento *tempEvent=nullptr;
 
                 // Carga y descarga en la propia funcion
-                tempEvent = DibujarCalendario(ANCHO,ALTO);
+                tempEvent = DibujarCalendario(ANCHO,ALTO,event);
 
                 if(tempEvent !=nullptr){
                     // Escribio eventos
@@ -239,9 +240,6 @@ int main(){
 
                     // Agregar el evento nuevo a la lista de eventos    
                     addEvent(&event,tempDia,tempMonth,tempTitle,tempDesc);
-                    
-                    pri(event);
-                    DibujarEventos(event,ANCHO,ALTO);
                 }
                 else{
                     // No escribio ningun evento

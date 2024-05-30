@@ -5,7 +5,7 @@
 struct Evento{
     int day;
     int month;
-    char title[20];
+    char title[15];
     char description[60];
     struct Evento *next, *prev;
 };
