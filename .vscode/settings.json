@@ -104,6 +104,23 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "xstring": "cpp",
-    "xiosbase": "cpp"
+    "xiosbase": "cpp",
+    "charconv": "cpp",
+    "cstring": "cpp",
+    "format": "cpp",
+    "iomanip": "cpp",
+    "ios": "cpp",
+    "locale": "cpp",
+    "xfacet": "cpp",
+    "xlocale": "cpp",
+    "xlocbuf": "cpp",
+    "xlocinfo": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xloctime": "cpp",
+    "xmemory": "cpp",
+    "xtr1common": "cpp",
+    "xutility": "cpp"
   }
 }

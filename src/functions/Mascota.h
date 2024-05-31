@@ -326,7 +326,6 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         
         // ----------------- D I A -------------------- //
         DrawRectangleRec(c_dia, archivos.Bloque1);
-
         
         DrawTextEx(archivos.fuente,dia,diaPos,18,1,BLACK);
         

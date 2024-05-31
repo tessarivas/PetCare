@@ -13,6 +13,7 @@
 #include "clases/Usuario.h"
 #include "functions/Mascota.h"
 
+
 using std::cout;
 using std::endl;
 using std::string;
@@ -24,7 +25,7 @@ using std::make_pair;
 #define ANCHO 414
 #define ALTO 896
 
-// ESCENARIOS
+// PANTALLAS DE LA APP
 typedef enum Pantalla{
     // PANTALLAS DEL DUEÑO
     INICIO = 0,
@@ -41,6 +42,7 @@ typedef enum Pantalla{
     MI_PERFIL,
     CALENDARIO,
     CARTILLA_MEDICA,
+    AGREGAR_CITA
 } Pantalla;
 
 /*
@@ -79,10 +81,13 @@ int main()
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos
     Evento *event = nullptr;
+    Cita *date = nullptr;
+    Cita **agendar = &date;
     int tempDia;
     int tempMes;
     char tempTitle[20];
     char tempDesc[50];
+    bool seleccion;
     // Variables
     srand(time(NULL));
     // Usuario
@@ -170,7 +175,7 @@ int main()
             case AVATAR_GATO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                // DescargarContenido(pantalla_actual,fondo_actual);
+                DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -178,14 +183,13 @@ int main()
             case AVATAR_PERRO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                // DescargarContenido(pantalla_actual,fondo_actual);
+                DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case MI_PERFIL:
             {   
-                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 auto[nuevaPantalla, regresar] = MiPerfil(fondo_actual, ANCHO, ALTO, perro);
                 if(regresar){
                     // VOLVER PANTALLA ANTERIOR (Saltandome lo de la creacion)
@@ -202,12 +206,11 @@ int main()
             }
             case CALENDARIO:
             {
-                // Los arvchivos los cargo en la misma funcion porque me da problemas de redefinicion
                 // Evento temporal
                 Evento *tempEvent=nullptr;
 
                 // Carga y descarga en la propia funcion
-                tempEvent = DibujarCalendario(ANCHO,ALTO,event);
+                tempEvent = DibujarCalendario(ANCHO, ALTO, event);
 
                 if(tempEvent !=nullptr){
                     // Escribio eventos
@@ -224,37 +227,54 @@ int main()
 
                     // Agregar el evento nuevo a la lista de eventos    
                     addEvent(&event,tempDia,tempMes,tempTitle,tempDesc);
+                    
+                    pri(event);
+                    DibujarEventos(event,ANCHO,ALTO);
                 }
                 else{
                     // No escribio ningun evento
                 }
 
-                pantalla_actual=MI_PERFIL;
+                pantalla_actual = MI_PERFIL;
                 break;
             }
-            case CARTILLA_MEDICA:
+            case CARTILLA_MEDICA: 
             {
-                // Evento temporal
-                Evento *tempEvent = nullptr;
-
-                // Carga y descarga en la propia funcion
-                tempEvent = DibujarCartillaMedica(ANCHO, ALTO);
-
-                if(tempEvent !=nullptr){
-                    // DATOS TEMPORALES SOBRE EL EVENTO DE LA CITA
-                    tempDia = tempEvent->day;
-                    tempMes = tempEvent->month;
-                    tempTitle[20];
-                    strcpy(tempTitle, tempEvent->title);
-                    tempDesc[50];
-                    strcpy(tempDesc, tempEvent->description);
-                    // AGREGAR EVENTO A LA LISTA
-                    addEvent(&event,tempDia,tempMes,tempTitle,tempDesc);
-                } else{
-                    // No escribio ningun evento
+                // HOLA LOCA
+                // Dibujar la pantalla CARTILLA_MEDICA y los botones correspondientes
+                int boton_click = DibujarCartillaMedica(date, ANCHO, ALTO);
+                
+                // Verificar si el usuario hizo clic en el botón ATRAS
+                if (boton_click == 1) {
+                    DescargarContenido(CARTILLA_MEDICA, fondo_actual);
+                    pantalla_actual = MI_PERFIL; // Cambiar a la pantalla MI_PERFIL
+                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual); // Cargar contenido de la nueva pantalla
                 }
+                // Verificar si el usuario hizo clic en el botón AGREGAR_CITA
+                else if (boton_click == 2) {
+                    DescargarContenido(CARTILLA_MEDICA, fondo_actual);
+                    pantalla_actual = AGREGAR_CITA; // Cambiar a la pantalla AGREGAR_CITA
+                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual); // Cargar contenido de la nueva pantalla
+                }
+                break;
+            }
+            case AGREGAR_CITA:
+            {
+                auto result = DibujarAgregarCita(agendar, ANCHO, ALTO);
 
-                pantalla_actual = MI_PERFIL;
+                // Verificar si la bandera de regresar es verdadera
+                if (result.second) {
+                    DescargarContenido(AGREGAR_CITA, fondo_actual);
+                    pantalla_actual = CARTILLA_MEDICA; // Cambiar a la pantalla CARTILLA_MEDICA
+                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual); // Cargar contenido de la nueva pantalla
+                }
+                // Verificar si el usuario hizo clic en el botón AÑADIR
+                else {
+                    DescargarContenido(AGREGAR_CITA, fondo_actual);
+                    // Aquí puedes implementar la lógica para agregar una cita
+                    pantalla_actual = CARTILLA_MEDICA; // Cambiar a la pantalla CARTILLA_MEDICA
+                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual); // Cargar contenido de la nueva pantalla
+                }
                 break;
             }
             default:

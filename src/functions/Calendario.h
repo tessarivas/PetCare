@@ -22,42 +22,36 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight);
 Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *events){
 
     //------------------------- FONDO ------------------------------ //
-    Texture2D fondo = LoadTexture("../assets/Temp/calendario.png"); 
+    Texture2D fondo = LoadTexture("../assets/PetCare_Calendario.png"); 
     Vector2 fondoPos;
-    fondoPos.x=0;
-    fondoPos.y=0;
+    fondoPos.x = 0;
+    fondoPos.y = 0;
 
     // Bandera de salida
     bool finish=false;
 
     //-------------------------Parte Superior------------------------------ // 
-    // titulo de calendario
-    Rectangle TitleCalendario;
-    TitleCalendario.x=screenWidth * 0.03;
-    TitleCalendario.y=screenHeight * 0.03;
-    TitleCalendario.width=screenWidth * 0.94;
-    TitleCalendario.height=screenHeight * 0.07;
 
     // Titulo de mes
     Rectangle Mes;
     Mes.x=screenWidth*0.03;
-    Mes.y=screenHeight * 0.12;
+    Mes.y=screenHeight * 0.17;
     Mes.width = screenWidth * 0.94;
     Mes.height = screenHeight * 0.03;
 
     // boton de mes anterior
     Rectangle PrevMonth;
-    PrevMonth.x=screenWidth*0.03;
-    PrevMonth.y=screenHeight*0.16;
-    PrevMonth.width=screenWidth*0.10;
-    PrevMonth.height=screenHeight*0.043;
+    PrevMonth.x = screenWidth * 0.10;
+    PrevMonth.y = screenHeight * 0.17;
+    PrevMonth.width = screenWidth * 0.10;
+    PrevMonth.height = screenHeight * 0.043;
 
     // Boton de siguiente mes
     Rectangle NextMonth;
-    NextMonth.x=screenWidth*0.86;
-    NextMonth.y=screenHeight*0.16;
-    NextMonth.width=screenWidth*0.10;
-    NextMonth.height=screenHeight*0.043;
+    NextMonth.x = screenWidth * 0.80;
+    NextMonth.y = screenHeight * 0.17;
+    NextMonth.width = screenWidth * 0.10;
+    NextMonth.height = screenHeight*0.043;
 
     // Bloque de calendario
     Rectangle Calendario;
@@ -69,13 +63,13 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     // ----------------Evento--------------------------
     Rectangle titleEvent;
     titleEvent.x=screenWidth*0.1;
-    titleEvent.y=screenHeight*0.63;
+    titleEvent.y=screenHeight*0.625;
     titleEvent.width=screenWidth*0.80;
     titleEvent.height=screenHeight*0.07;
 
     Rectangle desEvent;
     desEvent.x=screenWidth*0.1;
-    desEvent.y=screenHeight*0.71;
+    desEvent.y=screenHeight*0.705;
     desEvent.width=screenWidth*0.8;
     desEvent.height=screenHeight*0.15;
 
@@ -96,15 +90,13 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     Return.y=screenHeight * 0.93;
     Return.width=screenWidth * 0.1;
     Return.height = screenHeight * 0.05;
-
     
     //--------------------NUMERO DE DIAS-----------------------//
     /*
         13% de espacio entre el lado derecho
         7% de espacio entre los cubos de hacia abajo
     */
-    
-    //-------------------------------------------------------//
+    //---------------------------------------------------------//
 
     //------------CUADROS DE LOS DIAS-----------//
     float wi=0.05;
@@ -164,8 +156,8 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     // ---------- Eventos Registrados ----------- //
     // Hitbox
     Rectangle info;
-    info.x=screenWidth * 0.9;
-    info.y=screenHeight * 0.9;
+    info.x=screenWidth * 0.87;
+    info.y=screenHeight * 0.93;
     info.width=screenWidth * 0.1;
     info.height=screenHeight * 0.043;
     
@@ -209,16 +201,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             }
 
             // Fondo
-            // DrawTextureEx(fondo,fondoPos,0.0f,1.0f,WHITE);
-            
-            // Cuadro de Titulo de calendario 
-            DrawRectangleRec(TitleCalendario,YELLOW);
-            // Titulo
-            DrawTextEx(fuente,txtCalendario,calPos,50,1,BLACK);
-            
-            // ---------------------- MESES ---------------------- //
-            // Cuadro del titulo del mes
-            DrawRectangleRec(Mes,YELLOW);
+            DrawTextureEx(fondo,fondoPos,0.0f,1.0f,WHITE);
             
             // ------------Mes Anterior----------- // 
             // DrawRectangleRec(PrevMonth,YELLOW);
@@ -249,7 +232,6 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             }
             // Boton
             DrawTexture(nextm,NextMonth.x,NextMonth.y,WHITE);
-            
 
             // Par
             if(numMonth % 2 == 0){
@@ -279,17 +261,16 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             }
 
             // Volver a centrar el texto
-            textSize=MeasureText(month[numMonth-1],24);
+            textSize = MeasureText(month[numMonth-1], 40);
 
-            monthPos.x=((screenWidth - textSize ) / 2 ) +10;
-            monthPos.y=Mes.y+2;
+            monthPos.x = ((screenWidth - textSize ) / 2 ) +10;
+            monthPos.y = Mes.y+2;
             
             // Texto
-            DrawTextEx(fuente,month[numMonth-1],monthPos,24,1,BLACK);
+            DrawTextEx(fuente, month[numMonth-1], monthPos, 40, 1, WHITE);
 
             // Cuadro de Calendario
-            DrawRectangleRec(Calendario,BLUE);
-            
+            // DrawRectangleRec(Calendario,BLUE);
             
             // Evento-------------------------
             //titulo
@@ -567,12 +548,16 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     Rectangle salir;
     salir.width=screenWidth*0.1;
     salir.height=screenHeight*0.05;
-    salir.x=screenWidth*0.05;
-    salir.y=screenHeight*0.9;
+    salir.x=screenWidth*0.03;
+    salir.y=screenHeight*0.93;
 
     Vector2 salirPos;
     salirPos.x=salir.x;
     salirPos.y=salir.y;
+
+    Vector2 fondoPos;
+    fondoPos.x = 0;
+    fondoPos.y = 0;
 
     // Mouse y click
     Vector2 Mouse;
@@ -582,6 +567,8 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     int textSize;
 
     // Recursos
+    Texture2D fondo = LoadTexture("../assets/PetCare_Eventos.png");
+
     Texture2D Boton_atras = LoadTexture("../assets/PetCare_BotonAtrasAzul.png");
     
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
@@ -597,79 +584,73 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
 
     while(finish == false){
         BeginDrawing();
+        ClearBackground(WHITE);
             
-            Mouse=GetMousePosition();
-            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-                click=Mouse;
-            }
+        Mouse=GetMousePosition();
+        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            click=Mouse;
+        }
 
-            // Limpiamos el fondo
-            ClearBackground(WHITE);
-            
-            // Dibujamos el cuadro del titulo
-            // DrawRectangleRec(title,YELLOW);
-            DrawTextureEx(title_calendario,titlePos,0.0f,1.0f,WHITE);
-
-            // Dibujamos el cuado donde se presentaran los eventos
-            DrawRectangleRec(c_events,YELLOW);
-            
-            // Reinicamos los valores
-            temp=events;
-            c_eventos.y=screenHeight * 0.32;
-            text_events.y=c_eventos.y+10;
-            
-            while(temp != nullptr){
-                // Dibujamos el cuadro
-                DrawRectangleRec(c_eventos,BlancoOscuro);
-                // Dibujamos el texto
-                // titulo
-                    DrawTextEx(fuente,temp->title,text_events,32,1,BLACK);
-                // Dia
-                    textSize=MeasureText(temp->title,32);
-                    
-                    dia_text.x=text_events.x + textSize + 8;
-                    dia_text.y=text_events.y;
-                    
-                    diaTemp=dia_text.x;
-                    
-                    // Pasamos el dia que originalmente es int, a char
-                    // origen, destino, en decimal (puede ser 16 para hexadecimal)
-                    itoa(temp->day,tempDay,10);
-
-                    DrawTextEx(fuente,"Dia: ",dia_text,32,1,BLACK);
-
-                    dia_text.x=dia_text.x+50;
-
-                    DrawTextEx(fuente,tempDay,dia_text,32,1,BLACK);
-
-                    dia_text.x=diaTemp;
+        DrawTextureEx(fondo, fondoPos, 0.0f, 1.0f, WHITE);
+        
+        // Reinicamos los valores
+        temp=events;
+        c_eventos.y=screenHeight * 0.32;
+        text_events.y=c_eventos.y+10;
+        
+        while(temp != nullptr){
+            // Dibujamos el cuadro
+            DrawRectangleRec(c_eventos,BlancoOscuro);
+            // Dibujamos el texto
+            // titulo
+                DrawTextEx(fuente,temp->title,text_events,32,1,BLACK);
+            // Dia
+                textSize=MeasureText(temp->title,32);
                 
-                // Descripcion
-                    desc_text.x=text_events.x;
-                    desc_text.y=text_events.y+34;
+                dia_text.x=text_events.x + textSize + 8;
+                dia_text.y=text_events.y;
+                
+                diaTemp=dia_text.x;
+                
+                // Pasamos el dia que originalmente es int, a char
+                // origen, destino, en decimal (puede ser 16 para hexadecimal)
+                itoa(temp->day,tempDay,10);
 
-                    DrawTextEx(fuente,temp->description,desc_text,20,1,BLACK);
+                DrawTextEx(fuente,"Dia: ",dia_text,32,1,BLACK);
 
-                // Sumamos un 3% hacia abajo, es 13 pq le sumo el ancho del cuadro mas 3
-                c_eventos.y+=screenHeight* 0.13;
-                // Igual con el texto
-                text_events.y=c_eventos.y+10;
+                dia_text.x=dia_text.x+50;
 
-                // Pasamos al siguiente temp
-                temp=temp->next;
-            }
+                DrawTextEx(fuente,tempDay,dia_text,32,1,BLACK);
 
-            // Salir Rectangulo
-            // DrawRectangleRec(salir,BLUE);
-            // Salir
-            DrawTextureEx(Boton_atras,salirPos,0.0f,1.0f,WHITE);
-
-            if(CheckCollisionPointRec(click,salir)){
-                break;
-            }
+                dia_text.x=diaTemp;
             
-        EndDrawing();
+            // Descripcion
+                desc_text.x=text_events.x;
+                desc_text.y=text_events.y+34;
+
+                DrawTextEx(fuente,temp->description,desc_text,20,1,BLACK);
+
+            // Sumamos un 3% hacia abajo, es 13 pq le sumo el ancho del cuadro mas 3
+            c_eventos.y+=screenHeight* 0.13;
+            // Igual con el texto
+            text_events.y=c_eventos.y+10;
+
+            // Pasamos al siguiente temp
+            temp=temp->next;
+        }
+
+        // Salir Rectangulo
+        // DrawRectangleRec(salir,BLUE);
+        // Salir
+        DrawTextureEx(Boton_atras,salirPos,0.0f,1.0f,WHITE);
+
+        if(CheckCollisionPointRec(click,salir)){
+            break;
+        }
+        
+    EndDrawing();
     }
+    UnloadTexture(fondo);
     UnloadFont(fuente);
     UnloadTexture(Boton_atras);
 
