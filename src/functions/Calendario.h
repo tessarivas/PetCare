@@ -54,11 +54,11 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     NextMonth.height = screenHeight*0.043;
 
     // Bloque de calendario
-    Rectangle Calendario;
-    Calendario.x=screenWidth * 0.03;
-    Calendario.y=screenHeight*0.21;
-    Calendario.width= screenWidth *0.95;
-    Calendario.height= screenHeight * 0.70;
+    // Rectangle Calendario;
+    // Calendario.x=screenWidth * 0.03;
+    // Calendario.y=screenHeight*0.21;
+    // Calendario.width= screenWidth *0.95;
+    // Calendario.height= screenHeight * 0.70;
 
     // ----------------Evento--------------------------
     Rectangle titleEvent;
@@ -133,12 +133,12 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     desPos.y=desEvent.y+10;
     
     // ---------- Textos ----------- //
-    const char *txtCalendario = {"CALENDARIO"};
+    // const char *txtCalendario = {"CALENDARIO"};
     
     //Texto
-    Vector2 calPos;
-    calPos.x=screenWidth * 0.2;
-    calPos.y=screenHeight * 0.04;
+    // Vector2 calPos;
+    // calPos.x=screenWidth * 0.2;
+    // calPos.y=screenHeight * 0.04;
 
     // ---------- MESES ----------- //
 
@@ -498,16 +498,16 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     title.x=(screenWidth - title.width) / 2;
     title.y= screenHeight*0.1;
 
-    Vector2 titlePos;
-    titlePos.x=title.x;
-    titlePos.y=title.y;
+    // Vector2 titlePos;
+    // titlePos.x=title.x;
+    // titlePos.y=title.y;
 
     // Cuadro donde se imprimiran los eventos
-    Rectangle c_events;
-    c_events.x=screenWidth*0.1;
-    c_events.y=screenHeight*0.3;
-    c_events.width=screenWidth*0.8;
-    c_events.height=screenHeight*0.6;
+    // Rectangle c_events;
+    // c_events.x=screenWidth*0.1;
+    // c_events.y=screenHeight*0.3;
+    // c_events.width=screenWidth*0.8;
+    // c_events.height=screenHeight*0.6;
     
     // Cantidad de eventos a imprimir
     int count_events=0;
@@ -575,7 +575,7 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     
     Color BlancoOscuro={250,171,17,255};
     
-    Texture2D title_calendario=LoadTexture("../assets/PetCare_CalendarioTope.png");
+    // Texture2D title_calendario=LoadTexture("../assets/PetCare_CalendarioTope.png");
 
     // temporales extra
     char tempDay[20];

@@ -121,7 +121,7 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
     bool band = false; // Para boton agregar
     bool boton = false; // Para saber si selecciono vacuna o revision
     const int MaxCaracter = 20;
-    int tamano_fondo = GetScreenWidth();
+    // int tamano_fondo = GetScreenWidth();
 
     int cuenta_titulo = 0;
     int cuenta_descripcion = 0;

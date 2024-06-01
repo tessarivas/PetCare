@@ -142,10 +142,20 @@ int main()
             case MIS_MASCOTAS:
             {
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
-                DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
+                
+                perro = DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
+                string defaultt = "GoldenIsaac";
+                if(perro.Nombre == defaultt){
+                    pantalla_actual=CREAR_MASCOTA;
+                }
+                else
+                {
+                    pantalla_actual = MI_PERFIL;
+                }
+                
                 DescargarContenido(MIS_MASCOTAS, fondo_actual);
                 
-                pantalla_actual = CREAR_MASCOTA;
+                // pantalla_actual = CREAR_MASCOTA;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -153,6 +163,7 @@ int main()
             {
                 mascota_actual = DibujarCrearMascota(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(CREAR_MASCOTA,fondo_actual);
+                
                 if(mascota_actual == 1){
                     pantalla_actual = REGISTRAR_GATO;
                 }
@@ -161,6 +172,7 @@ int main()
                 } else{
                     pantalla_actual = MIS_MASCOTAS;;
                 }
+                
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
