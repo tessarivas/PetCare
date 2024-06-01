@@ -58,6 +58,7 @@ typedef enum Pantalla{
 //------------------Load And Unload Content----------------------------------------//
 Cargas CargarContenido(Pantalla actual, Cargas archivos);
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
+void copyy(struct Evento *&Destino, struct Evento *&Origen);
 
 //----------------------------Inicio-----------------------------------------------//
 int DibujarInicio(Cargas archivos);
@@ -150,10 +151,17 @@ int main()
                 }
                 else
                 {
+                    
+                    cout<<"AAAAA"<<endl;
+                    cout<<perro.event->title<<endl;
+                    cout<<perro.event->title<<endl;
+                    cout<<perro.event->title<<endl;
                     pantalla_actual = MI_PERFIL;
                 }
                 
                 DescargarContenido(MIS_MASCOTAS, fondo_actual);
+
+                event=nullptr;
                 
                 // pantalla_actual = CREAR_MASCOTA;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
@@ -243,7 +251,7 @@ int main()
                 Evento *tempEvent=nullptr;
 
                 // Carga y descarga en la propia funcion
-                tempEvent = DibujarCalendario(ANCHO, ALTO, event);
+                tempEvent = DibujarCalendario(ANCHO, ALTO, perro.event);
 
                 if(tempEvent !=nullptr){
                     // Escribio eventos
@@ -266,6 +274,8 @@ int main()
                     cout<<perro.event->title<<endl;
                     cout<<perro.event->title<<endl;
                     cout<<perro.event->title<<endl;
+
+                    lista->addEventDog(lista,event,perro);
 
                     DibujarEventos(perro.event,ANCHO,ALTO);
                 }
@@ -329,6 +339,15 @@ int main()
     free(event);
     
     return 0;
+}
+
+void copyy(struct Evento *&Destino, struct Evento *&Origen){
+    // Destino->title=Origen->title;
+    // Destino->description=Origen->description;
+    // Destino->day=Origen->day;
+    // Destino->month=Origen->month;
+    // Destino->next=Origen->next;
+    Destino=Origen;
 }
 
 // CARGAR TODAS LAS IMAGENES, AUDIO,FONTS, ETC...

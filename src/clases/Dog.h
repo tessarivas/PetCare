@@ -43,6 +43,7 @@ public:
     Dog *createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
     void add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
     void DefineEvents(struct Evento *event);
+    void addEventDog(Dog*&lista, struct Evento *event,Dog perro);
 };
 
 //--------------------Funciones----------------------//
@@ -107,6 +108,28 @@ Dog::Dog(string name, string raza, int dia, int mes, int anio,float peso, string
     this->Anio = anio;
     this->Peso = peso;
     this->Padecimientos = padecimientos;
+}
+
+void Dog::addEventDog(Dog*&lista, struct Evento *event,Dog perro){
+    Dog *temp = lista;
+    while (temp != nullptr) {
+        if (temp->Nombre == perro.Nombre) {
+            temp->event = event;
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (temp != nullptr && temp->event != nullptr) {
+        cout << temp->Nombre << ": " << temp->event->title << endl;
+        cout << temp->Nombre << ": " << temp->event->title << endl;
+        cout << temp->Nombre << ": " << temp->event->title << endl;
+    } else {
+        cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
+        cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
+        cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
+    }
+
 }
 
 void Dog:: DefineEvents(struct Evento *event){

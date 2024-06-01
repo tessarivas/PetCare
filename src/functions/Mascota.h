@@ -584,7 +584,8 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
             
         EndDrawing();
     }
-    cout << selected.Nombre<<endl;
+    cout << selected.event->title<<endl;
+    
     return selected;
 }
 
