@@ -180,6 +180,8 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
 
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
+    Color Bloque={245,246,243,255};
+
     // ---------- Extras ----------- //
 
     // Posicion del mouse
@@ -333,9 +335,36 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             }
 
             // Titulo del eveneto
+            Vector2 titulo2;
+            titulo2.x=titlePos.x-20;
+            titulo2.y=titlePos.y-20;
+
+            Rectangle titulo2Re;
+            titulo2Re.x=titulo2.x-5;
+            titulo2Re.y=titulo2.y-5;
+            titulo2Re.width = 60;
+            titulo2Re.height = 30;
+            
+
+
+            DrawRectangleRec(titulo2Re,WHITE);
+            DrawTextEx(fuente,"Titulo",titulo2,20,2,BLACK);
+
             DrawTextEx(fuente,title,titlePos,24,2,BLACK);
             
+            Vector2 desc2;
+            desc2.x=desPos.x-20;
+            desc2.y=desPos.y-20;
+
+            Rectangle desc2Re;
+            desc2Re.x=desc2.x-5;
+            desc2Re.y=desc2.y-5;
+            desc2Re.width=120;
+            desc2Re.height=30;
+            
             // Asutno de evento
+            DrawRectangleRec(desc2Re,WHITE);
+            DrawTextEx(fuente,"Descripcion",desc2,20,2,BLACK);
             DrawTextEx(fuente,des,desPos,24,2,BLACK);
             
             // Agregar evento
@@ -396,12 +425,19 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             */
             for(int i=1;i<=numDays+1;i++)
             {   
+                char dayC[5];
+                Vector2 dayText;
+                dayText.x=test.x+2;
+                dayText.y=test.y+2;
                 if(CheckCollisionPointRec(lastclick,test))
                 {
                     daySelected=true;
                 }
                 
-                DrawRectangleRec(test,RED);
+                DrawRectangleRec(test,BLUE);
+                itoa(i - 1,dayC,10);
+                
+                DrawTextEx(fuente,dayC,dayText,20,1,BLACK);
                 
                 if(i==8){
                     
@@ -581,6 +617,7 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
 
     // temporales extra
     char tempDay[20];
+    char tempMonth[20];
     int diaTemp=0;
     
 
@@ -597,7 +634,7 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
         
         // Reinicamos los valores
         temp=events;
-        c_eventos.y=screenHeight * 0.32;
+        c_eventos.y=screenHeight * 0.20;
         text_events.y=c_eventos.y+10;
         
         while(temp != nullptr){
@@ -617,12 +654,15 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
                 // Pasamos el dia que originalmente es int, a char
                 // origen, destino, en decimal (puede ser 16 para hexadecimal)
                 itoa(temp->day,tempDay,10);
-
-                DrawTextEx(fuente,"Dia: ",dia_text,32,1,BLACK);
-
-                dia_text.x=dia_text.x+50;
+                itoa(temp->month,tempMonth,10);
+                strcat(tempDay,"/");
+                strcat(tempDay,tempMonth);
 
                 DrawTextEx(fuente,tempDay,dia_text,32,1,BLACK);
+
+                dia_text.x=dia_text.x+20;
+
+                // DrawTextEx(fuente,tempMonth,dia_text,32,1,BLACK);
 
                 dia_text.x=diaTemp;
             
