@@ -83,8 +83,10 @@ int main()
     Evento *event = nullptr;
     Cita *date = nullptr;
     Cita **agendar = &date;
+    
     int tempDia;
     int tempMes;
+    
     char tempTitle[20];
     char tempDesc[50];
     bool seleccion;
@@ -93,8 +95,10 @@ int main()
     // Usuario
     Usuario user; // Usuario actual
     string tempName; // Nombre para copiar y pegar en el constructor de user
-    // Mascota
+    // Mascota temporal
     Dog perro;
+    Dog *lista=nullptr;
+
     /*1 = gato, 2 = perro*/
     int mascota_actual;
 
@@ -167,6 +171,7 @@ int main()
             case REGISTRAR_PERRO:
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
+
                 DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = AVATAR_PERRO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
@@ -183,6 +188,10 @@ int main()
             case AVATAR_PERRO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
+
+                // Agregar el perro nuevo a la lista
+                lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos);
+
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
