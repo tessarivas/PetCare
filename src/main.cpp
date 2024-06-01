@@ -97,7 +97,9 @@ int main()
     string tempName; // Nombre para copiar y pegar en el constructor de user
     // Mascota temporal
     Dog perro;
-    Dog *lista=nullptr;
+    // Dog *lista=nullptr;
+    Dog *lista = new (Dog);
+    lista=nullptr;
 
     /*1 = gato, 2 = perro*/
     int mascota_actual;
@@ -132,15 +134,17 @@ int main()
                         user.GetName();
                         DescargarContenido(CREAR_DUENO, fondo_actual);
                         pantalla_actual = MIS_MASCOTAS;
-                        fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                        // fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                     }
                 }
                 break;
             }
             case MIS_MASCOTAS:
             {
-                DibujarMisMascotas(fondo_actual,ANCHO,ALTO);
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
                 DescargarContenido(MIS_MASCOTAS, fondo_actual);
+                
                 pantalla_actual = CREAR_MASCOTA;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -180,6 +184,9 @@ int main()
             case AVATAR_GATO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
+
+                lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
+                
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
@@ -190,10 +197,11 @@ int main()
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
 
                 // Agregar el perro nuevo a la lista
-                lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos);
+                lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
+
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -212,6 +220,7 @@ int main()
                     pantalla_actual = nuevaPantalla;
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 }
+                DescargarContenido(MI_PERFIL, fondo_actual);
                 break;
             }
             case CALENDARIO:

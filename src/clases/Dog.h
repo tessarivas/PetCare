@@ -39,8 +39,8 @@ public:
     void DefineAvatar(Texture2D textura);
 
     // --- Lista --- //
-    Dog *createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos);
-    void add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos);
+    Dog *createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
+    void add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
 };
 
 //--------------------Funciones----------------------//
@@ -57,7 +57,7 @@ Dog::Dog(){
     this->prev=nullptr;
 }
 
-Dog *Dog::createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos){
+Dog *Dog::createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar){
     Dog *nodo = new(Dog);
     
     nodo->Nombre = name;
@@ -69,12 +69,17 @@ Dog *Dog::createNodo(string name, string raza, int dia, int mes , int anio, floa
     
     nodo->Peso=peso;
     nodo->Padecimientos=padecimientos;
+
+    nodo->Avatar=avatar;
+
+    nodo->next=nullptr;
+    nodo->prev=nullptr;
     
     return nodo;
 }
 
-void Dog::add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos){
-    Dog *nodo = createNodo(name,raza,dia,mes,anio,peso,padecimientos);
+void Dog::add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar){
+    Dog *nodo = createNodo(name,raza,dia,mes,anio,peso,padecimientos,avatar);
 
     if(lista==nullptr){
         lista=nodo;
@@ -84,11 +89,10 @@ void Dog::add(Dog *&lista, string name, string raza, int dia, int mes , int anio
         while(temp->next != nullptr){
             temp=temp->next;
         }
-        lista->prev=temp;
-        temp->next=lista;
+        nodo->prev=temp;
+        temp->next=nodo;
+        
     }
-
-
 }
 
 Dog::Dog(string name, string raza, int dia, int mes, int anio,float peso, string padecimientos){
