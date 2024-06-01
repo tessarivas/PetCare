@@ -1,5 +1,6 @@
 #pragma once
 #include "Usuario.h"
+#include "Eventos.h"
 
 class Dog
 {
@@ -19,7 +20,7 @@ public:
     Texture2D Avatar;
 
     Dog *next, *prev;
-
+    struct Evento *event;
     //Los padecimientos podemos hacerlo en una estructura de datos para poder poner mas de uno, pero eso ya despues :b
 
     //Constructor
@@ -41,6 +42,7 @@ public:
     // --- Lista --- //
     Dog *createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
     void add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
+    void DefineEvents(struct Evento *event);
 };
 
 //--------------------Funciones----------------------//
@@ -53,6 +55,7 @@ Dog::Dog(){
     this->Anio = 2024;
     this->Peso = 5.2;
     this->Padecimientos = "Ninguno";
+    this->event=nullptr;
     this->next=nullptr;
     this->prev=nullptr;
 }
@@ -72,6 +75,7 @@ Dog *Dog::createNodo(string name, string raza, int dia, int mes , int anio, floa
 
     nodo->Avatar=avatar;
 
+    nodo->event=nullptr;
     nodo->next=nullptr;
     nodo->prev=nullptr;
     
@@ -103,6 +107,10 @@ Dog::Dog(string name, string raza, int dia, int mes, int anio,float peso, string
     this->Anio = anio;
     this->Peso = peso;
     this->Padecimientos = padecimientos;
+}
+
+void Dog:: DefineEvents(struct Evento *event){
+    this->event=event;
 }
 
 // Gets
