@@ -728,13 +728,13 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
     // BOTON CARTILLA
     Rectangle cartilla;
     cartilla.x = screenWidth * 0.17;
-    cartilla.y = screenHeight * 0.43;
+    cartilla.y = screenHeight * 0.27;
     cartilla.width = screenWidth * 0.6;
     cartilla.height = screenHeight * 0.18;
     // BOTON CALENDARIO
     Rectangle calendario;
     calendario.x = screenWidth * 0.17;
-    calendario.y = screenHeight * 0.66;
+    calendario.y = screenHeight * 0.50;
     calendario.width = screenWidth * 0.6;
     calendario.height = screenHeight * 0.18;
     // POSICION DEL TEXTO DE LA MASCOTA
@@ -757,7 +757,6 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 
         // FONDO Y BOTONES
         DrawTextureEx(archivos.FondoMiMascota, archivos.Position,0.0f,1.0f,WHITE);
-        DrawTexture(archivos.BotonMiInfo, info.x, info.y, WHITE);
         DrawTexture(archivos.BotonCartilla, cartilla.x, cartilla.y, WHITE);
         DrawTexture(archivos.BotonCalendario, calendario.x, calendario.y, WHITE);
         DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);

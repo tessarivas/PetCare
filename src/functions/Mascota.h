@@ -493,6 +493,8 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
 
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
+    Color Bloque={245,246,243,255};
+
     Vector2 textPos;
     textPos.x=screenWidth * 0.10;
     textPos.y=screenHeight * 0.20;
@@ -537,7 +539,7 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
             DogBox.x=textPos.x-10;
             DogBox.y=textPos.y-10;
             DogBox.width=screenWidth *0.85;
-            DogBox.height=screenHeight *0.12;
+            DogBox.height=screenHeight *0.14;
             
             while(temp != nullptr){
                 // cout<< "Entro aqui con "<<temp->Nombre<<endl;
@@ -553,7 +555,7 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
                     DogBox.height=screenHeight *0.12;
                 
                 // Comenzamos a dibujar
-                DrawRectangleRec(DogBox,RED);
+                DrawRectangleRec(DogBox,Bloque);
 
                 DrawTextEx(fuente,name,textPos,34,2,BLACK);
 
@@ -571,8 +573,8 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
                 // pasamos al siguiente registro
                 temp=temp->next;
                 // Al final una separacion de 54 pixeles entre cada registro
-                textPos.y+=74;
-                avatarPos.y+=108;
+                textPos.y+=85;
+                avatarPos.y+=115;
 
             }
             
