@@ -58,6 +58,7 @@ typedef enum Pantalla{
 //------------------Load And Unload Content----------------------------------------//
 Cargas CargarContenido(Pantalla actual, Cargas archivos);
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
+void copyy(struct Evento *&Destino, struct Evento *&Origen);
 
 //----------------------------Inicio-----------------------------------------------//
 int DibujarInicio(Cargas archivos);
@@ -83,8 +84,10 @@ int main()
     Evento *event = nullptr;
     Cita *date = nullptr;
     Cita **agendar = &date;
+    
     int tempDia;
     int tempMes;
+    
     char tempTitle[20];
     char tempDesc[50];
     bool seleccion;
@@ -93,8 +96,12 @@ int main()
     // Usuario
     Usuario user; // Usuario actual
     string tempName; // Nombre para copiar y pegar en el constructor de user
-    // Mascota
+    // Mascota temporal
     Dog perro;
+    // Dog *lista=nullptr;
+    Dog *lista = new (Dog);
+    lista=nullptr;
+
     /*1 = gato, 2 = perro*/
     int mascota_actual;
 
@@ -128,16 +135,35 @@ int main()
                         user.GetName();
                         DescargarContenido(CREAR_DUENO, fondo_actual);
                         pantalla_actual = MIS_MASCOTAS;
-                        fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                        // fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                     }
                 }
                 break;
             }
             case MIS_MASCOTAS:
             {
-                DibujarMisMascotas(fondo_actual,ANCHO,ALTO);
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                
+                perro = DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
+                string defaultt = "GoldenIsaac";
+                if(perro.Nombre == defaultt){
+                    pantalla_actual=CREAR_MASCOTA;
+                }
+                else
+                {
+                    
+                    cout<<"AAAAA"<<endl;
+                    cout<<perro.event->title<<endl;
+                    cout<<perro.event->title<<endl;
+                    cout<<perro.event->title<<endl;
+                    pantalla_actual = MI_PERFIL;
+                }
+                
                 DescargarContenido(MIS_MASCOTAS, fondo_actual);
-                pantalla_actual = CREAR_MASCOTA;
+
+                event=nullptr;
+                
+                // pantalla_actual = CREAR_MASCOTA;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -145,6 +171,7 @@ int main()
             {
                 mascota_actual = DibujarCrearMascota(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(CREAR_MASCOTA,fondo_actual);
+                
                 if(mascota_actual == 1){
                     pantalla_actual = REGISTRAR_GATO;
                 }
@@ -153,6 +180,7 @@ int main()
                 } else{
                     pantalla_actual = MIS_MASCOTAS;;
                 }
+                
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -160,6 +188,7 @@ int main()
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(pantalla_actual,fondo_actual);
+                perro.event=nullptr;
                 pantalla_actual = AVATAR_GATO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -167,6 +196,7 @@ int main()
             case REGISTRAR_PERRO:
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
+                perro.event=nullptr;
                 DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = AVATAR_PERRO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
@@ -175,7 +205,7 @@ int main()
             case AVATAR_GATO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                UnloadTexture(fondo_actual.FondoAvatarGato);
+                DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -183,14 +213,18 @@ int main()
             case AVATAR_PERRO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                UnloadTexture(fondo_actual.FondoAvatarPerro);
+                DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
+
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case MI_PERFIL:
             {   
+                fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+
                 auto[nuevaPantalla, regresar] = MiPerfil(fondo_actual, ANCHO, ALTO, perro);
+                
                 if(regresar){
                     // VOLVER PANTALLA ANTERIOR (Saltandome lo de la creacion)
                     DescargarContenido(MI_PERFIL, fondo_actual);
@@ -202,6 +236,7 @@ int main()
                     pantalla_actual = nuevaPantalla;
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 }
+                DescargarContenido(MI_PERFIL, fondo_actual);
                 break;
             }
             case CALENDARIO:
@@ -210,7 +245,7 @@ int main()
                 Evento *tempEvent=nullptr;
 
                 // Carga y descarga en la propia funcion
-                tempEvent = DibujarCalendario(ANCHO, ALTO, event);
+                tempEvent = DibujarCalendario(ANCHO, ALTO, perro.event);
 
                 if(tempEvent !=nullptr){
                     // Escribio eventos
@@ -225,11 +260,18 @@ int main()
                     tempDesc[50];
                     strcpy(tempDesc,tempEvent->description);
 
-                    // Agregar el evento nuevo a la lista de eventos    
+                    // Agregar el evento nuevo a la lista de eventos
+                    
                     addEvent(&event,tempDia,tempMes,tempTitle,tempDesc);
                     
-                    pri(event);
-                    DibujarEventos(event,ANCHO,ALTO);
+                    perro.DefineEvents(event);
+                    cout<<perro.event->title<<endl;
+                    cout<<perro.event->title<<endl;
+                    cout<<perro.event->title<<endl;
+
+                    lista->addEventDog(lista,event,perro);
+
+                    DibujarEventos(perro.event,ANCHO,ALTO);
                 }
                 else{
                     // No escribio ningun evento
@@ -291,6 +333,15 @@ int main()
     free(event);
     
     return 0;
+}
+
+void copyy(struct Evento *&Destino, struct Evento *&Origen){
+    // Destino->title=Origen->title;
+    // Destino->description=Origen->description;
+    // Destino->day=Origen->day;
+    // Destino->month=Origen->month;
+    // Destino->next=Origen->next;
+    Destino=Origen;
 }
 
 // CARGAR TODAS LAS IMAGENES, AUDIO,FONTS, ETC...
@@ -618,7 +669,7 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
                 // Dibujar borde de color si esta seleccionado
                 DrawRectangleLinesEx(Avatar[i], 8, GREEN);
             }
-            DrawTextureEx(avataresTexturas[i], { Avatar[i].x, Avatar[i].y }, 0.0f, 1.0f, WHITE);
+            DrawTextureEx(avataresTexturas[i], { Avatar[i].x + 5, Avatar[i].y }, 0.0f, 1.0f, WHITE);
         }
 
         // Boton atras
@@ -671,13 +722,13 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
     // BOTON CARTILLA
     Rectangle cartilla;
     cartilla.x = screenWidth * 0.17;
-    cartilla.y = screenHeight * 0.43;
+    cartilla.y = screenHeight * 0.27;
     cartilla.width = screenWidth * 0.6;
     cartilla.height = screenHeight * 0.18;
     // BOTON CALENDARIO
     Rectangle calendario;
     calendario.x = screenWidth * 0.17;
-    calendario.y = screenHeight * 0.66;
+    calendario.y = screenHeight * 0.50;
     calendario.width = screenWidth * 0.6;
     calendario.height = screenHeight * 0.18;
     // POSICION DEL TEXTO DE LA MASCOTA
@@ -700,7 +751,6 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 
         // FONDO Y BOTONES
         DrawTextureEx(archivos.FondoMiMascota, archivos.Position,0.0f,1.0f,WHITE);
-        DrawTexture(archivos.BotonMiInfo, info.x, info.y, WHITE);
         DrawTexture(archivos.BotonCartilla, cartilla.x, cartilla.y, WHITE);
         DrawTexture(archivos.BotonCalendario, calendario.x, calendario.y, WHITE);
         DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);

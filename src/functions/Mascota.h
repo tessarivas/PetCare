@@ -16,7 +16,7 @@
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
-void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight);
+Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHeight);
 
 // --------- FUNCIONES ----------- //
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
@@ -151,11 +151,11 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     adelante.height = screenHeight * 0.05;
     // --------------------------------------------- //
     // ATRAS
-    Rectangle atras;
-    atras.y = screenWidth * 0.05;
-    atras.x = screenHeight * 0.03;
-    atras.width = screenWidth * 0.1;
-    atras.height = screenHeight * 0.05;
+    // Rectangle atras;
+    // atras.y = screenWidth * 0.05;
+    // atras.x = screenHeight * 0.03;
+    // atras.width = screenWidth * 0.1;
+    // atras.height = screenHeight * 0.05;
 
     // Variables temporales de cada dato
     string temp_name;
@@ -471,7 +471,7 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     return temp_dog;
 }
 
-void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
+Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHeight){
     
     /* Faltaria agregar una forma de agregar las mascotas registradas, y ver cual de ellas selecciona
     Pero ya despues ;b*/
@@ -486,6 +486,30 @@ void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
     Vector2 LastClick;
 
     bool finish = false;
+
+    Dog *temp=lista;
+    char name[30];
+    char raza[30];
+
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+
+    Color Bloque={245,246,243,255};
+
+    Vector2 textPos;
+    textPos.x=screenWidth * 0.10;
+    textPos.y=screenHeight * 0.20;
+    
+    Vector2 avatarPos;
+    avatarPos.x=screenWidth * 0.70;
+    avatarPos.y=textPos.y;
+
+    Rectangle DogBox;
+    DogBox.x=textPos.x-10;
+    DogBox.y=textPos.y-10;
+    DogBox.width=screenWidth *0.85;
+    DogBox.height=screenHeight *0.12;
+
+    Dog selected;
 
     while (finish == false)
     {
@@ -504,13 +528,67 @@ void DibujarMisMascotas(Cargas archivos, int screenWidth, int screenHeight){
             // Boton de anadir
             DrawTexture(archivos.BotonAnadir, anadir.x, anadir.y, WHITE);
 
+            // -------- Lista ---------//
+            temp=lista;
+            textPos.x=screenWidth * 0.10;
+            textPos.y=screenHeight * 0.20;
+            
+            avatarPos.x=screenWidth * 0.70;
+            avatarPos.y=textPos.y;
+
+            DogBox.x=textPos.x-10;
+            DogBox.y=textPos.y-10;
+            DogBox.width=screenWidth *0.85;
+            DogBox.height=screenHeight *0.14;
+            
+            while(temp != nullptr){
+                // cout<< "Entro aqui con "<<temp->Nombre<<endl;
+                
+                // Pasamos los valores a char -----
+                    strcpy(name,temp->Nombre.c_str());
+                    strcpy(raza,temp->Raza.c_str());
+
+                // volvemos a definir el hitbox
+                    DogBox.x=textPos.x-10;
+                    DogBox.y=textPos.y-10;
+                    DogBox.width=screenWidth *0.85;
+                    DogBox.height=screenHeight *0.12;
+                
+                // Comenzamos a dibujar
+                DrawRectangleRec(DogBox,Bloque);
+
+                DrawTextEx(fuente,name,textPos,34,2,BLACK);
+
+                DrawTextureEx(temp->Avatar,avatarPos,0.0f,1.0f,WHITE);
+        
+                textPos.y+=34;
+                DrawTextEx(fuente,raza,textPos,34,2,BLACK);
+                
+                // Colisiones
+                if(CheckCollisionPointRec(LastClick,DogBox)){
+                    selected = *temp;
+                    finish=true;
+                }
+                
+                // pasamos al siguiente registro
+                temp=temp->next;
+                // Al final una separacion de 54 pixeles entre cada registro
+                textPos.y+=85;
+                avatarPos.y+=115;
+
+            }
+            
             // Verificar colision en boton añadir
             if(CheckCollisionPointRec(LastClick, anadir)){
                 finish = true;
+                return selected;
             }
             
         EndDrawing();
     }
+    cout << selected.event->title<<endl;
+    
+    return selected;
 }
 
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight)
