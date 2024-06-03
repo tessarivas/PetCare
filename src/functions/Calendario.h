@@ -192,11 +192,16 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     // Evento
     struct Evento *temp=nullptr;
 
+    Color amarillo2 ={234,237,33,255};
+    
+    Color amarillo1 ={232,234,60,255};
+    
     while(finish == false){
         BeginDrawing();
             
             ClearBackground(WHITE);
             Mouse = GetMousePosition();
+            
 
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                 lastclick=Mouse;
@@ -276,9 +281,9 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             
             // Evento-------------------------
             //titulo
-            DrawRectangleRec(titleEvent,YELLOW);
+            DrawRectangleRec(titleEvent,amarillo1);
             //Descripcion
-            DrawRectangleRec(desEvent,YELLOW);
+            DrawRectangleRec(desEvent,amarillo1);
 
             // Tiene que seleccionar un dia para poder escribir un titulo y descripcion---
             if (daySelected== true)
@@ -346,8 +351,8 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             titulo2Re.height = 30;
             
 
-
-            DrawRectangleRec(titulo2Re,WHITE);
+            // titulo
+            DrawRectangleRec(titulo2Re,amarillo2);
             DrawTextEx(fuente,"Titulo",titulo2,20,2,BLACK);
 
             DrawTextEx(fuente,title,titlePos,24,2,BLACK);
@@ -363,7 +368,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             desc2Re.height=30;
             
             // Asutno de evento
-            DrawRectangleRec(desc2Re,WHITE);
+            DrawRectangleRec(desc2Re,amarillo2);
             DrawTextEx(fuente,"Descripcion",desc2,20,2,BLACK);
             DrawTextEx(fuente,des,desPos,24,2,BLACK);
             

@@ -676,7 +676,7 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
                 // Dibujar borde de color si esta seleccionado
                 DrawRectangleLinesEx(Avatar[i], 8, GREEN);
             }
-            DrawTextureEx(avataresTexturas[i], { Avatar[i].x, Avatar[i].y }, 0.0f, 1.0f, WHITE);
+            DrawTextureEx(avataresTexturas[i], { Avatar[i].x + 5, Avatar[i].y }, 0.0f, 1.0f, WHITE);
         }
 
         // Boton atras
