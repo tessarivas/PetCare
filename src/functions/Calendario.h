@@ -397,12 +397,15 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             }
 
             // Mas informacion
-            DrawTextureEx(botonInfo,infoPos,0.0f,1.0f,WHITE);
-            if(CheckCollisionPointRec(lastclick,info)){
-                if(events != nullptr){
+            if(events != nullptr){
+                DrawTextureEx(botonInfo,infoPos,0.0f,1.0f,WHITE);
+                if(CheckCollisionPointRec(lastclick,info)){
+                    
+                    cout<<"Entro"<<endl;    
                     DibujarEventos(events,screenWidth,screenHeight);
+                    
+                    lastclick={0,0};
                 }
-                lastclick={0,0};
             }
             
             wi=0.05;

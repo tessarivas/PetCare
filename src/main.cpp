@@ -188,6 +188,7 @@ int main()
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(pantalla_actual,fondo_actual);
+                perro.event=nullptr;
                 pantalla_actual = AVATAR_GATO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -195,7 +196,7 @@ int main()
             case REGISTRAR_PERRO:
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-
+                perro.event=nullptr;
                 DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = AVATAR_PERRO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
