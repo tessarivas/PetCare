@@ -175,7 +175,7 @@ int main()
             case AVATAR_GATO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                DescargarContenido(pantalla_actual,fondo_actual);
+                UnloadTexture(fondo_actual.FondoAvatarGato);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -183,7 +183,7 @@ int main()
             case AVATAR_PERRO:
             {
                 perro.Avatar = SeleccionarAvatarPerro(fondo_actual,ANCHO,ALTO);
-                DescargarContenido(pantalla_actual,fondo_actual);
+                UnloadTexture(fondo_actual.FondoAvatarPerro);
                 pantalla_actual = MI_PERFIL;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
