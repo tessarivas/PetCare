@@ -186,6 +186,7 @@ int main()
                 DescargarContenido(MIS_MASCOTAS, fondo_actual);
 
                 event=nullptr;
+                date=nullptr;
                 
                 // pantalla_actual = CREAR_MASCOTA;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
@@ -251,7 +252,8 @@ int main()
                 cout<<user.mascota->Nombre<<endl;
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
-
+                perro.date = nullptr;
+                lista->date = nullptr;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -318,9 +320,8 @@ int main()
             }
             case CARTILLA_MEDICA: 
             {
-                // HOLA LOCA
                 // Dibujar la pantalla CARTILLA_MEDICA y los botones correspondientes
-                int boton_click = DibujarCartillaMedica(date, ANCHO, ALTO);
+                int boton_click = DibujarCartillaMedica(perro.date, ANCHO, ALTO);
                 
                 // Verificar si el usuario hizo clic en el botón ATRAS
                 if (boton_click == 1) {
@@ -338,7 +339,7 @@ int main()
             }
             case AGREGAR_CITA:
             {
-                auto result = DibujarAgregarCita(agendar, ANCHO, ALTO);
+                auto result = DibujarAgregarCita(&date, ANCHO, ALTO);
 
                 // Verificar si la bandera de regresar es verdadera
                 if (result.second) {
@@ -348,6 +349,8 @@ int main()
                 }
                 // Verificar si el usuario hizo clic en el botón AÑADIR
                 else {
+                    perro.DefineDate(date);
+                    cout<<perro.date->titulo<<endl;
                     DescargarContenido(AGREGAR_CITA, fondo_actual);
                     // Aquí puedes implementar la lógica para agregar una cita
                     pantalla_actual = CARTILLA_MEDICA; // Cambiar a la pantalla CARTILLA_MEDICA
@@ -812,7 +815,7 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 } 
 
 // ---------- Iniciar sesion ----------- //
-
+/*
 void IniciarSesio(Cargas archivos, User usuario){
     bool finish = false;
 
@@ -829,4 +832,5 @@ void IniciarSesio(Cargas archivos, User usuario){
     }
 
 }
+*/
 

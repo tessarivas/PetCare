@@ -21,6 +21,7 @@ public:
 
     Dog *next, *prev;
     struct Evento *event;
+    struct Cita *date;
     //Los padecimientos podemos hacerlo en una estructura de datos para poder poner mas de uno, pero eso ya despues :b
 
     //Constructor
@@ -43,6 +44,7 @@ public:
     Dog *createNodo(string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
     void add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
     void DefineEvents(struct Evento *event);
+    void DefineDate(struct Cita *date);
     void addEventDog(Dog*&lista, struct Evento *event,Dog perro);
 };
 
@@ -57,6 +59,7 @@ Dog::Dog(){
     this->Peso = 5.2;
     this->Padecimientos = "Ninguno";
     this->event=nullptr;
+    this->date=nullptr;
     this->next=nullptr;
     this->prev=nullptr;
 }
@@ -129,11 +132,14 @@ void Dog::addEventDog(Dog*&lista, struct Evento *event,Dog perro){
         cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
         cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
     }
-
 }
 
 void Dog:: DefineEvents(struct Evento *event){
     this->event=event;
+}
+
+void Dog:: DefineDate(struct Cita *date){
+    this->date=date;
 }
 
 // Gets
