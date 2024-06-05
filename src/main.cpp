@@ -157,28 +157,15 @@ int main()
             case MIS_MASCOTAS:
             {
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
-                
-                Dog *temp = user.mascota;
-
-                while(temp != nullptr){
-                    cout<<temp->Nombre<<endl;
-                    temp=temp->next;
-                }
-                cout<<endl;
-                cout<<endl;
-                cout<<endl;
 
                 perro = DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
-                cout<<"SALIO"<<endl;
+                // No carga nada por lo tanto perro se queda con el constructor default y comparamos si es diferente de el default
                 string defaultt = "GoldenIsaac";
                 if(perro.Nombre == defaultt){
                     pantalla_actual=CREAR_MASCOTA;
                 }
                 else
-                {
-                    
-                    cout<<"AAAAA"<<endl;
-                    
+                {   
                     pantalla_actual = MI_PERFIL;
                 }
                 
@@ -212,7 +199,10 @@ int main()
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
                 DescargarContenido(pantalla_actual,fondo_actual);
+                
                 perro.event=nullptr;
+                perro.date = nullptr;
+
                 pantalla_actual = AVATAR_GATO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -220,7 +210,10 @@ int main()
             case REGISTRAR_PERRO:
             {
                 perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
+                
                 perro.event=nullptr;
+                perro.date = nullptr;
+                
                 DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = AVATAR_PERRO;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
@@ -236,8 +229,7 @@ int main()
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
-                perro.date = nullptr;
-                lista->date = nullptr;
+                
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -247,16 +239,12 @@ int main()
 
                 // Agregar el perro nuevo a la lista
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
-                
+
                 user.DefineMascota(lista);
-                cout<<user.mascota->Nombre<<endl;
-                cout<<user.mascota->Nombre<<endl;
-                cout<<user.mascota->Nombre<<endl;
-                cout<<user.mascota->Nombre<<endl;
+
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
-                perro.date = nullptr;
-                lista->date = nullptr;
+
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -354,6 +342,7 @@ int main()
                 else {
                     perro.DefineDate(date);
                     lista->addDateDog(lista,date,perro);
+
                     cout<<perro.date->titulo<<endl;
                     DescargarContenido(AGREGAR_CITA, fondo_actual);
                     // Aquí puedes implementar la lógica para agregar una cita

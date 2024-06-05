@@ -82,6 +82,7 @@ Dog *Dog::createNodo(string name, string raza, int dia, int mes , int anio, floa
     nodo->Avatar=avatar;
 
     nodo->event=nullptr;
+    nodo->date=nullptr;
     nodo->next=nullptr;
     nodo->prev=nullptr;
     
@@ -101,6 +102,7 @@ void Dog::add(Dog *&lista, string name, string raza, int dia, int mes , int anio
         }
         nodo->prev=temp;
         temp->next=nodo;
+        
         
     }
 }
