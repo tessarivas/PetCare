@@ -443,7 +443,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                 }
                 
                 DrawRectangleRec(test,BLUE);
-                // itoa(i - 1,dayC,10);
+                itoa(i - 1,dayC,10);
                 
                 DrawTextEx(fuente,dayC,dayText,20,1,BLACK);
                 
@@ -661,8 +661,8 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
                 
                 // Pasamos el dia que originalmente es int, a char
                 // origen, destino, en decimal (puede ser 16 para hexadecimal)
-                // itoa(temp->day,tempDay,10);
-                // itoa(temp->month,tempMonth,10);
+                itoa(temp->day,tempDay,10);
+                itoa(temp->month,tempMonth,10);
                 strcat(tempDay,"/");
                 strcat(tempDay,tempMonth);
 

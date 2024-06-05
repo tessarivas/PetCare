@@ -232,8 +232,12 @@ int main()
 
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
                 
+                user.DefineMascota(lista);
+
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
+                perro.date = nullptr;
+                lista->date = nullptr;
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -259,7 +263,6 @@ int main()
             case MI_PERFIL:
             {   
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
-
 
                 auto[nuevaPantalla, regresar] = MiPerfil(fondo_actual, ANCHO, ALTO, perro);
                 
