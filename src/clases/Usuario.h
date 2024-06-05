@@ -20,7 +20,7 @@ using std::to_string;
 #include "../functions/CartillaMedica.h"
 
 class Usuario{
-protected:
+public:
     // ---Datos basicos--- //
     string UsuarioID; // identificador
     
@@ -34,8 +34,9 @@ protected:
 
     // Contacto
     string Telefono="";
-    int FotoPerfil[6]; // Todavia falta saber como subir una foto personalizada
-public:
+    int FotoPerfil[6];
+    Dog *mascota;
+
     // Constructores
     Usuario();
     Usuario(string nombre, string email,string passwoard,string telefono);
@@ -44,6 +45,7 @@ public:
     // Id
     virtual string GenID ();
     void GetName();
+    void DefineMascota(Dog *mascota);
 };
 
 string Usuario::GenID() {
@@ -74,6 +76,7 @@ Usuario::Usuario(){
     this->Email = "xochitl.123@gmail.com";
     this->Passwoard = "xochilt1234";
     this->Telefono = "64612345678";
+    this->mascota=nullptr;
 }
 
 Usuario::Usuario(string nombre, string email,string passwoard,string telefono){
@@ -81,4 +84,8 @@ Usuario::Usuario(string nombre, string email,string passwoard,string telefono){
     this->Email=email;
     this->Passwoard=passwoard;
     this->Telefono=telefono;
+}
+
+void Usuario::DefineMascota(Dog *mascota){
+    this->mascota = mascota;
 }

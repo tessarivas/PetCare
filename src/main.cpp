@@ -144,6 +144,16 @@ int main()
             {
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 
+                Dog *temp = user.mascota;
+
+                while(temp != nullptr){
+                    cout<<temp->Nombre<<endl;
+                    temp=temp->next;
+                }
+                cout<<endl;
+                cout<<endl;
+                cout<<endl;
+
                 perro = DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
                 string defaultt = "GoldenIsaac";
                 if(perro.Nombre == defaultt){
@@ -219,7 +229,12 @@ int main()
 
                 // Agregar el perro nuevo a la lista
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
-
+                
+                user.DefineMascota(lista);
+                cout<<user.mascota->Nombre<<endl;
+                cout<<user.mascota->Nombre<<endl;
+                cout<<user.mascota->Nombre<<endl;
+                cout<<user.mascota->Nombre<<endl;
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
 
@@ -342,22 +357,13 @@ int main()
     return 0;
 }
 
-void copyy(struct Evento *&Destino, struct Evento *&Origen){
-    // Destino->title=Origen->title;
-    // Destino->description=Origen->description;
-    // Destino->day=Origen->day;
-    // Destino->month=Origen->month;
-    // Destino->next=Origen->next;
-    Destino=Origen;
-}
-
 // CARGAR TODAS LAS IMAGENES, AUDIO,FONTS, ETC...
 Cargas CargarContenido(Pantalla actual, Cargas archivos){
     switch (actual)
     {
         case INICIO:
         {
-            archivos.FondoInicio = LoadTexture("../assets/PetCare_PantallaInicio.png");
+            archivos.FondoInicio = LoadTexture("../assets/VA/PetCareInicioVA.png");
             archivos.BotonEntrar = LoadTexture("../assets/PetCare_BotonEntrar.png");
             break;
         }
