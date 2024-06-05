@@ -70,7 +70,8 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos);
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
 
 //----------------------------Inicio-----------------------------------------------//
-int DibujarInicio(Cargas archivos);
+void IniciarSesion(Cargas archivos, Usuario *&user);
+int DibujarInicio(Cargas archivos,int screenWidth, int screenHeight);
 
 pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
 
@@ -103,7 +104,8 @@ int main()
     // Variables
     srand(time(NULL));
     // Usuario
-    Usuario user; // Usuario actual
+    Usuario *user; // Usuario actual
+    
     string tempName; // Nombre para copiar y pegar en el constructor de user
     // Mascota temporal
     Dog perro;
@@ -122,19 +124,25 @@ int main()
         {
             case INICIO:
             {
-                int boton_click_inicio;
-                boton_click_inicio = DibujarInicio(fondo_actual);
-                if(IsKeyPressed(KEY_SPACE) || boton_click_inicio == 1){
-                    DescargarContenido(INICIO, fondo_actual);
-                    pantalla_actual = CREAR_DUENO;
-                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                int op;
+                op = DibujarInicio(fondo_actual,ANCHO,ALTO);
+                if(op == 1){
+                    // Iniciar sesion
+                    pantalla_actual = INICIAR_SESION;
                 }
+                else
+                {
+                    if(op==2){
+                        pantalla_actual = NUEVO_USUARIO1;
+                    }
+                }
+                DescargarContenido(INICIO,fondo_actual);
                 break;
             }
             case INICIAR_SESION:
             {
-                fondo_actual.Background=LoadTexture("assets/PetCareIniciarSesionVA.png");
-                
+                fondo_actual.Background=LoadTexture("../assets/VA/PetCareIniciarSesionVA.png");
+                IniciarSesion(fondo_actual,user);
                 UnloadTexture(fondo_actual.Background);
             }
             case CREAR_DUENO: // Avatares
@@ -145,9 +153,9 @@ int main()
                     pantalla_actual = INICIO;
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 } else {
-                    user.DefineName(tempName);
+                    user->DefineName(tempName);
                     if(tempName != " "){
-                        user.GetName();
+                        user->GetName();
                         DescargarContenido(CREAR_DUENO, fondo_actual);
                         pantalla_actual = MIS_MASCOTAS;
                     }
@@ -225,7 +233,7 @@ int main()
 
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
                 
-                user.DefineMascota(lista);
+                user->DefineMascota(lista);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
@@ -240,7 +248,7 @@ int main()
                 // Agregar el perro nuevo a la lista
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
 
-                user.DefineMascota(lista);
+                user->DefineMascota(lista);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
@@ -374,7 +382,12 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         case INICIO:
         {
             archivos.FondoInicio = LoadTexture("../assets/VA/PetCareInicioVA.png");
-            archivos.BotonEntrar = LoadTexture("../assets/PetCare_BotonEntrar.png");
+            
+            break;
+        }
+        case INICIAR_SESION:
+        {
+            archivos.Background=LoadTexture("../assets/VA/PetCareIniciarSesionVA.png");
             break;
         }
         case CREAR_DUENO:
@@ -477,7 +490,10 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
     if(pantalla_actual == INICIO){
         UnloadTexture(archivos.FondoInicio);
-        UnloadTexture(archivos.BotonEntrar);
+        
+    }
+    if(pantalla_actual==INICIAR_SESION){
+        UnloadTexture(archivos.Background);
     }
     if(pantalla_actual == CREAR_DUENO){
         UnloadTexture(archivos.FondoCrearDueno);
@@ -552,25 +568,67 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
     }
 }
 
-// DIBUJAR LA PANTALLA DE INICIO CON LA QUE ENTRARA
-int DibujarInicio(Cargas archivos) 
+// 1=Iniciar sesion, 2.-registrar, 0=error DIBUJAR LA PANTALLA DE INICIO CON LA QUE ENTRARA
+int DibujarInicio(Cargas archivos, int screenWidth, int screenHeight) 
 {
-    // FONDO DE INICIO
-    DrawTextureEx(archivos.FondoInicio, archivos.Position, 0.0f, 1.0f, WHITE);
+    // Iniciar sesion
+    Rectangle sesion;
+    sesion.width = screenWidth *0.62;
+    sesion.height = screenHeight *0.078;
+    sesion.x=(screenWidth - sesion.width) / 2;
+    sesion.y=screenHeight * 0.795;
 
-    // ------------------- BOTON "ENTRAR" -------------------
-    // Tamaño del boton
-    float boton_entrar_width = static_cast<float>(archivos.BotonEntrar.width);
-    float boton_entrar_height = static_cast<float>(archivos.BotonEntrar.height);
-    // Posición del boton centrado en la parte inferior de la pantalla
-    float boton_entrar_x = (GetScreenWidth() - boton_entrar_width) / 2;
-    float boton_entrar_y = GetScreenHeight() - boton_entrar_height - 30; 
-    // Dibujar el boton
-    DrawTexture(archivos.BotonEntrar, boton_entrar_x, boton_entrar_y, WHITE);
-    // Verificar si se presiona el boton
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && 
-        CheckCollisionPointRec(GetMousePosition(), { boton_entrar_x, boton_entrar_y, boton_entrar_width, boton_entrar_height })) {
-        return 1;
+    // Color rojo transparente
+    Color trans ={255,0,0,100};
+
+    // Registrarse
+    Rectangle registrar;
+    registrar.width = screenWidth *0.62;
+    registrar.height = screenHeight *0.06;
+    registrar.x=(screenWidth - registrar.width) / 2;
+    registrar.y=screenHeight * 0.9;
+
+    Vector2 Mouse;
+    Vector2 click;
+
+    while(true){
+        // FONDO DE INICIO
+        BeginDrawing();
+            Mouse = GetMousePosition();
+
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                click=Mouse;
+            }
+
+            DrawTextureEx(archivos.FondoInicio, archivos.Position, 0.0f, 1.0f, WHITE);
+
+            DrawRectangleRec(sesion,trans);
+            DrawRectangleRec(registrar,trans);
+
+
+            // // ------------------- BOTON "ENTRAR" -------------------
+            // // Tamaño del boton
+            // float boton_entrar_width = static_cast<float>(archivos.BotonEntrar.width);
+            // float boton_entrar_height = static_cast<float>(archivos.BotonEntrar.height);
+            // // Posición del boton centrado en la parte inferior de la pantalla
+            // float boton_entrar_x = (GetScreenWidth() - boton_entrar_width) / 2;
+            // float boton_entrar_y = GetScreenHeight() - boton_entrar_height - 30; 
+            // // Dibujar el boton
+            // DrawTexture(archivos.BotonEntrar, boton_entrar_x, boton_entrar_y, WHITE);
+            // Verificar si se presiona el boton
+            // if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && 
+            //     CheckCollisionPointRec(GetMousePosition(), { boton_entrar_x, boton_entrar_y, boton_entrar_width, boton_entrar_height })) {
+            //     return 1;
+            // }
+
+            if(CheckCollisionPointRec(click,sesion)){
+                return 1;
+            }
+            
+            if(CheckCollisionPointRec(click,registrar)){
+                return 2;
+            }
+        EndDrawing();
     }
 
     return 0;
@@ -808,22 +866,24 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 } 
 
 // ---------- Iniciar sesion ----------- //
-/*
-void IniciarSesio(Cargas archivos, User usuario){
-    bool finish = false;
+
+void IniciarSesion(Cargas archivos, Usuario *&user){
+    
 
     // background
     Vector2 fondoV;
     fondoV.x=0;
-    fondoV.y=0f;
+    fondoV.y=0;
 
-    while(finish == false){
+    while(true){
         BeginDrawing();
-            DrawTextureEx(archivos.Background,);
+            
+            DrawTexture(archivos.Background,0,0,WHITE);
             
         EndDrawing();
     }
 
 }
-*/
+
+
 
