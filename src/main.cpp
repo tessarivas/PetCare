@@ -27,18 +27,28 @@ using std::make_pair;
 
 // PANTALLAS DE LA APP
 typedef enum Pantalla{
-    // PANTALLAS DEL DUEÑO
+    // Seleccion de iniciar sesion o registrarse
     INICIO = 0,
+    // Nombre y contrasena
+    INICIAR_SESION,
+    // Nombre de usuario, contraseña
+    NUEVO_USUARIO1,
+    // Correo electronico y numero de celular
+    NUEVO_USUARIO2,
+    // Nombre real, apellidos y Fecha de nacimiento
+    NUEVO_USUARIO3,
+    // Avatares
     CREAR_DUENO, 
+    // Lista de mascotas
     MIS_MASCOTAS,
-    // REGISTRAR MASCOTA
+    // ---------REGISTRAR MASCOTA-------- // 
     CREAR_MASCOTA,
     REGISTRAR_PERRO,
     REGISTRAR_GATO,
     // AVATAR
     AVATAR_PERRO,
     AVATAR_GATO,
-    // PANTALLAS DE LA MASCOTA
+    // ------- PANTALLAS DE LA MASCOTA ----------- //
     MI_PERFIL,
     CALENDARIO,
     CARTILLA_MEDICA,
@@ -58,7 +68,6 @@ typedef enum Pantalla{
 //------------------Load And Unload Content----------------------------------------//
 Cargas CargarContenido(Pantalla actual, Cargas archivos);
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
-void copyy(struct Evento *&Destino, struct Evento *&Origen);
 
 //----------------------------Inicio-----------------------------------------------//
 int DibujarInicio(Cargas archivos);
@@ -122,7 +131,13 @@ int main()
                 }
                 break;
             }
-            case CREAR_DUENO:
+            case INICIAR_SESION:
+            {
+                fondo_actual.Background=LoadTexture("assets/PetCareIniciarSesionVA.png");
+                
+                UnloadTexture(fondo_actual.Background);
+            }
+            case CREAR_DUENO: // Avatares
             {
                 auto[tempName, regresar] = DibujarCrearPerfil(fondo_actual, ANCHO, ALTO);
                 if(regresar){
@@ -135,7 +150,6 @@ int main()
                         user.GetName();
                         DescargarContenido(CREAR_DUENO, fondo_actual);
                         pantalla_actual = MIS_MASCOTAS;
-                        // fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                     }
                 }
                 break;
@@ -796,3 +810,23 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 
     return make_pair(nuevaPantalla, regresar);
 } 
+
+// ---------- Iniciar sesion ----------- //
+
+void IniciarSesio(Cargas archivos, User usuario){
+    bool finish = false;
+
+    // background
+    Vector2 fondoV;
+    fondoV.x=0;
+    fondoV.y=0f;
+
+    while(finish == false){
+        BeginDrawing();
+            DrawTextureEx(archivos.Background,);
+            
+        EndDrawing();
+    }
+
+}
+
