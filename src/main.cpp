@@ -169,6 +169,7 @@ int main()
                 cout<<endl;
 
                 perro = DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
+                cout<<"SALIO"<<endl;
                 string defaultt = "GoldenIsaac";
                 if(perro.Nombre == defaultt){
                     pantalla_actual=CREAR_MASCOTA;
@@ -177,9 +178,7 @@ int main()
                 {
                     
                     cout<<"AAAAA"<<endl;
-                    cout<<perro.event->title<<endl;
-                    cout<<perro.event->title<<endl;
-                    cout<<perro.event->title<<endl;
+                    
                     pantalla_actual = MI_PERFIL;
                 }
                 
@@ -260,6 +259,7 @@ int main()
             case MI_PERFIL:
             {   
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+
 
                 auto[nuevaPantalla, regresar] = MiPerfil(fondo_actual, ANCHO, ALTO, perro);
                 
@@ -350,6 +350,7 @@ int main()
                 // Verificar si el usuario hizo clic en el botón AÑADIR
                 else {
                     perro.DefineDate(date);
+                    lista->addDateDog(lista,date,perro);
                     cout<<perro.date->titulo<<endl;
                     DescargarContenido(AGREGAR_CITA, fondo_actual);
                     // Aquí puedes implementar la lógica para agregar una cita

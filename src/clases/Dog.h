@@ -1,6 +1,7 @@
 #pragma once
 #include "Usuario.h"
 #include "Eventos.h"
+#include "Citas.h"
 
 class Dog
 {
@@ -46,6 +47,7 @@ public:
     void DefineEvents(struct Evento *event);
     void DefineDate(struct Cita *date);
     void addEventDog(Dog*&lista, struct Evento *event,Dog perro);
+    void addDateDog(Dog*&lista ,struct Cita *date,Dog perro);
 };
 
 //--------------------Funciones----------------------//
@@ -125,11 +127,24 @@ void Dog::addEventDog(Dog*&lista, struct Evento *event,Dog perro){
 
     if (temp != nullptr && temp->event != nullptr) {
         cout << temp->Nombre << ": " << temp->event->title << endl;
-        cout << temp->Nombre << ": " << temp->event->title << endl;
-        cout << temp->Nombre << ": " << temp->event->title << endl;
     } else {
         cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
-        cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
+    }
+}
+
+void Dog::addDateDog(Dog*&lista ,struct Cita *date,Dog perro){
+    Dog *temp = lista;
+    while (temp != nullptr) {
+        if (temp->Nombre == perro.Nombre) {
+            temp->date = date;
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (temp != nullptr && temp->date != nullptr) {
+        cout << temp->Nombre << ": " << temp->date->titulo << endl;
+    } else {
         cout << "No se encontró el perro o el evento no se asignó correctamente." << endl;
     }
 }
