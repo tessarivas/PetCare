@@ -28,19 +28,28 @@ public:
     string ApellidoPaterno="";
     string ApellidoMaterno="";
     
+    Texture2D avatar;
+    
     // Cuenta
     string Passwoard="";
     string Email="";
 
     // Contacto
     string Telefono="";
-    int FotoPerfil[6];
+    
+    // Mascotas
     Dog *mascota;
 
     // Constructores
     Usuario();
     Usuario(string nombre, string email,string passwoard,string telefono);
+    
+    // ------ Define ------- //
     void DefineName(string name);
+    void DefineName(char name[]);
+    
+    void DefinePas(char pas[]);
+    void DefinePas(string pas);
     
     // Id
     virtual string GenID ();
@@ -68,6 +77,19 @@ void Usuario::DefineName(string name){
     this->Nombre = name;
 }
 
+void Usuario::DefineName(char name[]){
+    this->Nombre = string(name);
+}
+
+void Usuario::DefinePas(string pas){
+    this->Nombre = pas;
+}
+
+void Usuario::DefinePas(char pas[]){
+    this->Nombre = string(pas);
+}
+
+
 Usuario::Usuario(){
     this->UsuarioID = "#000000";
     this->Nombre = "Xochitl";
@@ -76,6 +98,7 @@ Usuario::Usuario(){
     this->Email = "xochitl.123@gmail.com";
     this->Passwoard = "xochilt1234";
     this->Telefono = "64612345678";
+    this->avatar = LoadTexture("../assets/PetCare_Avatares/1.png");
     this->mascota=nullptr;
 }
 
