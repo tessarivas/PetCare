@@ -72,5 +72,5 @@ typedef struct Cargas{
     // Fuente
     Font fuente;
     // Color de los bloques de texto
-    Color Bloque1={245,246,243,255};
+    Color Bloque1 = {245,246,243,255};
 } Cargas;

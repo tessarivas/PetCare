@@ -79,7 +79,7 @@ int main()
     Image icono = LoadImage("../assets/PetCare_LOGO.png");
     SetWindowIcon(icono);
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = AGREGAR_CITA;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos

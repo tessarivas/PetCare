@@ -193,25 +193,29 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
     Anio.y=screenHeight * 0.53;
     Anio.width= screenWidth * 0.25;
     Anio.height = 40;
+    // ESCALA DE LOS BOTONES
+    float escala = 0.7f;
     // BOTON VACUNA
     Texture2D BotonVacuna = LoadTexture("../assets/PetCare_BotonVacuna.png");
     Rectangle Vacuna;
-    Vacuna.width = screenWidth * 0.55;
-    Vacuna.height = screenHeight * 0.1;
+    Vacuna.width = screenWidth * 0.55 * escala;
+    Vacuna.height = screenHeight * 0.1 * escala;
     Vacuna.y = screenHeight * 0.65;
-    Vacuna.x = (screenWidth / 2) - (Anadir.width / 2) - 52;
+    Vacuna.x = (screenWidth / 2) - (Anadir.width / 2) - 65 * escala;
     Vector2 BotonVacunaPosicion = {Vacuna.x, Vacuna.y};
     // BOTON REVISION
     Texture2D BotonRevision = LoadTexture("../assets/PetCare_BotonRevision.png");
     Rectangle Revision;
-    Revision.width = screenWidth * 0.55;
-    Revision.height = screenHeight * 0.1;
+    Revision.width = screenWidth * 0.55 * escala;
+    Revision.height = screenHeight * 0.1 * escala;
     Revision.y = screenHeight * 0.65;
-    Revision.x = (screenWidth / 2) - (Anadir.width / 2) + 117;
+    Revision.x = (screenWidth / 2) - (Anadir.width / 2) + 165 * escala;
     Vector2 BotonRevisionPosicion = {Revision.x, Revision.y};
 
     // FUENTE DE LETRA
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    // COLOR DE RECUADROS
+    Color ColorRect = {245,246,243,255};
 
     // Mouse y click
     Vector2 Mouse;
@@ -233,19 +237,19 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
         DrawTextureEx(BotonVacuna, BotonVacunaPosicion, 0.0f, 0.7f, WHITE);
         DrawTextureEx(BotonRevision, BotonRevisionPosicion, 0.0f, 0.7f, WHITE);
         // RECTANGULO DEL NOMBRE
-        DrawRectangleRec(Titulo, YELLOW);
+        DrawRectangleRec(Titulo, ColorRect);
         // CUADRO DE TEXTO
         Vector2 posicion_titulo = {55, 280};
         DrawTextEx(fuente, titulo, posicion_titulo, 30, 2, BLACK);
         // RECTANGULO DEL DESCRIPCION
-        DrawRectangleRec(Descripcion, YELLOW);
+        DrawRectangleRec(Descripcion, ColorRect);
         // CUADRO DE TEXTO
         Vector2 posicion_descripcion = {55, 380};
         DrawTextEx(fuente, descripcion, posicion_descripcion, 30, 2, BLACK);
         // FECHA (Dia, Mes, Anio)
-        DrawRectangleRec(Dia, YELLOW);
-        DrawRectangleRec(Mes, YELLOW);
-        DrawRectangleRec(Anio, YELLOW);
+        DrawRectangleRec(Dia, ColorRect);
+        DrawRectangleRec(Mes, ColorRect);
+        DrawRectangleRec(Anio, ColorRect);
         Vector2 posicion_dia = {60, 480};
         DrawTextEx(fuente, dia, posicion_dia, 30, 2, BLACK);
         Vector2 posicion_mes = {170, 480};
@@ -363,10 +367,12 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
         }
 
         if(CheckCollisionPointRec(Click, Vacuna)){
+            DrawRectangleLinesEx(Vacuna, 6 / escala, YELLOW);
             boton = true;
         }
 
         if(CheckCollisionPointRec(Click, Revision)){
+            DrawRectangleLinesEx(Revision, 6 / escala, YELLOW);
             boton = false;
         }
 
