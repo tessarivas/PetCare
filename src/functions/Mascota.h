@@ -14,7 +14,7 @@
 
 // --------- DECLARACION ----------//
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
-Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight);
+RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeight, Dog &temp_dog);
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
 Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHeight);
 
@@ -94,7 +94,7 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     return 0;
 }
 
-Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
+RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeight, Dog &temp_dog){
     // Nombre
     Rectangle c_nombre;
     c_nombre.x=screenWidth * 0.1; // 10% de espacio entre el borde de la izquierda
@@ -150,12 +150,12 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
     adelante.width = screenWidth * 0.1;
     adelante.height = screenHeight * 0.05;
     // --------------------------------------------- //
-    // ATRAS
-    // Rectangle atras;
-    // atras.y = screenWidth * 0.05;
-    // atras.x = screenHeight * 0.03;
-    // atras.width = screenWidth * 0.1;
-    // atras.height = screenHeight * 0.05;
+    // BOTON ATRAS
+    Rectangle atras;
+    atras.width = screenWidth * 0.1;
+    atras.height = screenHeight * 0.05;
+    atras.y = 20;
+    atras.x = 20;
 
     // Variables temporales de cada dato
     string temp_name;
@@ -221,6 +221,7 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
 
     // Bandera de ciclo
     bool band= false; 
+    RegistrarDogResult result = CONTINUAR;
 
     do
     {
@@ -234,21 +235,18 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         // Este almacenara la ultima posicion de donde hizo click
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             lastClick = Mouse;
-        }
+        }        
 
-        // Boton atras
-        // DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
-        
-        //Verificar si se presiono atras
-        // if(CheckCollisionPointRec(lastClick, atras)){
-        //     return true;
-        //     break;
-        // }
-        
+        DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
+        if (CheckCollisionPointRec(lastClick, atras)) {
+            result = REGRESAR;
+            break;
+        }
 
         // Verificar que se hayan llenado los campos para avanzar adelante
         DrawTexture(archivos.BotonAdelante, adelante.x, adelante.y, WHITE);
-        if(CheckCollisionPointRec(lastClick, adelante)){
+        if(CheckCollisionPointRec(lastClick, adelante))
+        {
             temp_name=name;
             temp_raza=raza;
 
@@ -258,8 +256,11 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
             
             temp_peso = std::atof(peso);
             temp_padecimientos = padecimientos;
+
+            temp_dog = Dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
             
             band = true;
+            result = AVANZAR;
         }
 
         // --------------- N O M B R E ---------------- //
@@ -467,8 +468,7 @@ Dog RegistrarDog(Cargas archivos, int screenWidth,int screenHeight){
         EndDrawing();
     } while (band == false);
 
-    Dog temp_dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
-    return temp_dog;
+    return result;
 }
 
 Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHeight){

@@ -57,16 +57,6 @@ typedef enum Pantalla{
     AGREGAR_CITA
 } Pantalla;
 
-/*
-    FALTA: 
-    En pantalla MisMascotas agregar el avatar y nombre del dueño abajo(No muy importante jeje)
-    El boton de regresar al registrar perro/gato
-    Cartilla medica
-    Remplazar fondo del calendario
-    Poner una condicion para los meses y anio bisiesto
-    Hacer que el usuario guarde el dia, el titulo, y el asunto que guarde en el calendario
-*/
-
 //------------------Load And Unload Content----------------------------------------//
 Cargas CargarContenido(Pantalla actual, Cargas archivos);
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
@@ -95,15 +85,17 @@ int main()
     // Eventos
     Evento *event = nullptr;
     Cita *date = nullptr;
-    Cita **agendar = &date;
+    Cita **agendar = &date; // Acceder al contenido de date
     
+    // Variables temporales
     int tempDia;
     int tempMes;
     
     char tempTitle[20];
     char tempDesc[50];
     bool seleccion;
-    // Variables
+
+    // Random
     srand(time(NULL));
     // Usuario
     Usuario *user; // Usuario actual
@@ -207,25 +199,37 @@ int main()
             }
             case REGISTRAR_GATO:
             {
-                perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-                DescargarContenido(pantalla_actual,fondo_actual);
-                
-                perro.event=nullptr;
-                perro.date = nullptr;
+                Dog temp_perro;
+                RegistrarDogResult result = RegistrarDog(fondo_actual, ANCHO, ALTO, temp_perro);
 
-                pantalla_actual = AVATAR_GATO;
+                DescargarContenido(pantalla_actual, fondo_actual);
+
+                if (result == AVANZAR) {
+                    perro = temp_perro;
+                    perro.event = nullptr;
+                    perro.date=nullptr;
+                    pantalla_actual = AVATAR_GATO;
+                } else if (result == REGRESAR) {
+                    pantalla_actual = CREAR_MASCOTA;
+                }
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case REGISTRAR_PERRO:
             {
-                perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-                
-                perro.event=nullptr;
-                perro.date = nullptr;
-                
-                DescargarContenido(pantalla_actual,fondo_actual);
-                pantalla_actual = AVATAR_PERRO;
+                Dog temp_perro;
+                RegistrarDogResult result = RegistrarDog(fondo_actual, ANCHO, ALTO, temp_perro);
+
+                DescargarContenido(pantalla_actual, fondo_actual);
+
+                if (result == AVANZAR) {
+                    perro = temp_perro;
+                    perro.event = nullptr;
+                    perro.date=nullptr;
+                    pantalla_actual = AVATAR_PERRO;
+                } else if (result == REGRESAR) {
+                    pantalla_actual = CREAR_MASCOTA;
+                }
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -436,7 +440,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         }
         case REGISTRAR_GATO:
         {
-            archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
+            archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiGatoDatos.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
             break;
