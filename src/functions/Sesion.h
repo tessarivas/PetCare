@@ -227,11 +227,18 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     int pasconCount = 0;
 
     // ---------- HitBoxes ---------- //
+    // Cuadro de nombre
     Rectangle UserC;
     UserC.x=screenWidth *0.14;
     UserC.y=screenHeight *0.30;
-    UserC.width = screenWidth * 0.65;
+    UserC.width = screenWidth * 0.69;
     UserC.height = screenHeight *0.06;
+    
+    Rectangle PasC;
+    PasC.x=screenWidth *0.14;
+    PasC.y=screenHeight *0.43;
+    PasC.width = screenWidth * 0.69;
+    PasC.height = screenHeight *0.06;
 
     // ---------- Recursos ---------- //
     Texture2D background = LoadTexture("../assets/VA/PetCareNuevoUsuario1VA.png");
@@ -244,6 +251,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
 
             // ------- Nombre de usuario ------- //
             DrawRectangleRec(UserC,trans);
+            DrawRectangleRec(PasC,trans);
 
         EndDrawing();
     }
