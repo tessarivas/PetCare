@@ -53,25 +53,18 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     NextMonth.width = screenWidth * 0.10;
     NextMonth.height = screenHeight*0.043;
 
-    // Bloque de calendario
-    // Rectangle Calendario;
-    // Calendario.x=screenWidth * 0.03;
-    // Calendario.y=screenHeight*0.21;
-    // Calendario.width= screenWidth *0.95;
-    // Calendario.height= screenHeight * 0.70;
-
     // ----------------Evento--------------------------
     Rectangle titleEvent;
-    titleEvent.x=screenWidth*0.1;
-    titleEvent.y=screenHeight*0.625;
-    titleEvent.width=screenWidth*0.80;
-    titleEvent.height=screenHeight*0.07;
+    titleEvent.x=screenWidth*0.05;
+    titleEvent.y=screenHeight*0.695;
+    titleEvent.width=screenWidth*0.9;
+    titleEvent.height=screenHeight*0.045;
 
     Rectangle desEvent;
-    desEvent.x=screenWidth*0.1;
-    desEvent.y=screenHeight*0.705;
-    desEvent.width=screenWidth*0.8;
-    desEvent.height=screenHeight*0.15;
+    desEvent.x=screenWidth*0.05;
+    desEvent.y=screenHeight*0.790;
+    desEvent.width=screenWidth*0.9;
+    desEvent.height=screenHeight*0.07;
 
     // Agregar evento
     Rectangle Agregar;
@@ -125,12 +118,12 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
 
     // ---------- Posicion de textos ----------- //
     Vector2 titlePos;
-    titlePos.x=titleEvent.x+10;
-    titlePos.y=titleEvent.y+10;
+    titlePos.x = titleEvent.x + 10;
+    titlePos.y = titleEvent.y + 10;
 
     Vector2 desPos;
-    desPos.x=desEvent.x+10;
-    desPos.y=desEvent.y+10;
+    desPos.x = desEvent.x + 10;
+    desPos.y = desEvent.y + 17;
     
     // ---------- Textos ----------- //
     // const char *txtCalendario = {"CALENDARIO"};
@@ -180,7 +173,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
 
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
-    Color Bloque={245,246,243,255};
+    Color Bloque = {245,246,243,255};
 
     // ---------- Extras ----------- //
 
@@ -192,11 +185,12 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     // Evento
     struct Evento *temp=nullptr;
 
-    Color amarillo2 ={234,237,33,255};
+    // Color amarillo2 ={234,237,33,255};
+    Color ColorRect = {245,246,243,255};
     
-    Color amarillo1 ={232,234,60,255};
-    
-    bool titlefull=false;
+    bool titlefull = false;
+
+    int clickCuadroDia = -1;
 
     while(finish == false){
         BeginDrawing();
@@ -280,9 +274,9 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             
             // Evento-------------------------
             //titulo
-            DrawRectangleRec(titleEvent,amarillo1);
+            DrawRectangleRec(titleEvent,ColorRect);
             //Descripcion
-            DrawRectangleRec(desEvent,amarillo1);
+            DrawRectangleRec(desEvent,ColorRect);
 
             // Tiene que seleccionar un dia para poder escribir un titulo y descripcion---
             if (daySelected== true)
@@ -342,37 +336,32 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                 }
             }
 
-            // Titulo del eveneto
+            /*
+            // Titulo
             Vector2 titulo2;
             titulo2.x=titlePos.x-20;
             titulo2.y=titlePos.y-20;
-
             Rectangle titulo2Re;
             titulo2Re.x=titulo2.x-5;
             titulo2Re.y=titulo2.y-5;
             titulo2Re.width = 60;
             titulo2Re.height = 30;
-            
-
-            // titulo
             DrawRectangleRec(titulo2Re,amarillo2);
             DrawTextEx(fuente,"Titulo",titulo2,20,2,BLACK);
-
-            DrawTextEx(fuente,title,titlePos,24,2,BLACK);
-            
+            // Descripcion
             Vector2 desc2;
             desc2.x=desPos.x-20;
             desc2.y=desPos.y-20;
-
             Rectangle desc2Re;
             desc2Re.x=desc2.x-5;
             desc2Re.y=desc2.y-5;
             desc2Re.width=120;
             desc2Re.height=30;
-            
-            // Asutno de evento
             DrawRectangleRec(desc2Re,amarillo2);
             DrawTextEx(fuente,"Descripcion",desc2,20,2,BLACK);
+            */
+
+            DrawTextEx(fuente,title,titlePos,24,2,BLACK);
             DrawTextEx(fuente,des,desPos,24,2,BLACK);
             
             // Agregar evento
@@ -461,9 +450,9 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             }
             
             wi=0.05;
-            hi=0.27;
-            test.x=screenWidth*0.05;
-            test.y=screenHeight*0.27;
+            hi=0.28;
+            test.x = screenWidth*wi;
+            test.y = screenHeight*hi;
 
             // Esta funcion me costo musho alv y tan simple que esta
             /*
@@ -484,12 +473,18 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                 Vector2 dayText;
                 dayText.x=test.x+2;
                 dayText.y=test.y+2;
+
                 if(CheckCollisionPointRec(lastclick,test))
                 {
                     daySelected=true;
                 }
+
+                if ((i - 1) == clickCuadroDia) {
+                    DrawRectangleRec(test, ORANGE); 
+                } else {
+                    DrawRectangleRec(test, WHITE);
+                }
                 
-                DrawRectangleRec(test,BLUE);
                 itoa(i - 1,dayC,10);
                 
                 DrawTextEx(fuente,dayC,dayText,20,1,BLACK);
@@ -529,9 +524,9 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             if(daySelected== true)
             {
                 wi=0.05;
-                hi=0.27;
-                test.x=screenWidth*0.05;
-                test.y=screenHeight*0.27;
+                hi=0.28;
+                test.x=screenWidth*wi;
+                test.y=screenHeight*hi;
                 for(int i=1;i<=numDays+1;i++)
                 {   
                     
@@ -564,6 +559,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
 
                     if(CheckCollisionPointRec(lastclick,test)){
                         DiaSeleccionado=i;
+                        clickCuadroDia=i;
                         cout<<"DIA "<< DiaSeleccionado<<endl;
                     }
                     
