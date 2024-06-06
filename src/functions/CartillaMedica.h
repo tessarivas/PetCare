@@ -26,7 +26,7 @@ int DibujarCartillaMedica(Cita *citas, int screenWidth, int screenHeight);
 
 pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, int screenHeight);
 
-RegistrarAccionCita DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight);
+
 
 // ---------------------------------------------------------------------------- //
 
@@ -394,7 +394,7 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
      return make_pair("", false); // Si se regresó no se añadio ninguna cita
 }
 
-RegistrarAccionCita DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight){
+RegistrarAccionCita DibujarDatosMedicos(Dog perro,const char dueno[] ,int screenWidth,int screenHeight){
     int opcion = 0;
 
     RegistrarAccionCita result = CONTINUA;
@@ -517,6 +517,7 @@ RegistrarAccionCita DibujarDatosMedicos(Dog perro, int screenWidth,int screenHei
             Vector2 mesPos = {MesC.x, MesC.y};
             Vector2 anioPos = {AnioC.x, AnioC.y};
             Vector2 pesoPos = {PesoC.x, PesoC.y};
+            Vector2 duenoPos = {DuenoC.x, DuenoC.y};
             Vector2 padecimientosPos = {PadeC.x, PadeC.y};
 
             DrawTextEx(fuente, perro.getName().c_str(), nombrePos, 20, 1, BLACK);
@@ -525,6 +526,7 @@ RegistrarAccionCita DibujarDatosMedicos(Dog perro, int screenWidth,int screenHei
             DrawTextEx(fuente, TextFormat("%02i", perro.getMonth()),mesPos , 20, 1, BLACK);
             DrawTextEx(fuente, TextFormat("%04i", perro.getYear()), anioPos, 20, 1, BLACK);
             DrawTextEx(fuente, TextFormat("%.2f kg", perro.getPeso()), pesoPos, 20, 1, BLACK);
+            DrawTextEx(fuente, dueno , duenoPos, 20, 1, BLACK);
             DrawTextEx(fuente, perro.getPadecimientos().c_str(), padecimientosPos, 20, 1, BLACK);
 
         EndDrawing();
