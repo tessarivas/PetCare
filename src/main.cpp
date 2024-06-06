@@ -135,13 +135,7 @@ int main()
             case INICIAR_SESION:
             {
                 // Carga las imagenes en la propia funcion
-                // usuario temporal
-                Usuario temp;
-                temp = IniciarSesion(ANCHO,ALTO);
-                
-                // Pasamos los datos a nuestro usuario
-                user.DefineName(temp.Nombre);
-                user.DefinePas(temp.Passwoard);
+                user = IniciarSesion(ANCHO,ALTO);
                 
                 // Acutalizamos pantallas
                 pantalla_actual=CREAR_DUENO;
@@ -704,6 +698,8 @@ pair<Texture2D, bool> DibujarSeleccionDeAvatar(Cargas archivos,int screenWidth,i
     // HitBox de avatares
     Rectangle Avatar[6];
 
+    bool selected=false;
+
     for(int i = 0; i < 6; i++){
         Avatar[i].x = screenWidth * ((i % 3 == 0) ? 0.15f : (i % 3 == 1) ? 0.40f : 0.66f);
         if(i <3){
@@ -737,6 +733,7 @@ pair<Texture2D, bool> DibujarSeleccionDeAvatar(Cargas archivos,int screenWidth,i
         for (int i = 0; i < 6; i++) {
             if (CheckCollisionPointRec(LastClick, Avatar[i])){
                 avatarSeleccionado = i;
+                selected = true;
             }
         }
 
@@ -763,8 +760,15 @@ pair<Texture2D, bool> DibujarSeleccionDeAvatar(Cargas archivos,int screenWidth,i
 
         // Verificar si se presiono listo
         if(CheckCollisionPointRec(LastClick, listo)){
-            avatarSelected=avataresTexturas[avatarSeleccionado];
-            band = true;
+            if(selected)
+            {
+                avatarSelected=avataresTexturas[avatarSeleccionado];
+                band = true;
+            }
+            else
+            {
+                // No a seleccionado un avatar
+            }
         }
 
         EndDrawing();
@@ -861,5 +865,4 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 
     return make_pair(nuevaPantalla, regresar);
 } 
-
 

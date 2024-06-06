@@ -21,10 +21,15 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight);
 // ---------- Funciones ---------- //
 Usuario IniciarSesion(int screenWidth,int screenHeight){
     
+    // tiempo
+    float timetolive = 2.0f; // 3 segundos
+    float actualtime = 0.0f;
+
     // ----------- recursos ----------- //
     // Fondo
     Texture2D Background=LoadTexture("../assets/VA/PetCareIniciarSesionVA.png");
     Texture2D RecBackground=LoadTexture("../assets/VA/PetCareIntenteloMasTarde.png");
+    Texture2D campos = LoadTexture("../assets/VA/PetCareCampos.png");
 
     // Fuente
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
@@ -97,6 +102,9 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
 
     }
 
+    bool namefull=false;
+    bool pasfull=false;
+
     while(finish == false){
         Mouse= GetMousePosition();
         BeginDrawing();
@@ -107,13 +115,6 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
 
             // Fondo
             DrawTexture(Background,0,0,WHITE);
-
-            /*  HitBox Debug 
-            DrawRectangleRec(NombreC,trans);
-            DrawRectangleRec(PasC,trans);
-            DrawRectangleRec(ListoC,trans);
-            DrawRectangleRec(RecC,trans);
-            */
 
             // Nombre
             DrawTextEx(fuente,name,NombreV,24,1.0,BLACK);
@@ -128,12 +129,16 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
                         name[nameCount] = (char)key; 
                         name[nameCount+1] = '\0'; 
                         nameCount++; 
+                        namefull= true;
                     }
                     key = GetCharPressed();  
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (nameCount < 0){
+                    if(nameCount <= 1){
+                        namefull = false;
+                    }
+                    if (nameCount <= 0){
                     } else{
                         nameCount--;   
                         name[nameCount] = '\0'; 
@@ -155,12 +160,16 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
                         pas[pasCount] = (char)key; 
                         pas[pasCount+1] = '\0'; 
                         pasCount++; 
+                        pasfull = true;
                     }
                     key = GetCharPressed();  
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (pasCount < 0){
+                    if(pasCount <= 1){
+                        pasfull=false;
+                    }
+                    if (pasCount <= 0){
                     } else{
                         pasCount--;   
                         pas[pasCount] = '\0'; 
@@ -171,36 +180,36 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
 
             // Si presiona recuperar contraseña
             if(CheckCollisionPointRec(Click,RecC)){
-                bool bandrec=false;
-
-                while(bandrec==false){
+                actualtime = 0.0f;
+                while(actualtime <= timetolive){
                     BeginDrawing();
-                        ClearBackground(WHITE);
-
+                        actualtime += GetFrameTime();
                         DrawTexture(RecBackground,0,0,WHITE);
-
-                        if(IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_SPACE))
-                        {
-                            bandrec=true;
-                        }
                     EndDrawing();
                 }
                 Click={0,0};
             }
 
+            // Boton listo
             if(CheckCollisionPointRec(Click,ListoC)){
-                string tempname = string(name);
-                string temppas = string(pas);
-                user.Nombre=tempname;
-                user.Passwoard=temppas;
-                cout<<user.Nombre<<" "<<user.Passwoard<<endl;
-                finish = true;
+                if(namefull && pasfull){
+                    user.UserName = name;
+                    user.Passwoard=pas;
+                    finish = true;
+                }
+                else
+                {
+                    LlenarCampos();
+                    Click = {0,0};
+                }
             }
 
         EndDrawing();
     }
     UnloadTexture(Background);
+    UnloadTexture(campos);
     UnloadTexture(RecBackground);
+
     return user;
 }
 
@@ -209,7 +218,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     // tiempo
     float timetolive = 2.0f; // 3 segundos
     float actualtime = 0.0f;
-    bool showimage=false;
+
 
     // Usuario tempora;
     Usuario user;

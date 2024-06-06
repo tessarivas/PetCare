@@ -18,6 +18,7 @@ using std::to_string;
 #include "Eventos.h"
 #include "../functions/Calendario.h"
 #include "../functions/CartillaMedica.h"
+#include "../functions/Load.h"
 
 class Usuario{
 public:
