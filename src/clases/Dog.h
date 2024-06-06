@@ -3,6 +3,12 @@
 #include "Eventos.h"
 #include "Citas.h"
 
+enum RegistrarDogResult {
+    AVANZAR,
+    REGRESAR,
+    CONTINUAR
+};
+
 class Dog
 {
 public:

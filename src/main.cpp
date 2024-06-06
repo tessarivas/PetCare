@@ -1,18 +1,19 @@
-#include "raylib.h"
+// main.cpp
 
+// LIBRERIAS
+#include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <cstdlib>
 #include <utility> 
 
+// LIBRERIAS PERSONALIZADAS
 #include "clases/Usuario.h"
 #include "functions/Mascota.h"
-
 
 using std::cout;
 using std::endl;
@@ -29,7 +30,7 @@ using std::make_pair;
 typedef enum Pantalla{
     // Seleccion de iniciar sesion o registrarse
     INICIO = 0,
-    // Nombre y contrasena
+    // Nombre y contraseña
     INICIAR_SESION,
     // Nombre de usuario, contraseña
     NUEVO_USUARIO1,
@@ -41,29 +42,19 @@ typedef enum Pantalla{
     CREAR_DUENO, 
     // Lista de mascotas
     MIS_MASCOTAS,
-    // ---------REGISTRAR MASCOTA-------- // 
+    // -------- REGISTRAR MASCOTA ------- // 
     CREAR_MASCOTA,
     REGISTRAR_PERRO,
     REGISTRAR_GATO,
     // AVATAR
     AVATAR_PERRO,
     AVATAR_GATO,
-    // ------- PANTALLAS DE LA MASCOTA ----------- //
+    // ---- PANTALLAS DE LA MASCOTA ----- //
     MI_PERFIL,
     CALENDARIO,
     CARTILLA_MEDICA,
     AGREGAR_CITA
 } Pantalla;
-
-/*
-    FALTA: 
-    En pantalla MisMascotas agregar el avatar y nombre del dueño abajo(No muy importante jeje)
-    El boton de regresar al registrar perro/gato
-    Cartilla medica
-    Remplazar fondo del calendario
-    Poner una condicion para los meses y anio bisiesto
-    Hacer que el usuario guarde el dia, el titulo, y el asunto que guarde en el calendario
-*/
 
 //------------------Load And Unload Content----------------------------------------//
 Cargas CargarContenido(Pantalla actual, Cargas archivos);
@@ -91,16 +82,16 @@ int main()
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos
     Evento *event = nullptr;
+    // Citas
     Cita *date = nullptr;
-    Cita **agendar = &date;
-    
+    Cita **agendar = &date; // Acceder al contenido de date
+    // Variables temporales
     int tempDia;
     int tempMes;
-    
     char tempTitle[20];
     char tempDesc[50];
     bool seleccion;
-    // Variables
+    // Random
     srand(time(NULL));
     // Usuario
     Usuario user; // Usuario actual
@@ -210,19 +201,37 @@ int main()
             }
             case REGISTRAR_GATO:
             {
-                perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-                DescargarContenido(pantalla_actual,fondo_actual);
-                perro.event=nullptr;
-                pantalla_actual = AVATAR_GATO;
+                Dog temp_perro;
+                RegistrarDogResult result = RegistrarDog(fondo_actual, ANCHO, ALTO, temp_perro);
+
+                DescargarContenido(pantalla_actual, fondo_actual);
+
+                if (result == AVANZAR) {
+                    perro = temp_perro;
+                    perro.event = nullptr;
+                    pantalla_actual = AVATAR_GATO;
+                } else if (result == REGRESAR) {
+                    pantalla_actual = CREAR_MASCOTA;
+                }
+
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
             case REGISTRAR_PERRO:
             {
-                perro = RegistrarDog(fondo_actual,ANCHO,ALTO);
-                perro.event=nullptr;
-                DescargarContenido(pantalla_actual,fondo_actual);
-                pantalla_actual = AVATAR_PERRO;
+                Dog temp_perro;
+                RegistrarDogResult result = RegistrarDog(fondo_actual, ANCHO, ALTO, temp_perro);
+
+                DescargarContenido(pantalla_actual, fondo_actual);
+
+                if (result == AVANZAR) {
+                    perro = temp_perro;
+                    perro.event = nullptr;
+                    pantalla_actual = AVATAR_PERRO;
+                } else if (result == REGRESAR) {
+                    pantalla_actual = CREAR_MASCOTA;
+                }
+
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
             }
@@ -425,7 +434,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         }
         case REGISTRAR_GATO:
         {
-            archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiPerroDatos.png");
+            archivos.FondoRegPerro = LoadTexture("../assets/PetCare_MiGatoDatos.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
             break;
