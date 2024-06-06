@@ -1,15 +1,12 @@
 #include "raylib.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <cstdlib>
 #include <utility> 
-
 #include "Images.h"
 
 // --------- DECLARACION ----------//

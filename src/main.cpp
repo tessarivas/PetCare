@@ -79,7 +79,7 @@ int main()
     Image icono = LoadImage("../assets/PetCare_LOGO.png");
     SetWindowIcon(icono);
     // Iniciar pantallas
-    Pantalla pantalla_actual = CARTILLA_MEDICA_DATOS;
+    Pantalla pantalla_actual = MI_PERFIL;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos
@@ -325,10 +325,21 @@ int main()
             }
             case CARTILLA_MEDICA_DATOS:
             {
-                int op;
-                // Carga y descarga el contenido en la funcion
-                op = DibujarDatosMedicos(perro,ANCHO,ALTO);
-                
+                RegistrarAccionCita result = DibujarDatosMedicos(perro, ANCHO, ALTO);
+                // CAMBIO DE PANTALLA DEPENDE LA SELECCION
+                if (result == ADELANTE) 
+                {
+                    DescargarContenido(pantalla_actual, fondo_actual);
+                    pantalla_actual = CARTILLA_MEDICA;
+                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                } 
+                else if (result == ATRAS) 
+                {
+                    DescargarContenido(pantalla_actual, fondo_actual);
+                    pantalla_actual = MI_PERFIL;
+                    fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                }
+                break;
             }
             case CARTILLA_MEDICA: 
             {
@@ -338,7 +349,7 @@ int main()
                 // Verificar si el usuario hizo clic en el botón ATRAS
                 if (boton_click == 1) {
                     DescargarContenido(CARTILLA_MEDICA, fondo_actual);
-                    pantalla_actual = MI_PERFIL; // Cambiar a la pantalla MI_PERFIL
+                    pantalla_actual = CARTILLA_MEDICA_DATOS; // Cambiar a la pantalla MI_PERFIL
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual); // Cargar contenido de la nueva pantalla
                 }
                 // Verificar si el usuario hizo clic en el botón AGREGAR_CITA
@@ -851,7 +862,7 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 
         if (CheckCollisionPointRec(LastClick, cartilla))
         {
-            nuevaPantalla = CARTILLA_MEDICA;
+            nuevaPantalla = CARTILLA_MEDICA_DATOS;
             seleccion = true;
         }
 

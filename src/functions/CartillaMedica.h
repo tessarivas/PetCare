@@ -20,8 +20,15 @@ using std::make_pair;
 // EN ESTA FUNCION SE RELACIONA LA LIBRERIA DE Citas.h
 #include "../clases/Usuario.h"
 
+// ---------------------------------------------------------------------------- //
+
 int DibujarCartillaMedica(Cita *citas, int screenWidth, int screenHeight);
+
 pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, int screenHeight);
+
+RegistrarAccionCita DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight);
+
+// ---------------------------------------------------------------------------- //
 
 int DibujarCartillaMedica(Cita *citas, int screenWidth, int screenHeight)
 {
@@ -36,8 +43,8 @@ int DibujarCartillaMedica(Cita *citas, int screenWidth, int screenHeight)
     Rectangle AgregarCita;
     AgregarCita.width = screenWidth * 0.55;
     AgregarCita.height = screenHeight * 0.1;
-    AgregarCita.y = screenHeight * 0.75;
-    AgregarCita.x = (screenWidth / 2) - (AgregarCita.width / 2);
+    AgregarCita.y = screenHeight * 0.73;
+    AgregarCita.x = (screenWidth / 2) - (AgregarCita.width / 2) - 13;
     // BOTON REGRESAR
     Texture2D BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
     Rectangle Atras;
@@ -387,89 +394,100 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
      return make_pair("", false); // Si se regresó no se añadio ninguna cita
 }
 
-int DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight){
-    int opcion=0;
+RegistrarAccionCita DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight){
+    int opcion = 0;
+
+    RegistrarAccionCita result = CONTINUA;
     
     Color trans ={255,0,0,100};
 
-    Texture2D background = LoadTexture("../assets/VA/PetCareCartillaMedicaInformacion.png");
+    // FONDO
+    Texture2D background = LoadTexture("../assets/PetCare_CartillaMedicaInfo.png");
+    Texture2D BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
+    Texture2D BotonCitas = LoadTexture("../assets/PetCare_BotonCitas.png");
 
+    // FUENTE DE LETRA
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+
+    // NOMBRE
     Rectangle NombreC;
     {
-        NombreC.x=screenWidth *0.13;
-        NombreC.y=screenHeight *0.24;
+        NombreC.x=screenWidth *0.17;
+        NombreC.y=screenHeight *0.26;
         NombreC.width=screenWidth*0.72;
         NombreC.height=screenHeight*0.06;
     }
-
+    // RAZA
     Rectangle RazaC;
     {
-        RazaC.x=screenWidth *0.13;
-        RazaC.y=screenHeight *0.34;
+        RazaC.x=screenWidth *0.17;
+        RazaC.y=screenHeight *0.36;
         RazaC.width=screenWidth*0.72;
         RazaC.height=screenHeight*0.06;
     }
-
+    // FECHA (DIA/MES/AÑO)
     Rectangle DiaC;
     {
-        DiaC.x=screenWidth *0.13;
-        DiaC.y=screenHeight *0.45;
+        DiaC.x=screenWidth *0.17;
+        DiaC.y=screenHeight *0.47;
         DiaC.width=screenWidth*0.23;
         DiaC.height=screenHeight*0.06;
     }
-    
     Rectangle MesC;
     {
-        MesC.x=screenWidth *0.38;
-        MesC.y=screenHeight *0.45;
+        MesC.x=screenWidth *0.42;
+        MesC.y=screenHeight *0.47;
         MesC.width=screenWidth*0.22;
         MesC.height=screenHeight*0.06;
     }
-    
     Rectangle AnioC;
     {
-        AnioC.x=screenWidth *0.62;
-        AnioC.y=screenHeight *0.45;
+        AnioC.x=screenWidth *0.66;
+        AnioC.y=screenHeight *0.47;
         AnioC.width=screenWidth*0.23;
         AnioC.height=screenHeight*0.06;
     }
-
+    // PESO
     Rectangle PesoC;
     {
-        PesoC.x=screenWidth *0.13;
-        PesoC.y=screenHeight *0.56;
+        PesoC.x=screenWidth *0.17;
+        PesoC.y=screenHeight *0.58;
         PesoC.width=screenWidth*0.23;
         PesoC.height=screenHeight*0.06;  
     }
-
+    // NOMBRE DEL DUEÑO
     Rectangle DuenoC;
     {
-        DuenoC.x=screenWidth *0.40;
-        DuenoC.y=screenHeight *0.56;
+        DuenoC.x=screenWidth *0.44;
+        DuenoC.y=screenHeight *0.58;
         DuenoC.width=screenWidth*0.45;
         DuenoC.height=screenHeight*0.06;  
     }
-
+    // PADECIMIENTOS
     Rectangle PadeC;
     {
-        PadeC.x=screenWidth *0.13;
-        PadeC.y=screenHeight *0.67;
+        PadeC.x=screenWidth *0.17;
+        PadeC.y=screenHeight *0.69;
         PadeC.width=screenWidth*0.72;
         PadeC.height=screenHeight*0.06;  
     }
-
-    Rectangle SigC;
-    {
-        SigC.x=screenWidth * 0.20;
-        SigC.y=screenHeight *0.80;
-        SigC.width=screenWidth *0.59;
-        SigC.height=screenHeight *0.07;
-    }
+    // BOTON ATRAS
+    Rectangle atras;
+    atras.width = screenWidth * 0.1;
+    atras.height = screenHeight * 0.05;
+    atras.y = 20;
+    atras.x = 20;
+    // BOTON CITAS
+    Rectangle citas;
+    citas.width = screenWidth * 0.55;
+    citas.height = screenHeight * 0.1;
+    citas.y = screenHeight * 0.77;
+    citas.x = (screenWidth / 2) - (citas.width / 2);
     
     Vector2 Mouse;
     Vector2 click;
 
-    while (opcion== 0)
+    while(opcion == 0)
     {
         Mouse = GetMousePosition();
         BeginDrawing();
@@ -480,19 +498,41 @@ int DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight){
                 click = Mouse;
             }
 
-            // Hitbox
-            // DrawRectangleRec(NombreC,trans);
-            // DrawRectangleRec(RazaC,trans);
-            // DrawRectangleRec(DiaC,trans);
-            // DrawRectangleRec(MesC,trans);
-            // DrawRectangleRec(AnioC,trans);
-            // DrawRectangleRec(PesoC,trans);
-            // DrawRectangleRec(DuenoC,trans);
-            // DrawRectangleRec(PadeC,trans);
-            // DrawRectangleRec(SigC,trans);
+            DrawTexture(BotonAtras, atras.x, atras.y, WHITE);
+            if(CheckCollisionPointRec(click, atras)){
+                result = ATRAS;
+                break;
+            }
+
+            DrawTexture(BotonCitas, citas.x, citas.y, WHITE);
+            if(CheckCollisionPointRec(click, citas))
+            {
+                result = ADELANTE;
+                break;
+            }
+
+            Vector2 nombrePos = {NombreC.x, NombreC.y};
+            Vector2 razaPos = {RazaC.x, RazaC.y};
+            Vector2 diaPos = {DiaC.x, DiaC.y};
+            Vector2 mesPos = {MesC.x, MesC.y};
+            Vector2 anioPos = {AnioC.x, AnioC.y};
+            Vector2 pesoPos = {PesoC.x, PesoC.y};
+            Vector2 padecimientosPos = {PadeC.x, PadeC.y};
+
+            DrawTextEx(fuente, perro.getName().c_str(), nombrePos, 20, 1, BLACK);
+            DrawTextEx(fuente, perro.getRaza().c_str(), razaPos, 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%02i", perro.getDia()), diaPos, 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%02i", perro.getMonth()),mesPos , 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%04i", perro.getYear()), anioPos, 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%.2f kg", perro.getPeso()), pesoPos, 20, 1, BLACK);
+            DrawTextEx(fuente, perro.getPadecimientos().c_str(), padecimientosPos, 20, 1, BLACK);
+
         EndDrawing();
     }
     
-    return opcion;
+    UnloadTexture(background);
+    UnloadTexture(BotonAtras);
+    UnloadTexture(BotonCitas);
+    return result;
 }
 

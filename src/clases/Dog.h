@@ -39,11 +39,11 @@ public:
     // Gets
     string getName();
     string getRaza();
-    // int getDia();
-    // int getMonth();
-    // int getYear();
-    // float getPeso();
-    // string getPadecimientos();
+    int getDia();
+    int getMonth();
+    int getYear();
+    float getPeso();
+    string getPadecimientos();
 
     // Define
     void DefineAvatar(Texture2D textura);
@@ -173,6 +173,26 @@ string Dog::getName(){
 
 string Dog::getRaza(){
     return this->Raza;
+}
+
+int Dog::getDia(){
+    return this->Dia;
+}
+
+int Dog::getMonth(){
+    return this->Mes;
+}
+
+int Dog::getYear(){
+    return this->Anio;
+}
+
+float Dog::getPeso(){
+    return this->Peso;
+}
+
+string Dog::getPadecimientos(){
+    return this->Padecimientos;
 }
 
 void Dog::DefineAvatar(Texture2D textura){

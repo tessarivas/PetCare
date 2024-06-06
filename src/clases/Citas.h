@@ -4,6 +4,12 @@
 
 using std::string;
 
+enum RegistrarAccionCita {
+    ADELANTE,
+    ATRAS,
+    CONTINUA
+};
+
 typedef struct Cita{
     string titulo;
     string descripcion;
