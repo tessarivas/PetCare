@@ -22,7 +22,7 @@ typedef struct Cita{
 
 // DEFINICIONES
 Cita* CrearNodo(int dia, int mes, const string& titulo, const string& descripcion, bool esVacuna);
-void AgregarCita(Cita **CitaAgendada, int dia, int mes, char titulo[], char descripcion[], bool seleccion);
+void AgregarCita(Cita** CitaAgendada, int dia, int mes, const string& titulo, const string& descripcion, bool esVacuna);
 void liberar(Cita *CitaAgendada);
 
 // CREAR NODO

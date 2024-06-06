@@ -340,7 +340,8 @@ int main()
             }
             case CARTILLA_MEDICA_DATOS:
             {
-                RegistrarAccionCita result = DibujarDatosMedicos(perro, ANCHO, ALTO);
+                const char *dueno = user.UserName.c_str();
+                RegistrarAccionCita result = DibujarDatosMedicos(perro,dueno, ANCHO, ALTO);
                 // CAMBIO DE PANTALLA DEPENDE LA SELECCION
                 if (result == ADELANTE) 
                 {
