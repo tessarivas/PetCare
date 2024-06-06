@@ -24,6 +24,8 @@ public:
     // ---Datos basicos--- //
     string UsuarioID; // identificador
     
+    string UserName="";
+
     string Nombre="";
     string ApellidoPaterno="";
     string ApellidoMaterno="";
@@ -92,12 +94,16 @@ void Usuario::DefinePas(char pas[]){
 
 Usuario::Usuario(){
     this->UsuarioID = "#000000";
+    this->UserName = "Xx_Xochitl_xX";
+
     this->Nombre = "Xochitl";
     this->ApellidoPaterno = "Lozano";
     this->ApellidoPaterno = "Swift";
+    
     this->Email = "xochitl.123@gmail.com";
     this->Passwoard = "xochilt1234";
     this->Telefono = "64612345678";
+    
     this->avatar = LoadTexture("../assets/PetCare_Avatares/1.png");
     this->mascota=nullptr;
 }

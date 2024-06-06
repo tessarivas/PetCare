@@ -65,7 +65,7 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
 //----------------------------Inicio-----------------------------------------------//
 int DibujarInicio(Cargas archivos,int screenWidth, int screenHeight);
 
-pair<Texture2D, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight);
+pair<Texture2D, bool> DibujarSeleccionDeAvatar(Cargas archivos,int screenWidth,int screenHeight);
 
 pair<Pantalla, bool> MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro);
 //---------------------------------------------------------------------------------//
@@ -149,14 +149,19 @@ int main()
             }
             case NUEVO_USUARIO1:
             {
-                RegistrarUsuario(ANCHO,ALTO);
+                // Carga las imagenes en la propia funcion
+                user = RegistrarUsuario(ANCHO,ALTO);
+
+                pantalla_actual=CREAR_DUENO;
                 break;
             }
             case CREAR_DUENO: // Avatares
             {
                 fondo_actual = CargarContenido(pantalla_actual,fondo_actual);
+                
                 // Retornara el avatar seleccionado y una bandera
-                auto[avatar, regresar] = DibujarCrearPerfil(fondo_actual, ANCHO, ALTO);
+                auto[avatar, regresar] = DibujarSeleccionDeAvatar(fondo_actual, ANCHO, ALTO);
+                
                 // asignamos el avatar del usuario
                 user.avatar=avatar;
 
@@ -175,7 +180,8 @@ int main()
             {
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
 
-                perro = DibujarMisMascotas(fondo_actual,lista,ANCHO,ALTO);
+                perro = DibujarMisMascotas(fondo_actual,lista,user,ANCHO,ALTO);
+                
                 // No carga nada por lo tanto perro se queda con el constructor default y comparamos si es diferente de el default
                 string defaultt = "GoldenIsaac";
                 if(perro.Nombre == defaultt){
@@ -538,12 +544,12 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.FondoCrearDueno);
         UnloadTexture(archivos.BotonListo);
         UnloadTexture(archivos.BotonAtras);
-        UnloadTexture(archivos.Avatar1);
-        UnloadTexture(archivos.Avatar2);
-        UnloadTexture(archivos.Avatar3);
-        UnloadTexture(archivos.Avatar4);
-        UnloadTexture(archivos.Avatar5);
-        UnloadTexture(archivos.Avatar6);
+        // UnloadTexture(archivos.Avatar1);
+        // UnloadTexture(archivos.Avatar2);
+        // UnloadTexture(archivos.Avatar3);
+        // UnloadTexture(archivos.Avatar4);
+        // UnloadTexture(archivos.Avatar5);
+        // UnloadTexture(archivos.Avatar6);
     }
     if(pantalla_actual == MIS_MASCOTAS){
         UnloadTexture(archivos.FondoMisMascotas);
@@ -641,24 +647,6 @@ int DibujarInicio(Cargas archivos, int screenWidth, int screenHeight)
 
             DrawTextureEx(archivos.FondoInicio, archivos.Position, 0.0f, 1.0f, WHITE);
 
-            // DrawRectangleRec(sesion,trans);
-            // DrawRectangleRec(registrar,trans);
-
-
-            // // ------------------- BOTON "ENTRAR" -------------------
-            // // Tamaño del boton
-            // float boton_entrar_width = static_cast<float>(archivos.BotonEntrar.width);
-            // float boton_entrar_height = static_cast<float>(archivos.BotonEntrar.height);
-            // // Posición del boton centrado en la parte inferior de la pantalla
-            // float boton_entrar_x = (GetScreenWidth() - boton_entrar_width) / 2;
-            // float boton_entrar_y = GetScreenHeight() - boton_entrar_height - 30; 
-            // // Dibujar el boton
-            // DrawTexture(archivos.BotonEntrar, boton_entrar_x, boton_entrar_y, WHITE);
-            // Verificar si se presiona el boton
-            // if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && 
-            //     CheckCollisionPointRec(GetMousePosition(), { boton_entrar_x, boton_entrar_y, boton_entrar_width, boton_entrar_height })) {
-            //     return 1;
-            // }
 
             if(CheckCollisionPointRec(click,sesion)){
                 return 1;
@@ -673,8 +661,8 @@ int DibujarInicio(Cargas archivos, int screenWidth, int screenHeight)
     return 0;
 }
 
-// DIBUJAR EL PERFIL DEL DUEÑO
-pair<Texture2D, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight)
+// Seleccionar avatar para el usuario
+pair<Texture2D, bool> DibujarSeleccionDeAvatar(Cargas archivos,int screenWidth,int screenHeight)
 {
     const int MaxCharacter=20;
 
@@ -780,7 +768,7 @@ pair<Texture2D, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int scr
         }
 
         EndDrawing();
-        } while(band == false);
+    } while(band == false);
 
 
     return make_pair(avatarSelected, regresar);

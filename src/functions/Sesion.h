@@ -16,6 +16,7 @@ using std::string;
 
 // ---------- Prototipo ---------- //
 Usuario IniciarSesion(int screenWidth,int screenHeight);
+Usuario RegistrarUsuario(int screenWidth, int screenHeight);
 
 // ---------- Funciones ---------- //
 Usuario IniciarSesion(int screenWidth,int screenHeight){
@@ -37,6 +38,8 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
     Vector2 Click;
     // color transparente
     Color trans ={255,0,0,100};
+
+    Color selected = {204,246,255,255};
 
     // user temporal
     Usuario user;
@@ -291,6 +294,9 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     // Color transparente
     Color trans ={255,0,0,100};
 
+
+    Color selected = {204,246,255,255};
+
     while (finish1 == false)
     {
         Mouse = GetMousePosition();
@@ -496,7 +502,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                 int key = GetCharPressed();
                 while (key > 0) 
                 {
-                    if ((key >= 32) && (key <= 122) && (correoConfirmCount <MaxCharacter))
+                    if ((key >= 32) && (key <= 122) && (correoConfirmCount <MaxMailCharacter))
                     {
                         correoConfirm[correoConfirmCount] = (char)key;
                         correoConfirm[correoConfirmCount+1] = '\0'; 
@@ -542,6 +548,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
 
             if(CheckCollisionPointRec(Click,ready)){
                 finish2=true;
+                Click = {0,0};
                 ClearBackground(WHITE);
             }
 
@@ -557,65 +564,106 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     // ----- Fecha de nacimiento ---- //
 
     Rectangle DiaC;
-    DiaC.x=screenWidth *0.14;
-    DiaC.y=screenHeight *0.27;
-    DiaC.width = screenWidth *0.21;
-    DiaC.height=screenHeight *0.07;
+    {
+        DiaC.x=screenWidth *0.14;
+        DiaC.y=screenHeight *0.27;
+        DiaC.width = screenWidth *0.21;
+        DiaC.height=screenHeight *0.07;
+    }
 
     Rectangle MesC;
-    MesC.x=screenWidth *0.37;
-    MesC.y=screenHeight *0.27;
-    MesC.width = screenWidth *0.23;
-    MesC.height=screenHeight *0.07;
+    {
+        MesC.x=screenWidth *0.37;
+        MesC.y=screenHeight *0.27;
+        MesC.width = screenWidth *0.23;
+        MesC.height=screenHeight *0.07;
+    }
     
     Rectangle AnioC;
-    AnioC.x=screenWidth *0.62;
-    AnioC.y=screenHeight *0.27;
-    AnioC.width = screenWidth *0.24;
-    AnioC.height=screenHeight *0.07;
+    {
+        AnioC.x=screenWidth *0.62;
+        AnioC.y=screenHeight *0.27;
+        AnioC.width = screenWidth *0.24;
+        AnioC.height=screenHeight *0.07;
+    }
 
     // ------ Datos Reales ------ //
     
     // Nombre real
     Rectangle NombreC;
-    NombreC.x= screenWidth * 0.14;
-    NombreC.y=screenHeight *0.40;
-    NombreC.width=screenWidth *0.7;
-    NombreC.height = screenHeight * 0.07;
+    {
+        NombreC.x= screenWidth * 0.14;
+        NombreC.y=screenHeight *0.40;
+        NombreC.width=screenWidth *0.7;
+        NombreC.height = screenHeight * 0.07;
+    }
    
     // Apellido Paterno
     Rectangle ApellidoPC;
-    ApellidoPC.x= screenWidth * 0.14;
-    ApellidoPC.y=screenHeight *0.66;
-    ApellidoPC.width=screenWidth *0.7;
-    ApellidoPC.height = screenHeight * 0.07;
+    {
+        ApellidoPC.x= screenWidth * 0.14;
+        ApellidoPC.y=screenHeight *0.54;
+        ApellidoPC.width=screenWidth *0.7;
+        ApellidoPC.height = screenHeight * 0.07;
+    }
    
     // Apellido materno
     Rectangle ApellidoC;
-    ApellidoC.x= screenWidth * 0.14;
-    ApellidoC.y=screenHeight *0.54;
-    ApellidoC.width=screenWidth *0.7;
-    ApellidoC.height = screenHeight * 0.07;
+    {
+        ApellidoC.x= screenWidth * 0.14;
+        ApellidoC.y=screenHeight *0.66;
+        ApellidoC.width=screenWidth *0.7;
+        ApellidoC.height = screenHeight * 0.07;
+    }
 
     // ------ Texto ------ //
-
+    // Dia
     char dia[MaxCharacter +1]= {""};
     int diaCount=0;
 
+    Vector2 diaV;
+    diaV.x=DiaC.x+32;
+    diaV.y=DiaC.y+20;
+    
+    // mes
     char mes[MaxCharacter +1]={""};
     int mesCount=0;
 
+    Vector2 mesV;
+    mesV.x=MesC.x+32;
+    mesV.y=MesC.y+20;
+
+    // Año
     char anio[MaxCharacter +1]={""};
     int anioCount=0;
 
+    Vector2 anioV;
+    anioV.x=AnioC.x+20;
+    anioV.y=AnioC.y+20;
+
+    // Nombre real
     char nombre[MaxCharacter+1]={""};
     int nombreCount=0;
 
+    Vector2 nombreV;
+    nombreV.x=NombreC.x+10;
+    nombreV.y=NombreC.y+10;
+
+    // Apellido paterno
     char apellidoP[MaxCharacter+1]={""};
     int apellidoPCount=0;
+
+    Vector2 apellidoPV;
+    apellidoPV.x=ApellidoPC.x+10;
+    apellidoPV.y=ApellidoPC.y+10;
     
+    // Apellido materno
     char apellidoM[MaxCharacter+1]={""};
     int apellidoMCount=0;
+    
+    Vector2 apellidoMV;
+    apellidoMV.x=ApellidoC.x+10;
+    apellidoMV.y=ApellidoC.y+10;
 
     while(finish3 == false){
         Mouse = GetMousePosition();
@@ -630,33 +678,183 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
 
             // ----- Dia ----- //
             if(CheckCollisionPointRec(Click,DiaC)){
+                // se ilumina el cuadro que selecciono
+                DrawRectangleRec(DiaC,selected);
                 
+                int key = GetCharPressed();
+                while (key > 0) 
+                {
+                    if ((key >= 48) && (key <= 57) && (diaCount < 2))
+                    {
+                        dia[diaCount] = (char)key;
+                        dia[diaCount+1] = '\0'; 
+                        diaCount++; 
+                    }
+                    key = GetCharPressed(); 
+                }
+                if (IsKeyPressed(KEY_BACKSPACE)) 
+                {
+                    if (diaCount < 0){
+                    } else{
+                        diaCount--;   
+                        dia[diaCount] = '\0'; 
+                    }
+                }
             }
+            
+            DrawTextEx(fuente,dia,diaV,24,1,BLACK);
+            
             // ----- Mes ----- //
-            if(CheckCollisionPointRec(Click,MesC)){
+            DrawTextEx(fuente,mes,mesV,24,1,BLACK);
 
+            if(CheckCollisionPointRec(Click,MesC)){
+                int key = GetCharPressed();
+                while (key > 0) 
+                {
+                    if ((key >= 48) && (key <= 57) && (mesCount < 2))
+                    {
+                        mes[mesCount] = (char)key;
+                        mes[mesCount+1] = '\0'; 
+                        mesCount++; 
+                    }
+                    key = GetCharPressed(); 
+                }
+                if (IsKeyPressed(KEY_BACKSPACE)) 
+                {
+                    if (mesCount < 0){
+                    } else{
+                        mesCount--;   
+                        mes[mesCount] = '\0'; 
+                    }
+                }
             }
             // ----- Anio ----- //
+            DrawTextEx(fuente,anio,anioV,24,1,BLACK);
+            
             if(CheckCollisionPointRec(Click,AnioC)){
-
+                int key = GetCharPressed();
+                while (key > 0) 
+                {
+                    if ((key >= 48) && (key <= 57) && (anioCount < 4))
+                    {
+                        anio[anioCount] = (char)key;
+                        anio[anioCount+1] = '\0'; 
+                        anioCount++; 
+                    }
+                    key = GetCharPressed(); 
+                }
+                if (IsKeyPressed(KEY_BACKSPACE)) 
+                {
+                    if (anioCount < 0){
+                    } else{
+                        anioCount--;   
+                        anio[anioCount] = '\0'; 
+                    }
+                }
             }
 
             // ----- Nombre real ----- //
-            if(CheckCollisionPointRec(Click,NombreC)){
 
+            DrawTextEx(fuente,nombre,nombreV,24,1,BLACK);
+
+            if(CheckCollisionPointRec(Click,NombreC)){
+                int key = GetCharPressed();
+                while (key > 0) 
+                {
+                    if ((key >= 32) && (key <= 122) && (nombreCount < MaxCharacter))
+                    {
+                        nombre[nombreCount] = (char)key;
+                        nombre[nombreCount+1] = '\0'; 
+                        nombreCount++; 
+                    }
+                    key = GetCharPressed(); 
+                }
+                if (IsKeyPressed(KEY_BACKSPACE)) 
+                {
+                    if (nombreCount < 0){
+                    } else{
+                        nombreCount--;   
+                        nombre[nombreCount] = '\0'; 
+                    }
+                }
             }
 
             // ----- Apellido Paterno ----- //
-            if(CheckCollisionPointRec(Click,ApellidoPC)){
 
+            DrawTextEx(fuente,apellidoP,apellidoPV,24,1,BLACK);
+
+            if(CheckCollisionPointRec(Click,ApellidoPC)){
+                int key = GetCharPressed();
+                while (key > 0) 
+                {
+                    if ((key >= 32) && (key <= 122) && (apellidoPCount < MaxCharacter))
+                    {
+                        apellidoP[apellidoPCount] = (char)key;
+                        apellidoP[apellidoPCount+1] = '\0'; 
+                        apellidoPCount++; 
+                    }
+                    key = GetCharPressed(); 
+                }
+                if (IsKeyPressed(KEY_BACKSPACE)) 
+                {
+                    if (apellidoPCount < 0){
+                    } else{
+                        apellidoPCount--;   
+                        apellidoP[apellidoPCount] = '\0'; 
+                    }
+                }
             }
 
             // ----- Apellido Materno ----- //
-            if(CheckCollisionPointRec(Click,ApellidoC)){
+            DrawTextEx(fuente,apellidoM,apellidoMV,24,1,BLACK);
 
+            if(CheckCollisionPointRec(Click,ApellidoC)){
+                int key = GetCharPressed();
+                while (key > 0) 
+                {
+                    if ((key >= 32) && (key <= 122) && (apellidoMCount < MaxCharacter))
+                    {
+                        apellidoM[apellidoMCount] = (char)key;
+                        apellidoM[apellidoMCount+1] = '\0'; 
+                        apellidoMCount++; 
+                    }
+                    key = GetCharPressed(); 
+                }
+                if (IsKeyPressed(KEY_BACKSPACE)) 
+                {
+                    if (apellidoMCount < 0){
+                    } else{
+                        apellidoMCount--;   
+                        apellidoM[apellidoMCount] = '\0'; 
+                    }
+                }
+            }
+
+            // ----- Boton listo ----- //
+            if(CheckCollisionPointRec(Click,ready)){
+                finish3=true;
+                ClearBackground(WHITE);
             }
 
         EndDrawing();
     }
+
+    int id;
+    user.UsuarioID=id;
+
+    user.UserName=name;
     
+    user.Passwoard=pas;
+    user.Email=correo;
+    user.Telefono=numero;
+    
+    user.Nombre=nombre;
+    user.ApellidoPaterno=apellidoP;
+    user.ApellidoMaterno=apellidoM;
+
+
+    UnloadTexture(background);
+    UnloadFont(fuente);
+
+    return user;
 }

@@ -13,7 +13,7 @@
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeight, Dog &temp_dog);
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
-Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHeight);
+Dog DibujarMisMascotas(Cargas archivos, Dog *lista,Usuario user,int screenWidth, int screenHeight);
 
 // --------- FUNCIONES ----------- //
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
@@ -468,10 +468,7 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
     return result;
 }
 
-Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHeight){
-    
-    /* Faltaria agregar una forma de agregar las mascotas registradas, y ver cual de ellas selecciona
-    Pero ya despues ;b*/
+Dog DibujarMisMascotas(Cargas archivos, Dog *lista,Usuario user,int screenWidth, int screenHeight){
     
     Rectangle anadir;
     anadir.width = screenWidth * 0.55;
@@ -505,6 +502,14 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
     DogBox.y=textPos.y-10;
     DogBox.width=screenWidth *0.85;
     DogBox.height=screenHeight *0.12;
+
+    Vector2 UserAvatarV;
+    UserAvatarV.x=screenWidth *0.17;
+    UserAvatarV.y=screenHeight *0.90;
+    
+    Vector2 UserNameV;
+    UserNameV.x=screenWidth *0.34;
+    UserNameV.y=screenHeight *0.93;
 
     Dog selected;
 
@@ -580,6 +585,12 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,int screenWidth, int screenHe
                 finish = true;
                 return selected;
             }
+
+            DrawTextureEx(user.avatar,UserAvatarV,0.0f,1.0f,WHITE);
+
+            const char *nombre = user.UserName.c_str();
+            
+            DrawTextEx(fuente,nombre,UserNameV,24,1,BLACK);
             
         EndDrawing();
     }
