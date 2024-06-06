@@ -1,0 +1,38 @@
+Date : 2024-06-05 19:48:54
+Directory : c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src
+Total : 10 files,  2191 codes, 420 comments, 488 blanks, all 3099 lines
+
+Languages
++--------------+------------+------------+------------+------------+------------+
+| language     | files      | code       | comment    | blank      | total      |
++--------------+------------+------------+------------+------------+------------+
+| C++          |          9 |      2,190 |        420 |        488 |      3,098 |
+| Shell Script |          1 |          1 |          0 |          0 |          1 |
++--------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                          | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                             |         10 |      2,191 |        420 |        488 |      3,099 |
+| . (Files)                                                                     |          2 |        661 |        114 |        124 |        899 |
+| clases                                                                        |          4 |        288 |         29 |         63 |        380 |
+| functions                                                                     |          4 |      1,242 |        277 |        301 |      1,820 |
++-------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| filename                                                                      | language     | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\build.bash                 | Shell Script |          1 |          0 |          0 |          1 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Citas.h             | C++          |         43 |          5 |          7 |         55 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Dog.h               | C++          |        127 |         16 |         30 |        173 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Eventos.h           | C++          |         49 |          2 |         10 |         61 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Usuario.h           | C++          |         69 |          6 |         16 |         91 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\Calendario.h     | C++          |        424 |        131 |        153 |        708 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\CartillaMedica.h | C++          |        308 |         39 |         41 |        388 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\Images.h         | C++          |         60 |         12 |          4 |         76 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\Mascota.h        | C++          |        450 |         95 |        103 |        648 |
+| c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\main.cpp                   | C++          |        660 |        114 |        124 |        898 |
+| Total                                                                         |              |      2,191 |        420 |        488 |      3,099 |
++-------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+

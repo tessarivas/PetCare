@@ -386,3 +386,95 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
 
      return make_pair("", false); // Si se regresó no se añadio ninguna cita
 }
+
+int DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight){
+    int opcion=0;
+    
+    Color trans ={255,0,0,100};
+
+    Texture2D background = LoadTexture("../assets/VA/PetCareCartillaMedicaInformacion.png");
+
+    Rectangle NombreC;
+    {
+        NombreC.x=screenWidth *0.13;
+        NombreC.y=screenHeight *0.24;
+        NombreC.width=screenWidth*0.72;
+        NombreC.height=screenHeight*0.06;
+    }
+
+    Rectangle RazaC;
+    {
+        RazaC.x=screenWidth *0.13;
+        RazaC.y=screenHeight *0.34;
+        RazaC.width=screenWidth*0.72;
+        RazaC.height=screenHeight*0.06;
+    }
+
+    Rectangle DiaC;
+    {
+        DiaC.x=screenWidth *0.13;
+        DiaC.y=screenHeight *0.45;
+        DiaC.width=screenWidth*0.23;
+        DiaC.height=screenHeight*0.06;
+    }
+    
+    Rectangle MesC;
+    {
+        MesC.x=screenWidth *0.38;
+        MesC.y=screenHeight *0.45;
+        MesC.width=screenWidth*0.22;
+        MesC.height=screenHeight*0.06;
+    }
+    
+    Rectangle AnioC;
+    {
+        AnioC.x=screenWidth *0.62;
+        AnioC.y=screenHeight *0.45;
+        AnioC.width=screenWidth*0.23;
+        AnioC.height=screenHeight*0.06;
+    }
+
+    Rectangle PesoC;
+    {
+        PesoC.x=screenWidth *0.13;
+        PesoC.y=screenHeight *0.56;
+        PesoC.width=screenWidth*0.23;
+        PesoC.height=screenHeight*0.06;  
+    }
+
+    Rectangle DuenoC;
+    {
+        DuenoC.x=screenWidth *0.40;
+        DuenoC.y=screenHeight *0.56;
+        DuenoC.width=screenWidth*0.45;
+        DuenoC.height=screenHeight*0.06;  
+    }
+
+    Rectangle PadeC;
+    {
+        PadeC.x=screenWidth *0.13;
+        PadeC.y=screenHeight *0.67;
+        PadeC.width=screenWidth*0.72;
+        PadeC.height=screenHeight*0.06;  
+
+    }
+    
+
+    while (opcion== 0)
+    {
+        BeginDrawing();
+            DrawTexture(background,0,0,WHITE);
+            DrawRectangleRec(NombreC,trans);
+            DrawRectangleRec(RazaC,trans);
+            DrawRectangleRec(DiaC,trans);
+            DrawRectangleRec(MesC,trans);
+            DrawRectangleRec(AnioC,trans);
+            DrawRectangleRec(PesoC,trans);
+            DrawRectangleRec(DuenoC,trans);
+            DrawRectangleRec(PadeC,trans);
+        EndDrawing();
+    }
+    
+    return opcion;
+}
+

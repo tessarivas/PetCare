@@ -51,6 +51,8 @@ typedef enum Pantalla{
     // ------- PANTALLAS DE LA MASCOTA ----------- //
     MI_PERFIL,
     CALENDARIO,
+    // Cartilla medica
+    CARTILLA_MEDICA_DATOS,
     CARTILLA_MEDICA,
     AGREGAR_CITA
 } Pantalla;
@@ -87,7 +89,7 @@ int main()
     Image icono = LoadImage("../assets/PetCare_LOGO.png");
     SetWindowIcon(icono);
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = CARTILLA_MEDICA_DATOS;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos
@@ -153,9 +155,9 @@ int main()
                     pantalla_actual = INICIO;
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 } else {
-                    user->DefineName(tempName);
+                    // user->DefineName(tempName);
                     if(tempName != " "){
-                        user->GetName();
+                        // user->GetName();
                         DescargarContenido(CREAR_DUENO, fondo_actual);
                         pantalla_actual = MIS_MASCOTAS;
                     }
@@ -316,6 +318,13 @@ int main()
 
                 pantalla_actual = MI_PERFIL;
                 break;
+            }
+            case CARTILLA_MEDICA_DATOS:
+            {
+                int op;
+                // Carga y descarga el contenido en la funcion
+                op = DibujarDatosMedicos(perro,ANCHO,ALTO);
+                
             }
             case CARTILLA_MEDICA: 
             {

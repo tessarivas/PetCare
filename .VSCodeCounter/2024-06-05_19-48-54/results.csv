@@ -1,0 +1,12 @@
+"filename", "language", "C++", "Shell Script", "comment", "blank", "total"
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\build.bash", "Shell Script", 0, 1, 0, 0, 1
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Citas.h", "C++", 43, 0, 5, 7, 55
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Dog.h", "C++", 127, 0, 16, 30, 173
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Eventos.h", "C++", 49, 0, 2, 10, 61
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\clases\Usuario.h", "C++", 69, 0, 6, 16, 91
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\Calendario.h", "C++", 424, 0, 131, 153, 708
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\CartillaMedica.h", "C++", 308, 0, 39, 41, 388
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\Images.h", "C++", 60, 0, 12, 4, 76
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\functions\Mascota.h", "C++", 450, 0, 95, 103, 648
+"c:\Users\PC\Documents\CHAMBA\Proyectos\PetCare\src\main.cpp", "C++", 660, 0, 114, 124, 898
+"Total", "-", 2190, 1, 420, 488, 3099
