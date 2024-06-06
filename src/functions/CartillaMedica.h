@@ -456,22 +456,40 @@ int DibujarDatosMedicos(Dog perro, int screenWidth,int screenHeight){
         PadeC.y=screenHeight *0.67;
         PadeC.width=screenWidth*0.72;
         PadeC.height=screenHeight*0.06;  
+    }
 
+    Rectangle SigC;
+    {
+        SigC.x=screenWidth * 0.20;
+        SigC.y=screenHeight *0.80;
+        SigC.width=screenWidth *0.59;
+        SigC.height=screenHeight *0.07;
     }
     
+    Vector2 Mouse;
+    Vector2 click;
 
     while (opcion== 0)
     {
+        Mouse = GetMousePosition();
         BeginDrawing();
+            // Fondo
             DrawTexture(background,0,0,WHITE);
-            DrawRectangleRec(NombreC,trans);
-            DrawRectangleRec(RazaC,trans);
-            DrawRectangleRec(DiaC,trans);
-            DrawRectangleRec(MesC,trans);
-            DrawRectangleRec(AnioC,trans);
-            DrawRectangleRec(PesoC,trans);
-            DrawRectangleRec(DuenoC,trans);
-            DrawRectangleRec(PadeC,trans);
+
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                click = Mouse;
+            }
+
+            // Hitbox
+            // DrawRectangleRec(NombreC,trans);
+            // DrawRectangleRec(RazaC,trans);
+            // DrawRectangleRec(DiaC,trans);
+            // DrawRectangleRec(MesC,trans);
+            // DrawRectangleRec(AnioC,trans);
+            // DrawRectangleRec(PesoC,trans);
+            // DrawRectangleRec(DuenoC,trans);
+            // DrawRectangleRec(PadeC,trans);
+            // DrawRectangleRec(SigC,trans);
         EndDrawing();
     }
     
