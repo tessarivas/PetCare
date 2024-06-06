@@ -206,6 +206,11 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
 
 Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     
+    // tiempo
+    float timetolive = 2.0f; // 3 segundos
+    float actualtime = 0.0f;
+    bool showimage=false;
+
     // Usuario tempora;
     Usuario user;
 
@@ -288,14 +293,18 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
 
     // ---------- Recursos ---------- //
     Texture2D background = LoadTexture("../assets/VA/PetCareNuevoUsuario1VA.png");
+    Texture2D cargando = LoadTexture("../assets/VA/PetCareCampos.png");
 
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
     // Color transparente
     Color trans ={255,0,0,100};
 
-
     Color selected = {204,246,255,255};
+
+    bool namefull = false;
+    bool pasfull = false;
+    bool pas2full = false;
 
     while (finish1 == false)
     {
@@ -322,17 +331,23 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         name[nameCount] = (char)key;
                         name[nameCount+1] = '\0'; 
                         nameCount++; 
+                        namefull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (nameCount < 0){
+                    // Una bandera que no deja avanzar si no esta lleno los campos
+                    if(nameCount <=1) {
+                        namefull = false;
+                    }
+                    if (nameCount <= 0){
                     } else{
                         nameCount--;   
                         name[nameCount] = '\0'; 
                     }
                 }
+                
             }
             
             // ------- Contrasenia ------- //
@@ -348,12 +363,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         pas[pasCount] = (char)key;
                         pas[pasCount+1] = '\0'; 
                         pasCount++; 
+                        pasfull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (pasCount < 0){
+                    if(pasCount <=1) {
+                        pasfull = false;
+                    }
+                    if (pasCount <= 0){
                     } else{
                         pasCount--;   
                         pas[pasCount] = '\0'; 
@@ -374,12 +393,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         pascon[pasconCount] = (char)key;
                         pascon[pasconCount+1] = '\0'; 
                         pasconCount++; 
+                        pas2full=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (pasconCount < 0){
+                    if(pasconCount <=1) {
+                        pas2full = false;
+                    }
+                    if (pasconCount <= 0){
                     } else{
                         pasconCount--;   
                         pascon[pasconCount] = '\0'; 
@@ -388,9 +411,22 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
             }
 
             if(CheckCollisionPointRec(Click,ready)){
-                finish1=true;
-                ClearBackground(WHITE);
-                Click={0,0};
+                if(namefull== true && pasfull == true && pas2full == true){
+                    finish1=true;
+                    ClearBackground(WHITE);
+                    Click={0,0};
+                }
+                else
+                {
+                    actualtime=0.0f;
+                    while(actualtime <= timetolive){
+                        actualtime +=GetFrameTime();
+                        BeginDrawing();
+                            DrawTexture(cargando,0,0,WHITE);
+                        EndDrawing();
+                    }
+                    Click={0,0};
+                }
             }
 
         EndDrawing();
@@ -456,6 +492,10 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     numV.x=NumC.x+10;
     numV.y=NumC.y+10;
 
+    bool correofull =false;
+    bool correo2full =false;
+    bool numerofull =false;
+
     while (finish2 == false)
     {
         Mouse = GetMousePosition();
@@ -481,11 +521,15 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         correo[correoCount] = (char)key;
                         correo[correoCount+1] = '\0'; 
                         correoCount++; 
+                        correofull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
+                    if(correoCount <=1){
+                        correofull=false;
+                    }
                     if (correoCount < 0){
                     } else{
                         correoCount--;   
@@ -507,11 +551,15 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         correoConfirm[correoConfirmCount] = (char)key;
                         correoConfirm[correoConfirmCount+1] = '\0'; 
                         correoConfirmCount++; 
+                        correo2full=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
+                    if(correoConfirmCount <=1){
+                        correo2full=false;
+                    }
                     if (correoConfirmCount < 0){
                     } else{
                         correoConfirmCount--;   
@@ -528,17 +576,21 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                 int key = GetCharPressed();
                 while (key > 0) 
                 {
-                    if ((key >= 32) && (key <= 122) && (numerCount <MaxCharacter))
+                    if ((key >= 48) && (key <= 57) && (numerCount <MaxCharacter))
                     {
                         numero[numerCount] = (char)key;
                         numero[numerCount+1] = '\0'; 
                         numerCount++; 
+                        numerofull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (numerCount < 0){
+                    if(numerCount <=1) {
+                        numerofull = false;
+                    }
+                    if (numerCount <= 0){
                     } else{
                         numerCount--;   
                         numero[numerCount] = '\0'; 
@@ -547,9 +599,22 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
             }
 
             if(CheckCollisionPointRec(Click,ready)){
-                finish2=true;
-                Click = {0,0};
-                ClearBackground(WHITE);
+                if(correofull && correo2full && numerofull){
+                    finish2=true;
+                    Click = {0,0};
+                    ClearBackground(WHITE);
+                }
+                else
+                {
+                    actualtime=0.0f;
+                    while(actualtime <= timetolive){
+                        actualtime +=GetFrameTime();
+                        BeginDrawing();
+                            DrawTexture(cargando,0,0,WHITE);
+                        EndDrawing();
+                    }
+                    Click={0,0};
+                }
             }
 
         EndDrawing();
@@ -665,6 +730,13 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     apellidoMV.x=ApellidoC.x+10;
     apellidoMV.y=ApellidoC.y+10;
 
+    bool diafull =false;
+    bool mesfull =false;
+    bool aniofull =false;
+    bool nombrefull =false;
+    bool aptfull =false;
+    bool apmfull =false;
+
     while(finish3 == false){
         Mouse = GetMousePosition();
         BeginDrawing();
@@ -689,12 +761,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         dia[diaCount] = (char)key;
                         dia[diaCount+1] = '\0'; 
                         diaCount++; 
+                        diafull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (diaCount < 0){
+                    if(diaCount <=1){
+                        diafull=false;
+                    }
+                    if (diaCount <= 0){
                     } else{
                         diaCount--;   
                         dia[diaCount] = '\0'; 
@@ -716,12 +792,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         mes[mesCount] = (char)key;
                         mes[mesCount+1] = '\0'; 
                         mesCount++; 
+                        mesfull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (mesCount < 0){
+                    if(mesCount <=1){
+                        mesfull=false;
+                    }
+                    if (mesCount <= 0){
                     } else{
                         mesCount--;   
                         mes[mesCount] = '\0'; 
@@ -740,12 +820,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         anio[anioCount] = (char)key;
                         anio[anioCount+1] = '\0'; 
                         anioCount++; 
+                        aniofull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (anioCount < 0){
+                    if(anioCount <=1){
+                        aniofull=false;
+                    }
+                    if (anioCount <= 0){
                     } else{
                         anioCount--;   
                         anio[anioCount] = '\0'; 
@@ -766,12 +850,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         nombre[nombreCount] = (char)key;
                         nombre[nombreCount+1] = '\0'; 
                         nombreCount++; 
+                        nombrefull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (nombreCount < 0){
+                    if(nombreCount <=1){
+                        nombrefull=false;
+                    }
+                    if (nombreCount <= 0){
                     } else{
                         nombreCount--;   
                         nombre[nombreCount] = '\0'; 
@@ -792,12 +880,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         apellidoP[apellidoPCount] = (char)key;
                         apellidoP[apellidoPCount+1] = '\0'; 
                         apellidoPCount++; 
+                        aptfull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (apellidoPCount < 0){
+                    if(apellidoPCount <=1){
+                        aptfull=false;
+                    }
+                    if (apellidoPCount <= 0){
                     } else{
                         apellidoPCount--;   
                         apellidoP[apellidoPCount] = '\0'; 
@@ -817,12 +909,16 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         apellidoM[apellidoMCount] = (char)key;
                         apellidoM[apellidoMCount+1] = '\0'; 
                         apellidoMCount++; 
+                        apmfull=true;
                     }
                     key = GetCharPressed(); 
                 }
                 if (IsKeyPressed(KEY_BACKSPACE)) 
                 {
-                    if (apellidoMCount < 0){
+                    if(apellidoMCount <=1){
+                        apmfull=false;
+                    }
+                    if (apellidoMCount <= 0){
                     } else{
                         apellidoMCount--;   
                         apellidoM[apellidoMCount] = '\0'; 
@@ -832,8 +928,23 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
 
             // ----- Boton listo ----- //
             if(CheckCollisionPointRec(Click,ready)){
-                finish3=true;
-                ClearBackground(WHITE);
+                if(diafull && mesfull && aniofull && nombrefull && aptfull && apmfull)
+                {
+                    finish3=true;
+                    ClearBackground(WHITE);
+                    Click={0,0};
+                }
+                else
+                {
+                    actualtime=0.0f;
+                    while(actualtime <= timetolive){
+                        actualtime +=GetFrameTime();
+                        BeginDrawing();
+                            DrawTexture(cargando,0,0,WHITE);
+                        EndDrawing();
+                    }
+                    Click={0,0};
+                }
             }
 
         EndDrawing();
