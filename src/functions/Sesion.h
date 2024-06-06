@@ -426,28 +426,29 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     
     // ------- texto --------- //
     // Correo electronico
-    char correo[MaxCharacter +1]={""};
+    const int MaxMailCharacter = 30;
+    char correo[MaxMailCharacter +1]={""};
     int correoCount=0;
     
     Vector2 correoV;
-    correoV.x=CorreoC.x;
-    correoV.y=CorreoC.y;
+    correoV.x=CorreoC.x+10;
+    correoV.y=CorreoC.y+10;
 
     // Confirmacion de correo electronico
     char correoConfirm[MaxCharacter+1]={""};
     int correoConfirmCount=0;
 
     Vector2 correoConfirmV;
-    correoConfirmV.x=CorreoConC.x;
-    correoConfirmV.y=CorreoConC.y;
+    correoConfirmV.x=CorreoConC.x+10;
+    correoConfirmV.y=CorreoConC.y+10;
     
     // Numero de celular
     char numero[MaxCharacter +1]={""};
     int numerCount=0;
 
     Vector2 numV;
-    numV.x=NumC.x;
-    numV.y=NumC.y;
+    numV.x=NumC.x+10;
+    numV.y=NumC.y+10;
 
     while (finish2 == false)
     {
@@ -469,7 +470,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                 int key = GetCharPressed();
                 while (key > 0) 
                 {
-                    if ((key >= 32) && (key <= 122) && (correoCount <MaxCharacter))
+                    if ((key >= 32) && (key <= 122) && (correoCount <MaxMailCharacter))
                     {
                         correo[correoCount] = (char)key;
                         correo[correoCount+1] = '\0'; 
@@ -547,6 +548,115 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
         EndDrawing();
     }
     
-    // Falta la 3ra pantalla papu
+    UnloadTexture(background);
+
+    // ------------------------------------ Tercera pantalla ------------------------------------------ //
+
+    background = LoadTexture("../assets/VA/PetCareNuevoUsuario3VA.png");
+
+    // ----- Fecha de nacimiento ---- //
+
+    Rectangle DiaC;
+    DiaC.x=screenWidth *0.14;
+    DiaC.y=screenHeight *0.27;
+    DiaC.width = screenWidth *0.21;
+    DiaC.height=screenHeight *0.07;
+
+    Rectangle MesC;
+    MesC.x=screenWidth *0.37;
+    MesC.y=screenHeight *0.27;
+    MesC.width = screenWidth *0.23;
+    MesC.height=screenHeight *0.07;
+    
+    Rectangle AnioC;
+    AnioC.x=screenWidth *0.62;
+    AnioC.y=screenHeight *0.27;
+    AnioC.width = screenWidth *0.24;
+    AnioC.height=screenHeight *0.07;
+
+    // ------ Datos Reales ------ //
+    
+    // Nombre real
+    Rectangle NombreC;
+    NombreC.x= screenWidth * 0.14;
+    NombreC.y=screenHeight *0.40;
+    NombreC.width=screenWidth *0.7;
+    NombreC.height = screenHeight * 0.07;
+   
+    // Apellido Paterno
+    Rectangle ApellidoPC;
+    ApellidoPC.x= screenWidth * 0.14;
+    ApellidoPC.y=screenHeight *0.66;
+    ApellidoPC.width=screenWidth *0.7;
+    ApellidoPC.height = screenHeight * 0.07;
+   
+    // Apellido materno
+    Rectangle ApellidoC;
+    ApellidoC.x= screenWidth * 0.14;
+    ApellidoC.y=screenHeight *0.54;
+    ApellidoC.width=screenWidth *0.7;
+    ApellidoC.height = screenHeight * 0.07;
+
+    // ------ Texto ------ //
+
+    char dia[MaxCharacter +1]= {""};
+    int diaCount=0;
+
+    char mes[MaxCharacter +1]={""};
+    int mesCount=0;
+
+    char anio[MaxCharacter +1]={""};
+    int anioCount=0;
+
+    char nombre[MaxCharacter+1]={""};
+    int nombreCount=0;
+
+    char apellidoP[MaxCharacter+1]={""};
+    int apellidoPCount=0;
+    
+    char apellidoM[MaxCharacter+1]={""};
+    int apellidoMCount=0;
+
+    while(finish3 == false){
+        Mouse = GetMousePosition();
+        BeginDrawing();
+            
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                Click = Mouse;
+            }
+            
+            // Fondo
+            DrawTexture(background,0,0,WHITE);
+
+            // ----- Dia ----- //
+            if(CheckCollisionPointRec(Click,DiaC)){
+                
+            }
+            // ----- Mes ----- //
+            if(CheckCollisionPointRec(Click,MesC)){
+
+            }
+            // ----- Anio ----- //
+            if(CheckCollisionPointRec(Click,AnioC)){
+
+            }
+
+            // ----- Nombre real ----- //
+            if(CheckCollisionPointRec(Click,NombreC)){
+
+            }
+
+            // ----- Apellido Paterno ----- //
+            if(CheckCollisionPointRec(Click,ApellidoPC)){
+
+            }
+
+            // ----- Apellido Materno ----- //
+            if(CheckCollisionPointRec(Click,ApellidoC)){
+
+            }
+
+        EndDrawing();
+    }
     
 }
