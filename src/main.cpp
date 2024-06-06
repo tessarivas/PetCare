@@ -12,6 +12,7 @@
 
 #include "clases/Usuario.h"
 #include "functions/Mascota.h"
+#include "functions/Sesion.h"
 
 
 using std::cout;
@@ -62,10 +63,9 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos);
 void DescargarContenido(Pantalla pantalla_actual, Cargas archivos);
 
 //----------------------------Inicio-----------------------------------------------//
-void IniciarSesion(Cargas archivos, Usuario *&user);
 int DibujarInicio(Cargas archivos,int screenWidth, int screenHeight);
 
-pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWeidth,int screenHeight);
+pair<Texture2D, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight);
 
 pair<Pantalla, bool> MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro);
 //---------------------------------------------------------------------------------//
@@ -98,9 +98,8 @@ int main()
     // Random
     srand(time(NULL));
     // Usuario
-    Usuario *user; // Usuario actual
+    Usuario user; // Usuario actual
     
-    string tempName; // Nombre para copiar y pegar en el constructor de user
     // Mascota temporal
     Dog perro;
     // Dog *lista=nullptr;
@@ -135,24 +134,40 @@ int main()
             }
             case INICIAR_SESION:
             {
-                fondo_actual.Background=LoadTexture("../assets/VA/PetCareIniciarSesionVA.png");
-                IniciarSesion(fondo_actual,user);
-                UnloadTexture(fondo_actual.Background);
+                // Carga las imagenes en la propia funcion
+                // usuario temporal
+                Usuario temp;
+                temp = IniciarSesion(ANCHO,ALTO);
+                
+                // Pasamos los datos a nuestro usuario
+                user.DefineName(temp.Nombre);
+                user.DefinePas(temp.Passwoard);
+                
+                // Acutalizamos pantallas
+                pantalla_actual=CREAR_DUENO;
+                break;
+            }
+            case NUEVO_USUARIO1:
+            {
+                RegistrarUsuario(ANCHO,ALTO);
+                break;
             }
             case CREAR_DUENO: // Avatares
             {
-                auto[tempName, regresar] = DibujarCrearPerfil(fondo_actual, ANCHO, ALTO);
-                if(regresar){
+                fondo_actual = CargarContenido(pantalla_actual,fondo_actual);
+                // Retornara el avatar seleccionado y una bandera
+                auto[avatar, regresar] = DibujarCrearPerfil(fondo_actual, ANCHO, ALTO);
+                // asignamos el avatar del usuario
+                user.avatar=avatar;
+
+                // Si regresar es true, regresa a la pantalla de inicio,en caso de que no continua a mis mascotas
+                if(regresar == true){
                     DescargarContenido(CREAR_DUENO, fondo_actual);
                     pantalla_actual = INICIO;
                     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 } else {
-                    // user->DefineName(tempName);
-                    if(tempName != " "){
-                        // user->GetName();
-                        DescargarContenido(CREAR_DUENO, fondo_actual);
-                        pantalla_actual = MIS_MASCOTAS;
-                    }
+                    DescargarContenido(CREAR_DUENO, fondo_actual);
+                    pantalla_actual = MIS_MASCOTAS;
                 }
                 break;
             }
@@ -239,7 +254,7 @@ int main()
 
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
                 
-                user->DefineMascota(lista);
+                user.DefineMascota(lista);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
@@ -254,7 +269,7 @@ int main()
                 // Agregar el perro nuevo a la lista
                 lista->add(lista,perro.Nombre,perro.Raza,perro.Dia,perro.Mes,perro.Anio,perro.Peso,perro.Padecimientos,perro.Avatar);
 
-                user->DefineMascota(lista);
+                user.DefineMascota(lista);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
                 pantalla_actual = MI_PERFIL;
@@ -416,7 +431,7 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
         }
         case CREAR_DUENO:
         {
-            archivos.FondoCrearDueno = LoadTexture("../assets/PetCare_CrearDueno.png");
+            archivos.FondoCrearDueno = LoadTexture("../assets/PetCare_CrearDueno2.png");
             archivos.BotonListo = LoadTexture("../assets/PetCare_BotonListo.png");
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.Avatar1 = LoadTexture("../assets/PetCare_Avatares/1.png");
@@ -626,8 +641,8 @@ int DibujarInicio(Cargas archivos, int screenWidth, int screenHeight)
 
             DrawTextureEx(archivos.FondoInicio, archivos.Position, 0.0f, 1.0f, WHITE);
 
-            DrawRectangleRec(sesion,trans);
-            DrawRectangleRec(registrar,trans);
+            // DrawRectangleRec(sesion,trans);
+            // DrawRectangleRec(registrar,trans);
 
 
             // // ------------------- BOTON "ENTRAR" -------------------
@@ -659,7 +674,7 @@ int DibujarInicio(Cargas archivos, int screenWidth, int screenHeight)
 }
 
 // DIBUJAR EL PERFIL DEL DUEÑO
-pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight)
+pair<Texture2D, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screenHeight)
 {
     const int MaxCharacter=20;
 
@@ -691,17 +706,10 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
     listo.y = screenHeight * 0.75;
     listo.x = (screenWidth/2) - (listo.width/2);
 
-    // Cuadro de texto de nombre
-    Rectangle c_name;
-    c_name.x=(tamano_fondo - 320 )/2;
-    c_name.y=320.0f;
-    c_name.width=320.0f;
-    c_name.height=70.0f;
-
     // Cuadro de avatares
     Rectangle c_avatares;
     c_avatares.x=(tamano_fondo - 320 )/2;
-    c_avatares.y=430;
+    c_avatares.y=screenHeight * 0.40;
     c_avatares.width=320;
     c_avatares.height=225;
 
@@ -710,14 +718,21 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
 
     for(int i = 0; i < 6; i++){
         Avatar[i].x = screenWidth * ((i % 3 == 0) ? 0.15f : (i % 3 == 1) ? 0.40f : 0.66f);
-        Avatar[i].y = screenHeight * (0.50f + (0.12f * (i / 3)));
+        if(i <3){
+            Avatar[i].y = screenHeight * 0.41;
+        }
+        else
+        {
+            Avatar[i].y = screenHeight * 0.54;
+        }
         Avatar[i].width = screenWidth * 0.2f;
         Avatar[i].height = screenHeight * 0.1f;
     }
 
     // Textura de cada avatar
     Texture2D avataresTexturas[6] = { archivos.Avatar1, archivos.Avatar2, archivos.Avatar3, archivos.Avatar4, archivos.Avatar5, archivos.Avatar6 };
-    
+    // el avatar que va a regreasr
+    Texture2D avatarSelected;
     do{
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -729,37 +744,6 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
 
         // FONDO
         DrawTextureEx(archivos.FondoCrearDueno,archivos.Position,0.0f,1.0f,WHITE);
-        // RECTANGULO DEL NOMBRE
-        DrawRectangleRec(c_name, archivos.Bloque1);
-        // CUADRO DE TEXTO
-        Vector2 posicion_texto = {55, 325};
-        DrawTextEx(archivos.fuente, name, posicion_texto, 30, 2, BLACK);
-        // RECTANGULO DE AVATARES
-        DrawRectangleRec(c_avatares, YELLOW);
-
-        int key = GetCharPressed(); // Tecla presionada
-
-        // Checar si dio click en el cuadro de nombre
-        if(CheckCollisionPointRec(LastClick, c_name)){
-            // Verificar si hay presiona mas de 1 caracter en el mismo frame. Saldra del ciclo si no presiona nada
-            while (key > 0){
-                if ((key >= 32) && (key <= 125) && (CharacterCont <MaxCharacter)){ // Solo caracteres entre el 32 y 125
-                    name[CharacterCont] = (char)key; // Transformar el caracter de codigo asci a caracter
-                    name[CharacterCont+1] = '\0'; // Agregar caracter nulo al final de la cadena
-                    CharacterCont++; // Aumentamos el contador de caracteres
-                }
-                key = GetCharPressed();  // revisamos si hay nuevos caracteres en cola
-            }
-
-            if (IsKeyPressed(KEY_BACKSPACE)){
-                if (CharacterCont <= 0){
-                    // Si la cadena esta vacia no hara nada
-                } else{
-                    name[CharacterCont] = '\0'; //Al ultimo que antes era una letra la sustituimos por el caracter nulo
-                    CharacterCont--; //Si no esta vacia eliminara un espacio     
-                }
-            }
-        }
 
         // Verificar si se hizo clic en algun avatar
         for (int i = 0; i < 6; i++) {
@@ -791,14 +775,15 @@ pair<string, bool> DibujarCrearPerfil(Cargas archivos,int screenWidth,int screen
 
         // Verificar si se presiono listo
         if(CheckCollisionPointRec(LastClick, listo)){
+            avatarSelected=avataresTexturas[avatarSeleccionado];
             band = true;
         }
 
         EndDrawing();
         } while(band == false);
 
-    nombre = name;
-    return make_pair(nombre, regresar);
+
+    return make_pair(avatarSelected, regresar);
 }
 
 // DIBUJAR EL PERFIL DE LA MASCOTA CREADA O SELECCIONADA
@@ -888,26 +873,5 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
 
     return make_pair(nuevaPantalla, regresar);
 } 
-
-// ---------- Iniciar sesion ----------- //
-
-void IniciarSesion(Cargas archivos, Usuario *&user){
-    
-
-    // background
-    Vector2 fondoV;
-    fondoV.x=0;
-    fondoV.y=0;
-
-    while(true){
-        BeginDrawing();
-            
-            DrawTexture(archivos.Background,0,0,WHITE);
-            
-        EndDrawing();
-    }
-
-}
-
 
 
