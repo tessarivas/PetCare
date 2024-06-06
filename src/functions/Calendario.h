@@ -196,6 +196,8 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
     
     Color amarillo1 ={232,234,60,255};
     
+    bool titlefull=false;
+
     while(finish == false){
         BeginDrawing();
             
@@ -275,9 +277,6 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
             
             // Texto
             DrawTextEx(fuente, month[numMonth-1], monthPos, 40, 1, WHITE);
-
-            // Cuadro de Calendario
-            // DrawRectangleRec(Calendario,BLUE);
             
             // Evento-------------------------
             //titulo
@@ -299,12 +298,16 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                             title[titleCharacterCont] = (char)key; // Transformar el caracter de codigo ascii a caracter
                             title[titleCharacterCont+1] = '\0'; // Agregar caracter nulo al final de la cadena
                             titleCharacterCont++; // Aumentamos el contador de caracteres
+                            titlefull=true;
                         }
                         key = GetCharPressed();  // Revisamos si hay nuevos caracteres en cola en el mismo frame
                     }
                     if (IsKeyPressed(KEY_BACKSPACE)) // Borrar
                     {
-                        if (titleCharacterCont < 0){
+                        if(titleCharacterCont <=1){
+                            titlefull=false;
+                        }
+                        if (titleCharacterCont <= 0){
                             // Si la cadena esta vacia no hara nada
                         } else{
                             titleCharacterCont--; // Si no esta vacia eliminara un espacio     
@@ -329,7 +332,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                     }
                     if (IsKeyPressed(KEY_BACKSPACE)) // Borrar
                     {
-                        if (desCharacterCont < 0){
+                        if (desCharacterCont <= 0){
                             // Si la cadena esta vacia no hara nada
                         } else{
                             desCharacterCont--; // Si no esta vacia eliminara un espacio     
@@ -377,20 +380,64 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
 
             if(daySelected== true){
                 if(CheckCollisionPointRec(lastclick,Agregar)){
+                    if(titlefull){
+                        temp=(struct Evento*)malloc(sizeof(struct Evento));
+                        
+                        temp->day=DiaSeleccionado;
+                        temp->month=numMonth;
+                        
+                        strcpy(temp->title,title);
+                        strcpy(temp->description,des);
 
-                    temp=(struct Evento*)malloc(sizeof(struct Evento));
-                    
-                    temp->day=DiaSeleccionado;
-                    temp->month=numMonth;
-                    
-                    strcpy(temp->title,title);
-                    strcpy(temp->description,des);
+                        temp->next=nullptr;
+                        temp->prev=nullptr;
 
-                    temp->next=nullptr;
-                    temp->prev=nullptr;
+                        break;
+                    }
+                    else
+                    {
+                        float timetolive = 2.0f;
+                        float actualtime = 0.0f;
+                        
+                        Texture2D campos = LoadTexture("../assets/VA/PetCareCampos.png");
 
-                    break;
+                        actualtime=0.0f;
+                        while(actualtime <= timetolive){
+                            actualtime +=GetFrameTime();
+                            BeginDrawing();
+                                DrawTexture(campos,0,0,WHITE);
+                                if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ESCAPE)){
+                                    break;
+                                }
+                            EndDrawing();
+                        }
+
+                        lastclick={0,0};
+                    }
+
                 }
+            }
+            
+
+            // Si presiona agregar y no a seleccionado el dia
+            if(daySelected == false && CheckCollisionPointRec(lastclick,Agregar)){
+                float timetolive = 2.0f;
+                float actualtime = 0.0f;
+                
+                Texture2D campos = LoadTexture("../assets/VA/PetCareCampos.png");
+
+                actualtime=0.0f;
+                while(actualtime <= timetolive){
+                    actualtime +=GetFrameTime();
+                    BeginDrawing();
+                        DrawTexture(campos,0,0,WHITE);
+                        if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ESCAPE)){
+                            break;
+                        }
+                    EndDrawing();
+                }
+
+                lastclick={0,0};
             }
 
             // Regresar
@@ -443,7 +490,7 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                 }
                 
                 DrawRectangleRec(test,BLUE);
-                // itoa(i - 1,dayC,10);
+                itoa(i - 1,dayC,10);
                 
                 DrawTextEx(fuente,dayC,dayText,20,1,BLACK);
                 
@@ -661,8 +708,8 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
                 
                 // Pasamos el dia que originalmente es int, a char
                 // origen, destino, en decimal (puede ser 16 para hexadecimal)
-                // itoa(temp->day,tempDay,10);
-                // itoa(temp->month,tempMonth,10);
+                itoa(temp->day,tempDay,10);
+                itoa(temp->month,tempMonth,10);
                 strcat(tempDay,"/");
                 strcat(tempDay,tempMonth);
 

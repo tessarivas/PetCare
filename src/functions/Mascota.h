@@ -220,6 +220,14 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
     bool band= false; 
     RegistrarDogResult result = CONTINUAR;
 
+    bool namefull=false;
+    bool razafull=false;
+    bool diafull=false;
+    bool mesfull=false;
+    bool aniofull=false;
+    bool pesofull=false;
+    bool padefull=false;
+
     do
     {
         BeginDrawing();
@@ -244,20 +252,27 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
         DrawTexture(archivos.BotonAdelante, adelante.x, adelante.y, WHITE);
         if(CheckCollisionPointRec(lastClick, adelante))
         {
-            temp_name=name;
-            temp_raza=raza;
+            if(namefull && razafull && diafull && mesfull && aniofull && pesofull && padefull){
+                temp_name=name;
+                temp_raza=raza;
 
-            temp_dia = std::atoi(dia);
-            temp_mes = std::atoi(mes);
-            temp_anio = std::atoi(anio);
-            
-            temp_peso = std::atof(peso);
-            temp_padecimientos = padecimientos;
+                temp_dia = std::atoi(dia);
+                temp_mes = std::atoi(mes);
+                temp_anio = std::atoi(anio);
+                
+                temp_peso = std::atof(peso);
+                temp_padecimientos = padecimientos;
 
-            temp_dog = Dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
-            
-            band = true;
-            result = AVANZAR;
+                temp_dog = Dog(temp_name, temp_raza, temp_dia, temp_mes, temp_anio, temp_peso, temp_padecimientos);
+                
+                band = true;
+                result = AVANZAR;
+            }
+            else
+            {
+                LlenarCampos();
+                lastClick = {0,0};
+            }
         }
 
         // --------------- N O M B R E ---------------- //
@@ -278,12 +293,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     name[nameCharacterCont] = (char)key; // Transformar el caracter de codigo ascii a caracter
                     name[nameCharacterCont+1] = '\0'; // Agregar caracter nulo al final de la cadena
                     nameCharacterCont++; // Aumentamos el contador de caracteres
+                    namefull=true;
                 }
                 key = GetCharPressed();  // Revisamos si hay nuevos caracteres en cola en el mismo frame
             }
             if (IsKeyPressed(KEY_BACKSPACE)) // Borrar
             {
-                if (nameCharacterCont < 0){
+                if(nameCharacterCont <=1){
+                    namefull = false;
+                }
+                if (nameCharacterCont <= 0){
                     // Si la cadena esta vacia no hara nada
                 } else{
                     nameCharacterCont--; // Si no esta vacia eliminara un espacio     
@@ -309,12 +328,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     raza[razaCharacterCont] = (char)key;
                     raza[razaCharacterCont+1] = '\0'; 
                     razaCharacterCont++; 
+                    razafull = true;
                 }
                 key = GetCharPressed(); 
             }
             if (IsKeyPressed(KEY_BACKSPACE)) 
             {
-                if (razaCharacterCont < 0){
+                if(razaCharacterCont <=1){
+                    razafull = false;
+                }
+                if (razaCharacterCont <= 0){
                 } else{
                     razaCharacterCont--;   
                     raza[razaCharacterCont] = '\0'; 
@@ -337,12 +360,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     dia[diaCharacterCont] = (char)key; 
                     dia[diaCharacterCont+1] = '\0'; 
                     diaCharacterCont++; 
+                    diafull = true;
                 }
                 key = GetCharPressed();  
             }
             if (IsKeyPressed(KEY_BACKSPACE)) 
             {
-                if (diaCharacterCont < 0){
+                if(diaCharacterCont <=1){
+                    diafull=false;
+                }
+                if (diaCharacterCont <= 0){
                 } else{
                     diaCharacterCont--;   
                     dia[diaCharacterCont] = '\0'; 
@@ -365,12 +392,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     mes[mesCharacterCont] = (char)key; 
                     mes[mesCharacterCont+1] = '\0';
                     mesCharacterCont++; 
+                    mesfull=true;
                 }
                 key = GetCharPressed();  
             }
             if (IsKeyPressed(KEY_BACKSPACE))
             {
-                if (mesCharacterCont < 0){
+                if(mesCharacterCont <=1){
+                    mesfull = false;
+                }
+                if (mesCharacterCont <= 0){
                 } else{
                     mesCharacterCont--;   
                     mes[mesCharacterCont] = '\0'; 
@@ -393,12 +424,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     anio[anioCharacterCont] = (char)key; 
                     anio[anioCharacterCont+1] = '\0'; 
                     anioCharacterCont++; 
+                    aniofull=true;
                 }
                 key = GetCharPressed();  
             }
             if (IsKeyPressed(KEY_BACKSPACE)) 
             {
-                if (anioCharacterCont < 0){
+                if(anioCharacterCont <=1){
+                    aniofull = false;
+                }
+                if (anioCharacterCont <= 0){
                 } else{
                     anioCharacterCont--;     
                     anio[anioCharacterCont] = '\0';
@@ -421,12 +456,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     peso[pesoCharacterCont] = (char)key;
                     peso[pesoCharacterCont+1] = '\0'; 
                     pesoCharacterCont++; 
+                    pesofull=true;
                 }
                 key = GetCharPressed();  
             }
             if (IsKeyPressed(KEY_BACKSPACE)) 
             {
-                if (pesoCharacterCont < 0){
+                if(pesoCharacterCont <=1){
+                    pesofull = false;
+                }
+                if (pesoCharacterCont <= 0){
                 } else{
                     pesoCharacterCont--;    
                     peso[pesoCharacterCont] = '\0'; 
@@ -449,12 +488,16 @@ RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeigh
                     padecimientos[padecimientosCharacterCont] = (char)key; 
                     padecimientos[padecimientosCharacterCont+1] = '\0'; 
                     padecimientosCharacterCont++; 
+                    padefull=true;
                 }
                 key = GetCharPressed();  
             }
             if (IsKeyPressed(KEY_BACKSPACE)) 
             {
-                if (padecimientosCharacterCont < 0){
+                if(padecimientosCharacterCont <=1){
+                    padefull = false;
+                }
+                if (padecimientosCharacterCont <= 0){
                 } else{
                     padecimientosCharacterCont--;    
                     padecimientos[padecimientosCharacterCont] = '\0'; 
