@@ -145,6 +145,12 @@ int main()
                 
                 // Acutalizamos pantallas
                 pantalla_actual=CREAR_DUENO;
+                break;
+            }
+            case NUEVO_USUARIO1:
+            {
+                RegistrarUsuario(ANCHO,ALTO);
+                break;
             }
             case CREAR_DUENO: // Avatares
             {
@@ -624,8 +630,8 @@ int DibujarInicio(Cargas archivos, int screenWidth, int screenHeight)
 
             DrawTextureEx(archivos.FondoInicio, archivos.Position, 0.0f, 1.0f, WHITE);
 
-            DrawRectangleRec(sesion,trans);
-            DrawRectangleRec(registrar,trans);
+            // DrawRectangleRec(sesion,trans);
+            // DrawRectangleRec(registrar,trans);
 
 
             // // ------------------- BOTON "ENTRAR" -------------------

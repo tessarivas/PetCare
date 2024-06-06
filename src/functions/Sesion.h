@@ -14,6 +14,10 @@ using std::endl;
 using std::atoi;
 using std::string;
 
+// ---------- Prototipo ---------- //
+Usuario IniciarSesion(int screenWidth,int screenHeight);
+
+// ---------- Funciones ---------- //
 Usuario IniciarSesion(int screenWidth,int screenHeight){
     
     // ----------- recursos ----------- //
@@ -197,3 +201,51 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
     return user;
 }
 
+Usuario RegistrarUsuario(int screenWidth, int screenHeight){
+    // Bandera de salida
+    bool finish = false;
+    
+    // Usuario tempora;
+    Usuario user;
+
+    // color transparente
+    Color trans ={255,0,0,100};
+
+    // ---------- Text ---------- //
+    const int MaxCharacter=20;
+    
+    // Nombre de usuario
+    char name[MaxCharacter +1]={""};
+    int nameCount = 0;
+    
+    // Contrasena
+    char pas[MaxCharacter +1]={""};
+    int pasCount = 0;
+    
+    // Contrasenia confirmacion
+    char pascon[MaxCharacter +1]={""};
+    int pasconCount = 0;
+
+    // ---------- HitBoxes ---------- //
+    Rectangle UserC;
+    UserC.x=screenWidth *0.14;
+    UserC.y=screenHeight *0.30;
+    UserC.width = screenWidth * 0.65;
+    UserC.height = screenHeight *0.06;
+
+    // ---------- Recursos ---------- //
+    Texture2D background = LoadTexture("../assets/VA/PetCareNuevoUsuario1VA.png");
+
+    while (finish == false)
+    {
+        BeginDrawing();
+            // Fondo
+            DrawTexture(background,0,0,WHITE);
+
+            // ------- Nombre de usuario ------- //
+            DrawRectangleRec(UserC,trans);
+
+        EndDrawing();
+    }
+    
+}
