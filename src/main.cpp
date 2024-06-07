@@ -511,6 +511,8 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.BotonMiInfo = LoadTexture("../assets/PetCare_BotonMiInfo.png");
             archivos.BotonCartilla = LoadTexture("../assets/PetCare_BotonCartillaMedica.png");
             archivos.BotonCalendario = LoadTexture("../assets/PetCare_BotonCalendario.png");
+            archivos.BotonCompartir=LoadTexture("../assets/VA/PetCareBotonCompartir.png");
+            archivos.FuncionNoDisponible = LoadTexture("../assets/VA/PetCareNoDisponible.png");
             break;
         }
         case CALENDARIO:
@@ -602,6 +604,9 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.BotonMiInfo);
         UnloadTexture(archivos.BotonCartilla);
         UnloadTexture(archivos.BotonCalendario);
+        UnloadTexture(archivos.BotonCompartir);
+        UnloadTexture(archivos.FuncionNoDisponible);
+
     }
     if(pantalla_actual == CALENDARIO){
         UnloadTexture(archivos.FondoCalendario);
@@ -832,6 +837,15 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
     AvatarPos.x = mascotaPos.x - 80;
     AvatarPos.y = screenHeight * 0.9;
 
+    // Boton de compartir
+    Rectangle shareC;
+    shareC.x=screenWidth *0.84;
+    shareC.y=screenHeight *0.04;
+    shareC.width=archivos.BotonCompartir.width;
+    shareC.height=archivos.BotonCompartir.height;
+
+    Vector2 shareV = {shareC.x,shareC.y};
+
     Vector2 Mouse;
     Vector2 LastClick;
 
@@ -849,6 +863,9 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
         DrawTexture(archivos.BotonCartilla, cartilla.x, cartilla.y, WHITE);
         DrawTexture(archivos.BotonCalendario, calendario.x, calendario.y, WHITE);
         DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
+        
+        DrawTextureEx(archivos.BotonCompartir,shareV,0.0f,1.0f,WHITE);
+
 
         if (CheckCollisionPointRec(LastClick, cartilla))
         {
@@ -866,6 +883,23 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
         {
             regresar = true;
             break;
+        }
+
+        if(CheckCollisionPointRec(LastClick,shareC)){
+            float timetolive = 2.0f;
+            float actualtime = 0.0f;
+            
+            while(actualtime <= timetolive){
+                actualtime +=GetFrameTime();
+                BeginDrawing();
+                    DrawTexture(archivos.FuncionNoDisponible,0,0,WHITE);
+                    
+                    if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ESCAPE)){
+                        break;
+                    }
+                EndDrawing();
+            }
+            LastClick={0,0};
         }
 
         // AVATAR DEL PERRO
