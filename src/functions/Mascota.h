@@ -43,6 +43,18 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     Dog.width = screenWidth * 0.79;
     Dog.height = 120;
 
+    // Posicion del boton de link
+    Vector2 linkV;
+    linkV.x=(screenWidth / 2) - ((archivos.BotonLink.width * 0.7) / 2) + 10;
+    linkV.y = screenHeight * 0.80;
+
+    // hitbox del boton de link
+    Rectangle linkC;
+    linkC.x=linkV.x;
+    linkC.y=linkV.y;
+    linkC.width=archivos.BotonLink.width * 0.7;
+    linkC.height=archivos.BotonLink.height;
+
     //----------Otras variables--------------//
     //Posicion actual del mouse
     Vector2 Mouse = {0.0f, 0.0f};
@@ -61,10 +73,11 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
             DrawTexture(archivos.BotonAtras, atras.x, atras.y, WHITE);
 
             //Botones Posicion
-            DrawRectangleRec(Cat, WHITE);
             DrawTextureEx(archivos.BotonGato, {Cat.x, Cat.y}, 0.0f, 1.0f, WHITE);
-            DrawRectangleRec(Dog, WHITE);
+            
             DrawTextureEx(archivos.BotonPerro, {Dog.x, Dog.y}, 0.0f, 1.0f, WHITE);
+
+            DrawTextureEx(archivos.BotonLink,linkV,0.0f,0.6f,WHITE);
 
             // Comparar las posiciones del mouse con un rectangulo
             // SI PRESIONA GATO:
@@ -84,6 +97,24 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
             {
                 ciclo = false;
                 return 3;
+            }
+            
+            if (CheckCollisionPointRec(Mouse, linkC) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                // tiempo
+                float timetolive = 2.0f;
+                float actualtime = 0.0f;
+                
+                while(actualtime <= timetolive){
+                    actualtime +=GetFrameTime();
+                    BeginDrawing();
+                        DrawTexture(archivos.FuncionNoDisponible,0,0,WHITE);
+                        
+                        if(IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ESCAPE)){
+                            break;
+                        }
+                    EndDrawing();
+                }
             }
 
         EndDrawing();
@@ -640,9 +671,7 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,Usuario user,int screenWidth,
             DrawTextEx(fuente,nombre,UserNameV,32,1,BLACK);
             
         EndDrawing();
-    }
-    cout << selected.Nombre<<endl;
-    
+    }    
     
     return selected;
 }

@@ -29,8 +29,10 @@ typedef struct Cargas{
     Texture2D BotonAnadir;
     // AÑADIR MASCOTAS
     Texture2D FondoAnadirMascotas;
+    Texture2D FuncionNoDisponible;
     Texture2D BotonPerro;
     Texture2D BotonGato;
+    Texture2D BotonLink;
     // REGISTRAR PERRO
     Texture2D FondoRegPerro;
     Texture2D FondoAvatarPerro;

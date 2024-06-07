@@ -456,6 +456,8 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
             archivos.BotonPerro = LoadTexture("../assets/PetCare_BotonPerro.png");
             archivos.BotonGato = LoadTexture("../assets/PetCare_BotonGato.png");
+            archivos.BotonLink = LoadTexture("../assets/VA/PetCareBotonLink.png");
+            archivos.FuncionNoDisponible = LoadTexture("../assets/VA/PetCareNoDisponible.png");
             break;
         }
         case REGISTRAR_PERRO:
@@ -552,9 +554,11 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
     }
     if(pantalla_actual == CREAR_MASCOTA){
         UnloadTexture(archivos.FondoAnadirMascotas);
+        UnloadTexture(archivos.FuncionNoDisponible);
         UnloadTexture(archivos.BotonAtras);
         UnloadTexture(archivos.BotonPerro);
         UnloadTexture(archivos.BotonGato);
+        UnloadTexture(archivos.BotonLink);
     }
     if(pantalla_actual == REGISTRAR_PERRO){
         UnloadTexture(archivos.FondoRegPerro);
