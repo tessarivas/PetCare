@@ -46,7 +46,7 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
     // Posicion del boton de link
     Vector2 linkV;
     linkV.x=(screenWidth / 2) - ((archivos.BotonLink.width * 0.7) / 2) + 10;
-    linkV.y = screenHeight * 0.80;
+    linkV.y = screenHeight * 0.76;
 
     // hitbox del boton de link
     Rectangle linkC;
