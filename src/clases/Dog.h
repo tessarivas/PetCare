@@ -55,6 +55,8 @@ public:
     void DefineDate(struct Cita *date);
     void addEventDog(Dog*&lista, struct Evento *event,Dog perro);
     void addDateDog(Dog*&lista ,struct Cita *date,Dog perro);
+    void setPeso(float peso);
+    void setPadecimientos(const string& padecimientos);
 };
 
 //--------------------Funciones----------------------//
@@ -197,4 +199,12 @@ string Dog::getPadecimientos(){
 
 void Dog::DefineAvatar(Texture2D textura){
     this->Avatar = textura;
+}
+
+void Dog::setPeso(float peso) {
+    this->Peso = peso;
+}
+
+void Dog::setPadecimientos(const string& padecimientos) {
+    this->Padecimientos = padecimientos;
 }

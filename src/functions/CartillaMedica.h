@@ -26,7 +26,7 @@ int DibujarCartillaMedica(Cita *citas, int screenWidth, int screenHeight);
 
 pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, int screenHeight);
 
-
+void editarTexto(char* text, int maximoLargo);
 
 // ---------------------------------------------------------------------------- //
 
@@ -413,119 +413,84 @@ pair<string, bool> DibujarAgregarCita(Cita **citasAgendadas, int screenWidth, in
      return make_pair("", false); // Si se regresó no se añadio ninguna cita
 }
 
-RegistrarAccionCita DibujarDatosMedicos(Dog perro,const char dueno[] ,int screenWidth,int screenHeight){
+RegistrarAccionCita DibujarDatosMedicos(Dog *perro, const char dueno[], int screenWidth, int screenHeight) {
     int opcion = 0;
 
     RegistrarAccionCita result = CONTINUA;
-    
-    Color trans ={255,0,0,100};
+
+    Color trans = {255, 0, 0, 100};
 
     // FONDO
     Texture2D background = LoadTexture("../assets/PetCare_CartillaMedicaInfo.png");
     Texture2D BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
     Texture2D BotonCitas = LoadTexture("../assets/PetCare_BotonCitas.png");
+    Texture2D BotonMas = LoadTexture("../assets/PetCare_BotonMas.png");
 
     // FUENTE DE LETRA
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
     // NOMBRE
-    Rectangle NombreC;
-    {
-        NombreC.x=screenWidth *0.17;
-        NombreC.y=screenHeight *0.26;
-        NombreC.width=screenWidth*0.72;
-        NombreC.height=screenHeight*0.06;
-    }
+    Rectangle NombreC = {screenWidth * 0.17, screenHeight * 0.26, screenWidth * 0.72, screenHeight * 0.06};
     // RAZA
-    Rectangle RazaC;
-    {
-        RazaC.x=screenWidth *0.17;
-        RazaC.y=screenHeight *0.36;
-        RazaC.width=screenWidth*0.72;
-        RazaC.height=screenHeight*0.06;
-    }
+    Rectangle RazaC = {screenWidth * 0.17, screenHeight * 0.36, screenWidth * 0.72, screenHeight * 0.06};
     // FECHA (DIA/MES/AÑO)
-    Rectangle DiaC;
-    {
-        DiaC.x=screenWidth *0.17;
-        DiaC.y=screenHeight *0.47;
-        DiaC.width=screenWidth*0.23;
-        DiaC.height=screenHeight*0.06;
-    }
-    Rectangle MesC;
-    {
-        MesC.x=screenWidth *0.42;
-        MesC.y=screenHeight *0.47;
-        MesC.width=screenWidth*0.22;
-        MesC.height=screenHeight*0.06;
-    }
-    Rectangle AnioC;
-    {
-        AnioC.x=screenWidth *0.66;
-        AnioC.y=screenHeight *0.47;
-        AnioC.width=screenWidth*0.23;
-        AnioC.height=screenHeight*0.06;
-    }
+    Rectangle DiaC = {screenWidth * 0.17, screenHeight * 0.47, screenWidth * 0.23, screenHeight * 0.06};
+    Rectangle MesC = {screenWidth * 0.42, screenHeight * 0.47, screenWidth * 0.22, screenHeight * 0.06};
+    Rectangle AnioC = {screenWidth * 0.66, screenHeight * 0.47, screenWidth * 0.23, screenHeight * 0.06};
     // PESO
-    Rectangle PesoC;
-    {
-        PesoC.x=screenWidth *0.17;
-        PesoC.y=screenHeight *0.58;
-        PesoC.width=screenWidth*0.23;
-        PesoC.height=screenHeight*0.06;  
-    }
+    Rectangle PesoC = {screenWidth * 0.17, screenHeight * 0.58, screenWidth * 0.23, screenHeight * 0.06};
     // NOMBRE DEL DUEÑO
-    Rectangle DuenoC;
-    {
-        DuenoC.x=screenWidth *0.44;
-        DuenoC.y=screenHeight *0.58;
-        DuenoC.width=screenWidth*0.45;
-        DuenoC.height=screenHeight*0.06;  
-    }
+    Rectangle DuenoC = {screenWidth * 0.44, screenHeight * 0.58, screenWidth * 0.45, screenHeight * 0.06};
     // PADECIMIENTOS
-    Rectangle PadeC;
-    {
-        PadeC.x=screenWidth *0.17;
-        PadeC.y=screenHeight *0.69;
-        PadeC.width=screenWidth*0.72;
-        PadeC.height=screenHeight*0.06;  
-    }
+    Rectangle PadeC = {screenWidth * 0.17, screenHeight * 0.69, screenWidth * 0.72, screenHeight * 0.06};
     // BOTON ATRAS
-    Rectangle atras;
-    atras.width = screenWidth * 0.1;
-    atras.height = screenHeight * 0.05;
-    atras.y = 20;
-    atras.x = 20;
+    Rectangle atras = {20, 20, screenWidth * 0.1, screenHeight * 0.05};
     // BOTON CITAS
-    Rectangle citas;
-    citas.width = screenWidth * 0.55;
-    citas.height = screenHeight * 0.1;
-    citas.y = screenHeight * 0.77;
-    citas.x = (screenWidth / 2) - (citas.width / 2);
-    
+    Rectangle citas = {(screenWidth / 2) - (screenWidth * 0.55 / 2), screenHeight * 0.77, screenWidth * 0.55, screenHeight * 0.1};
+    // BOTON MAS
+    Rectangle mas;
+    mas.x = screenWidth * 0.85;
+    mas.y = screenHeight * 0.03;
+    mas.width = screenWidth * 0.1;
+    mas.height = screenHeight * 0.05;
+    // BORDE ROJO EDITAR PESO
+    Rectangle PesoB = {screenWidth * 0.13, screenHeight * 0.56, screenWidth * 0.23, screenHeight * 0.06};
+    // BORDE ROJO EDITAR PADECIMIENTOS
+    Rectangle PadeB = {screenWidth * 0.13, screenHeight * 0.67, screenWidth * 0.72, screenHeight * 0.06};
+
     Vector2 Mouse;
     Vector2 click;
 
-    while(opcion == 0)
-    {
+    bool editando_peso = false;
+    bool editando_padecimientos = false;
+
+    // textos editables
+    char pesoText[20];
+    snprintf(pesoText, sizeof(pesoText), "%.2f", perro->getPeso());
+    char padecimientosText[100];
+    strncpy(padecimientosText, perro->getPadecimientos().c_str(), sizeof(padecimientosText) - 1);
+    padecimientosText[sizeof(padecimientosText) - 1] = '\0';
+
+    while (opcion == 0) {
         Mouse = GetMousePosition();
         BeginDrawing();
             // Fondo
-            DrawTexture(background,0,0,WHITE);
+            DrawTexture(background, 0, 0, WHITE);
 
-            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 click = Mouse;
+                editando_peso = CheckCollisionPointRec(click, PesoC);
+                editando_padecimientos = CheckCollisionPointRec(click, PadeC);
             }
 
             DrawTexture(BotonAtras, atras.x, atras.y, WHITE);
-            if(CheckCollisionPointRec(click, atras)){
+            if (CheckCollisionPointRec(click, atras)) {
                 result = ATRAS;
                 break;
             }
 
             DrawTexture(BotonCitas, citas.x, citas.y, WHITE);
-            if(CheckCollisionPointRec(click, citas))
-            {
+            if (CheckCollisionPointRec(click, citas)) {
                 result = ADELANTE;
                 break;
             }
@@ -539,21 +504,58 @@ RegistrarAccionCita DibujarDatosMedicos(Dog perro,const char dueno[] ,int screen
             Vector2 duenoPos = {DuenoC.x, DuenoC.y};
             Vector2 padecimientosPos = {PadeC.x, PadeC.y};
 
-            DrawTextEx(fuente, perro.getName().c_str(), nombrePos, 20, 1, BLACK);
-            DrawTextEx(fuente, perro.getRaza().c_str(), razaPos, 20, 1, BLACK);
-            DrawTextEx(fuente, TextFormat("%02i", perro.getDia()), diaPos, 20, 1, BLACK);
-            DrawTextEx(fuente, TextFormat("%02i", perro.getMonth()),mesPos , 20, 1, BLACK);
-            DrawTextEx(fuente, TextFormat("%04i", perro.getYear()), anioPos, 20, 1, BLACK);
-            DrawTextEx(fuente, TextFormat("%.2f kg", perro.getPeso()), pesoPos, 20, 1, BLACK);
-            DrawTextEx(fuente, dueno , duenoPos, 20, 1, BLACK);
-            DrawTextEx(fuente, perro.getPadecimientos().c_str(), padecimientosPos, 20, 1, BLACK);
+            DrawTextEx(fuente, perro->getName().c_str(), nombrePos, 20, 1, BLACK);
+            DrawTextEx(fuente, perro->getRaza().c_str(), razaPos, 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%02i", perro->getDia()), diaPos, 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%02i", perro->getMonth()), mesPos, 20, 1, BLACK);
+            DrawTextEx(fuente, TextFormat("%04i", perro->getYear()), anioPos, 20, 1, BLACK);
+            DrawTextEx(fuente, dueno, duenoPos, 20, 1, BLACK);
+
+            if (editando_peso){
+                editarTexto(pesoText, sizeof(pesoText) - 1);
+                DrawRectangleLinesEx(PesoB, 6, RED);
+            }
+            DrawTextEx(fuente, pesoText, pesoPos, 20, 1, BLACK);
+
+            if (editando_padecimientos) {
+                editarTexto(padecimientosText, sizeof(padecimientosText) - 1);
+                DrawRectangleLinesEx(PadeB, 6, RED);
+            }
+            DrawTextEx(fuente, padecimientosText, padecimientosPos, 20, 1, BLACK);
+
+            // BOTON PARA ACTUALIZAR LOS DATOS DE PESO Y PADEC
+            DrawTexture(BotonMas, mas.x, mas.y, WHITE);
+            if (CheckCollisionPointRec(click, mas)) {
+                // Logica pa actualizar los datos
+                perro->setPeso(atof(pesoText));  // Actualiza el peso del perro
+                perro->setPadecimientos(padecimientosText);  // Actualiza los padecimientos del perro
+            }
 
         EndDrawing();
     }
-    
+
     UnloadTexture(background);
     UnloadTexture(BotonAtras);
     UnloadTexture(BotonCitas);
+    UnloadTexture(BotonMas);
     return result;
 }
 
+void editarTexto(char* text, int maximoLargo) 
+{
+    int key = GetKeyPressed();
+    while (key > 0) 
+    {
+        if ((key >= 32) && (key <= 125) && (strlen(text) < maximoLargo)) 
+        {
+            int len = strlen(text);
+            text[len] = (char)key;
+            text[len + 1] = '\0';
+        }
+        if (key == KEY_BACKSPACE && strlen(text) > 0) 
+        {
+            text[strlen(text) - 1] = '\0';
+        }
+        key = GetKeyPressed();
+    }
+}

@@ -79,7 +79,7 @@ int main()
     Image icono = LoadImage("../assets/PetCare_LOGO.png");
     SetWindowIcon(icono);
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = CARTILLA_MEDICA_DATOS;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos
@@ -341,7 +341,7 @@ int main()
             case CARTILLA_MEDICA_DATOS:
             {
                 const char *dueno = user.UserName.c_str();
-                RegistrarAccionCita result = DibujarDatosMedicos(perro,dueno, ANCHO, ALTO);
+                RegistrarAccionCita result = DibujarDatosMedicos(&perro, dueno, ANCHO, ALTO);
                 // CAMBIO DE PANTALLA DEPENDE LA SELECCION
                 if (result == ADELANTE) 
                 {
