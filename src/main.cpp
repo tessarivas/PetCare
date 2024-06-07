@@ -786,39 +786,47 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
     bool seleccion = false; // Pantalla siguiente
     Pantalla nuevaPantalla = MI_PERFIL;
     
-    // AVATAR MASCOTA
-    Vector2 AvatarPos;
-    AvatarPos.x = screenWidth * 0.2;
-    AvatarPos.y = screenHeight * 0.9;
     // BOTON ATRAS
     Rectangle atras;
     atras.width = screenWidth * 0.1;
     atras.height = screenHeight * 0.05;
     atras.y = 20;
     atras.x = 20;
+    
     // BOTON INFO
     Rectangle info;
     info.x = screenWidth * 0.17;
     info.y = screenHeight * 0.27;
     info.width = screenWidth * 0.6;
     info.height = screenHeight * 0.1;
+    
     // BOTON CARTILLA
     Rectangle cartilla;
     cartilla.x = screenWidth * 0.17;
     cartilla.y = screenHeight * 0.27;
     cartilla.width = screenWidth * 0.6;
     cartilla.height = screenHeight * 0.18;
+    
     // BOTON CALENDARIO
     Rectangle calendario;
     calendario.x = screenWidth * 0.17;
     calendario.y = screenHeight * 0.50;
     calendario.width = screenWidth * 0.6;
     calendario.height = screenHeight * 0.18;
+    
     // POSICION DEL TEXTO DE LA MASCOTA
     const char * mascota = perro.Nombre.c_str(); // Transformar a cadena
+    
+    int mascotaSize=MeasureText(mascota,26);
+    
     Vector2 mascotaPos;
-    mascotaPos.x = screenWidth * 0.4;
+    mascotaPos.x = (screenWidth / 2) - (mascotaSize / 2);
     mascotaPos.y = screenHeight * 0.92;
+
+    // AVATAR MASCOTA
+    Vector2 AvatarPos;
+    AvatarPos.x = mascotaPos.x - 80;
+    AvatarPos.y = screenHeight * 0.9;
 
     Vector2 Mouse;
     Vector2 LastClick;
