@@ -789,7 +789,7 @@ pair<Pantalla, bool> MiPerfil(Cargas archivos, int screenWidth, int screenHeight
     // AVATAR MASCOTA
     Vector2 AvatarPos;
     AvatarPos.x = screenWidth * 0.2;
-    AvatarPos.y = screenHeight * 0.91;
+    AvatarPos.y = screenHeight * 0.9;
     // BOTON ATRAS
     Rectangle atras;
     atras.width = screenWidth * 0.1;

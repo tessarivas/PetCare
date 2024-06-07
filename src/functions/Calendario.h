@@ -613,7 +613,7 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
 
     // Cuadro del evento por separado
     Rectangle c_eventos;
-    c_eventos.width=screenWidth*0.7;
+    c_eventos.width=screenWidth*0.75;
     c_eventos.height=screenHeight*0.1;
     c_eventos.x=(screenWidth - c_eventos.width)/2;
     c_eventos.y=screenHeight * 0.32;

@@ -94,25 +94,38 @@ int DibujarCartillaMedica(Cita *citas, int screenWidth, int screenHeight)
 
         int x = 40;
         int y = 270; // Posición inicial en Y para imprimir las citas
-        Vector2 Posicion = {x, y};
-        Vector2 Posicion2 = {x, y + 20};
-        Vector2 Posicion3 = {x, y + 40};
-        Vector2 Posicion4 = {x, y + 60};
+        int marginX = 10; // Margen en X para el texto dentro del rect
+        int marginY = 7; // Margen en Y para el texto dentro del rect
+
+        Vector2 Posicion = {x + marginX, y + marginY};
+        Vector2 Posicion2 = {x + marginX, y + 20 + marginY};
+        Vector2 Posicion3 = {x + marginX, y + 40 + marginY};
+        Vector2 Posicion4 = {x + marginX, y + 60 + marginY};
         Cita* temp = citas;
+
+        Color fondoColor = {245, 246, 243, 255};
+        int rectWidth = screenWidth - 80; 
+        int rectHeight = 100; 
+
         while (temp != nullptr) {
+            Rectangle rect = {x, y, rectWidth, rectHeight};
+            DrawRectangleRec(rect, fondoColor);
+            
             DrawTextEx(fuente, temp->titulo.c_str(), Posicion, 25, 0, BLACK);
             DrawTextEx(fuente, temp->descripcion.c_str(), Posicion2, 25, 0, BLACK); 
-            // Convertir la fecha a una cadena 
+
             std::string fecha = "Fecha: " + std::to_string(temp->dia) + "/" + std::to_string(temp->mes);
             DrawTextEx(fuente, fecha.c_str(), Posicion3, 25, 0, BLACK);
             std::string tipo = temp->esVacuna ? "Tipo: Vacuna" : "Tipo: Revision";
             DrawTextEx(fuente, tipo.c_str(), Posicion4, 25, 0, BLACK);
+
             temp = temp->siguiente;
-            y += 100; // Ajustar la posición en Y para la siguiente cita
-            Posicion.y = y;
-            Posicion2.y = y + 20;
-            Posicion3.y = y + 40;
-            Posicion4.y = y + 60;
+
+            y += 120; // Ajustar la distancia entre citas
+            Posicion.y = y + marginY;
+            Posicion2.y = y + 20 + marginY;
+            Posicion3.y = y + 40 + marginY;
+            Posicion4.y = y + 60 + marginY;
         }
 
         EndDrawing();
