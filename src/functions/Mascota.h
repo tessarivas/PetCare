@@ -546,13 +546,17 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,Usuario user,int screenWidth,
     DogBox.width=screenWidth *0.85;
     DogBox.height=screenHeight *0.12;
 
-    Vector2 UserAvatarV;
-    UserAvatarV.x=screenWidth *0.17;
-    UserAvatarV.y=screenHeight *0.90;
-    
+    // texto del nombre del dueno
+    int nameSize= MeasureText(user.UserName.c_str(),20);
+
     Vector2 UserNameV;
-    UserNameV.x=screenWidth *0.34;
+    UserNameV.x=(screenWidth / 2) - (nameSize/2);
     UserNameV.y=screenHeight *0.93;
+
+    // Posicion del avatar del dueno
+    Vector2 UserAvatarV;
+    UserAvatarV.x=UserNameV.x-80;
+    UserAvatarV.y=screenHeight *0.90;
 
     Dog selected;
 
@@ -633,7 +637,7 @@ Dog DibujarMisMascotas(Cargas archivos, Dog *lista,Usuario user,int screenWidth,
 
             const char *nombre = user.UserName.c_str();
             
-            DrawTextEx(fuente,nombre,UserNameV,24,1,BLACK);
+            DrawTextEx(fuente,nombre,UserNameV,32,1,BLACK);
             
         EndDrawing();
     }
