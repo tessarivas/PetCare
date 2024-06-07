@@ -566,7 +566,6 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                     if(CheckCollisionPointRec(lastclick,test)){
                         DiaSeleccionado=i;
                         clickCuadroDia=i;
-                        cout<<"DIA "<< DiaSeleccionado<<endl;
                     }
                     
                     wi=wi+0.13;
@@ -575,11 +574,11 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
         
         EndDrawing();
     }
-    UnloadTexture(fondo);
-    UnloadTexture(nextm);
-    UnloadTexture(prevM);
-    UnloadTexture(botonAgregar);
-    UnloadFont(fuente);
+    // UnloadTexture(fondo);
+    // UnloadTexture(nextm);
+    // UnloadTexture(prevM);
+    // UnloadTexture(botonAgregar);
+    // UnloadFont(fuente);
     return temp;
 }
 
@@ -592,17 +591,6 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     title.height = screenHeight *0.1;
     title.x=(screenWidth - title.width) / 2;
     title.y= screenHeight*0.1;
-
-    // Vector2 titlePos;
-    // titlePos.x=title.x;
-    // titlePos.y=title.y;
-
-    // Cuadro donde se imprimiran los eventos
-    // Rectangle c_events;
-    // c_events.x=screenWidth*0.1;
-    // c_events.y=screenHeight*0.3;
-    // c_events.width=screenWidth*0.8;
-    // c_events.height=screenHeight*0.6;
     
     // Cantidad de eventos a imprimir
     int count_events=0;
@@ -669,8 +657,6 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
     
     Color BlancoOscuro={250,171,17,255};
-    
-    // Texture2D title_calendario=LoadTexture("../assets/PetCare_CalendarioTope.png");
 
     // temporales extra
     char tempDay[20];
@@ -696,7 +682,7 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
         
         while(temp != nullptr){
             // Dibujamos el cuadro
-            DrawRectangleRec(c_eventos,BlancoOscuro);
+            // DrawRectangleRec(c_eventos,BlancoOscuro);
             // Dibujamos el texto
             // titulo
                 DrawTextEx(fuente,temp->title,text_events,32,1,BLACK);
@@ -738,9 +724,6 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
             temp=temp->next;
         }
 
-        // Salir Rectangulo
-        // DrawRectangleRec(salir,BLUE);
-        // Salir
         DrawTextureEx(Boton_atras,salirPos,0.0f,1.0f,WHITE);
 
         if(CheckCollisionPointRec(click,salir)){
@@ -749,8 +732,8 @@ void DibujarEventos(struct Evento *events,int screenWidth,int screenHeight){
         
     EndDrawing();
     }
-    UnloadTexture(fondo);
-    UnloadFont(fuente);
-    UnloadTexture(Boton_atras);
+    // UnloadTexture(fondo);
+    // UnloadFont(fuente);
+    // UnloadTexture(Boton_atras);
 
 }
