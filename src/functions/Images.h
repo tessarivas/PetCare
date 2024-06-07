@@ -69,6 +69,8 @@ typedef struct Cargas{
     
     Texture2D BotonCompartir;
 
+    Texture2D FondoGenero;
+
     // Fondo predeteminado
     Texture2D Background;
     // Posicion predeteminada

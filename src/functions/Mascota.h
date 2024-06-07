@@ -14,6 +14,7 @@ int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight);
 RegistrarDogResult RegistrarDog(Cargas archivos, int screenWidth,int screenHeight, Dog &temp_dog);
 Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeight);
 Dog DibujarMisMascotas(Cargas archivos, Dog *lista,Usuario user,int screenWidth, int screenHeight);
+string SeleccionarGenero(Cargas archivos,int screenWidth,int screenHeight);
 
 // --------- FUNCIONES ----------- //
 int DibujarCrearMascota(Cargas archivos, int screenWidth, int screenHeight){
@@ -729,4 +730,46 @@ Texture2D SeleccionarAvatarPerro(Cargas archivos,int screenWidth, int screenHeig
 
     // Retornar la textura del avatar seleccionado
     return avatarPerroTextura[avatarSeleccionado];
+}
+
+string SeleccionarGenero(Cargas archivos,int screenWidth,int screenHeight){
+    bool finish = false;
+
+    Rectangle FemeninoC;
+    FemeninoC.x=screenWidth *0.15;
+    FemeninoC.y=screenHeight *0.32;
+    FemeninoC.width = screenWidth *0.7;
+    FemeninoC.height = screenHeight *0.12;
+
+    Rectangle MasculinoC;
+    MasculinoC.x=screenWidth *0.15;
+    MasculinoC.y=screenHeight *0.60;
+    MasculinoC.width = screenWidth *0.7;
+    MasculinoC.height = screenHeight *0.12;
+
+    Vector2 Mouse;
+    Vector2 Click;
+
+    while(finish == false){
+        BeginDrawing();
+            Mouse=GetMousePosition();
+            
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                Click=Mouse;
+            }
+
+            DrawTexture(archivos.FondoGenero,0,0,WHITE);
+            
+            if(CheckCollisionPointRec(Click,FemeninoC)){
+                string F = "F";
+                return F;
+            }
+            
+            if(CheckCollisionPointRec(Click,MasculinoC)){
+                string M = "M";
+                return M;
+            }            
+
+        EndDrawing();
+    }
 }

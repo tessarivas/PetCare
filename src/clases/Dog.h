@@ -25,6 +25,7 @@ public:
     //Datos medicos
     float Peso;
     string Padecimientos;
+    string Genero;
     Texture2D Avatar;
 
     Dog *next, *prev;
@@ -53,6 +54,8 @@ public:
     void add(Dog *&lista, string name, string raza, int dia, int mes , int anio, float peso, string padecimientos,Texture2D avatar);
     void DefineEvents(struct Evento *event);
     void DefineDate(struct Cita *date);
+    void DefineGen(string gen);
+
     void addEventDog(Dog*&lista, struct Evento *event,Dog perro);
     void addDateDog(Dog*&lista ,struct Cita *date,Dog perro);
     void setPeso(float peso);
@@ -64,11 +67,15 @@ public:
 Dog::Dog(){
     this->Nombre = "GoldenIsaac";
     this->Raza = "Golden Retriever";
+    
     this->Dia = 1;
     this->Mes = 1;
     this->Anio = 2024;
+    
     this->Peso = 5.2;
     this->Padecimientos = "Ninguno";
+    this->Genero="Masculino";
+
     this->event=nullptr;
     this->date=nullptr;
     this->next=nullptr;
@@ -166,6 +173,10 @@ void Dog:: DefineEvents(struct Evento *event){
 
 void Dog:: DefineDate(struct Cita *date){
     this->date=date;
+}
+
+void Dog::DefineGen(string gen){
+    this->Genero=gen;
 }
 
 // Gets

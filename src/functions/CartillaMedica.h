@@ -421,7 +421,7 @@ RegistrarAccionCita DibujarDatosMedicos(Dog *perro, const char dueno[], int scre
     Color trans = {255, 0, 0, 100};
 
     // FONDO
-    Texture2D background = LoadTexture("../assets/PetCare_CartillaMedicaInfo.png");
+    Texture2D background = LoadTexture("../assets/VA/PetCareCartillaMedicaDatos.png");
     Texture2D BotonAtras = LoadTexture("../assets/PetCare_BotonAtras.png");
     Texture2D BotonCitas = LoadTexture("../assets/PetCare_BotonCitas.png");
     Texture2D BotonMas = LoadTexture("../assets/PetCare_BotonMas.png");
@@ -430,7 +430,7 @@ RegistrarAccionCita DibujarDatosMedicos(Dog *perro, const char dueno[], int scre
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
 
     // NOMBRE
-    Rectangle NombreC = {screenWidth * 0.17, screenHeight * 0.26, screenWidth * 0.72, screenHeight * 0.06};
+    Rectangle NombreC = {screenWidth * 0.17, screenHeight * 0.255, screenWidth * 0.72, screenHeight * 0.06};
     // RAZA
     Rectangle RazaC = {screenWidth * 0.17, screenHeight * 0.36, screenWidth * 0.72, screenHeight * 0.06};
     // FECHA (DIA/MES/AÑO)
@@ -496,6 +496,7 @@ RegistrarAccionCita DibujarDatosMedicos(Dog *perro, const char dueno[], int scre
             }
 
             Vector2 nombrePos = {NombreC.x, NombreC.y};
+            Vector2 genPos = {screenWidth*0.72, NombreC.y};
             Vector2 razaPos = {RazaC.x, RazaC.y};
             Vector2 diaPos = {DiaC.x, DiaC.y};
             Vector2 mesPos = {MesC.x, MesC.y};
@@ -505,6 +506,7 @@ RegistrarAccionCita DibujarDatosMedicos(Dog *perro, const char dueno[], int scre
             Vector2 padecimientosPos = {PadeC.x, PadeC.y};
 
             DrawTextEx(fuente, perro->getName().c_str(), nombrePos, 20, 1, BLACK);
+            DrawTextEx(fuente,perro->Genero.c_str(),genPos,20,1,BLACK);
             DrawTextEx(fuente, perro->getRaza().c_str(), razaPos, 20, 1, BLACK);
             DrawTextEx(fuente, TextFormat("%02i", perro->getDia()), diaPos, 20, 1, BLACK);
             DrawTextEx(fuente, TextFormat("%02i", perro->getMonth()), mesPos, 20, 1, BLACK);

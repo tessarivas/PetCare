@@ -34,10 +34,6 @@ typedef enum Pantalla{
     INICIAR_SESION,
     // Nombre de usuario, contraseña
     NUEVO_USUARIO1,
-    // Correo electronico y numero de celular
-    NUEVO_USUARIO2,
-    // Nombre real, apellidos y Fecha de nacimiento
-    NUEVO_USUARIO3,
     // Avatares
     CREAR_DUENO, 
     // Lista de mascotas
@@ -46,6 +42,7 @@ typedef enum Pantalla{
     CREAR_MASCOTA,
     REGISTRAR_PERRO,
     REGISTRAR_GATO,
+    GENERO,
     // AVATAR
     AVATAR_PERRO,
     AVATAR_GATO,
@@ -70,7 +67,6 @@ pair<Texture2D, bool> DibujarSeleccionDeAvatar(Cargas archivos,int screenWidth,i
 pair<Pantalla, bool> MiPerfil(Cargas archivos,int screenWidth, int screenHeight, Dog perro);
 //---------------------------------------------------------------------------------//
 
-// INT MAIN, MANEJO DE CASOS, ETC...
 int main()
 {
     // Ventana
@@ -79,7 +75,7 @@ int main()
     Image icono = LoadImage("../assets/PetCare_LOGO.png");
     SetWindowIcon(icono);
     // Iniciar pantallas
-    Pantalla pantalla_actual = INICIO;
+    Pantalla pantalla_actual = GENERO;
     Cargas fondo_actual;
     fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
     // Eventos
@@ -257,7 +253,7 @@ int main()
                 user.DefineMascota(lista);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
-                pantalla_actual = MI_PERFIL;
+                pantalla_actual = GENERO;
                 
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
                 break;
@@ -272,9 +268,17 @@ int main()
                 user.DefineMascota(lista);
 
                 // DescargarContenido(pantalla_actual,fondo_actual);
-                pantalla_actual = MI_PERFIL;
+                pantalla_actual = GENERO;
 
                 fondo_actual = CargarContenido(pantalla_actual, fondo_actual);
+                break;
+            }
+            case GENERO:
+            {
+                fondo_actual = (pantalla_actual,fondo_actual);
+                    perro.Genero = SeleccionarGenero(fondo_actual,ANCHO,ALTO);
+                DescargarContenido(pantalla_actual, fondo_actual);
+                pantalla_actual=MI_PERFIL;
                 break;
             }
             case MI_PERFIL:
@@ -474,6 +478,11 @@ Cargas CargarContenido(Pantalla actual, Cargas archivos){
             archivos.BotonAdelante = LoadTexture("../assets/PetCare_BotonAdelante.png");
             break;
         }
+        case GENERO:
+        {
+            archivos.FondoGenero=LoadTexture("../assets/VA/PetCareGenero.png");
+            break;
+        }
         case AVATAR_PERRO:
         {
             archivos.Background = LoadTexture("../assets/PetCare_MiPerroAvatar.png");
@@ -571,6 +580,9 @@ void DescargarContenido(Pantalla pantalla_actual, Cargas archivos){
         UnloadTexture(archivos.FondoRegGato);
         UnloadTexture(archivos.BotonAtras);
         UnloadTexture(archivos.BotonAdelante);
+    }
+    if(pantalla_actual== GENERO){
+        UnloadTexture(archivos.FondoGenero);
     }
     if(pantalla_actual == AVATAR_PERRO){
         UnloadTexture(archivos.FondoAvatarPerro);
