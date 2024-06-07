@@ -480,7 +480,13 @@ Evento *DibujarCalendario(int screenWidth, int screenHeight, struct Evento *even
                 }
 
                 if ((i - 1) == clickCuadroDia) {
-                    DrawRectangleRec(test, ORANGE); 
+                    if(daySelected == true){
+                        DrawRectangleRec(test, ORANGE); 
+                    }
+                    else
+                    {
+                        DrawRectangleRec(test, WHITE);
+                    }
                 } else {
                     DrawRectangleRec(test, WHITE);
                 }

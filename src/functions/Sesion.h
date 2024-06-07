@@ -105,6 +105,9 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
     bool namefull=false;
     bool pasfull=false;
 
+    char hidePas[MaxCharacter+1];
+    int hideCount=0;
+
     while(finish == false){
         Mouse= GetMousePosition();
         BeginDrawing();
@@ -148,7 +151,8 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
             }
 
             // Contraseña
-            DrawTextEx(fuente,pas,PasV,24,1.0,BLACK);
+
+            DrawTextEx(fuente,hidePas,PasV,24,1.0,BLACK);
 
             // ------ texto de contraseña ------ //
             if(CheckCollisionPointRec(Click,PasC)){
@@ -160,6 +164,13 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
                         pas[pasCount] = (char)key; 
                         pas[pasCount+1] = '\0'; 
                         pasCount++; 
+                        
+
+                        int simb=42;
+                        hidePas[hideCount] = (char)simb;
+                        hidePas[hideCount+1] = '\0';
+                        hideCount++;
+                        
                         pasfull = true;
                     }
                     key = GetCharPressed();  
@@ -171,6 +182,9 @@ Usuario IniciarSesion(int screenWidth,int screenHeight){
                     }
                     if (pasCount <= 0){
                     } else{
+                        hideCount--;
+                        hidePas[hideCount] = '\0';
+                        
                         pasCount--;   
                         pas[pasCount] = '\0'; 
                     }
@@ -315,6 +329,15 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
     bool pasfull = false;
     bool pas2full = false;
 
+    int simbolo = 42;
+
+    char hidePas[MaxCharacter +1]= {""};
+    int hideCount = 0;
+    
+    char hidePas2[MaxCharacter +1]= {""};
+    int hideCount2 = 0;
+    
+
     while (finish1 == false)
     {
         Mouse = GetMousePosition();
@@ -360,7 +383,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
             }
             
             // ------- Contrasenia ------- //
-            DrawTextEx(fuente,pas,pasV,24,1,BLACK);
+            DrawTextEx(fuente,hidePas,pasV,24,1,BLACK);
 
             if(CheckCollisionPointRec(Click,PasC))
             {
@@ -372,6 +395,11 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         pas[pasCount] = (char)key;
                         pas[pasCount+1] = '\0'; 
                         pasCount++; 
+
+                        hidePas[hideCount] = (char)simbolo;
+                        hidePas[hideCount+1];
+                        hideCount++;
+
                         pasfull=true;
                     }
                     key = GetCharPressed(); 
@@ -383,6 +411,9 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                     }
                     if (pasCount <= 0){
                     } else{
+                        hideCount--;
+                        hidePas[hideCount]='\0';
+
                         pasCount--;   
                         pas[pasCount] = '\0'; 
                     }
@@ -390,7 +421,7 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
             }
             
             // ------- Confirmar Contrasenia ------- //
-            DrawTextEx(fuente,pascon,pas2V,24,1,BLACK);
+            DrawTextEx(fuente,hidePas2,pas2V,24,1,BLACK);
 
             if(CheckCollisionPointRec(Click,Pas2C))
             {
@@ -402,6 +433,11 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                         pascon[pasconCount] = (char)key;
                         pascon[pasconCount+1] = '\0'; 
                         pasconCount++; 
+
+                        hidePas2[hideCount2]= (char)simbolo;
+                        hidePas2[hideCount2 +1]= '\0';
+                        hideCount2++;
+                        
                         pas2full=true;
                     }
                     key = GetCharPressed(); 
@@ -413,6 +449,9 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
                     }
                     if (pasconCount <= 0){
                     } else{
+                        hideCount2--;
+                        hidePas2[hideCount2];
+
                         pasconCount--;   
                         pascon[pasconCount] = '\0'; 
                     }
@@ -759,9 +798,6 @@ Usuario RegistrarUsuario(int screenWidth, int screenHeight){
 
             // ----- Dia ----- //
             if(CheckCollisionPointRec(Click,DiaC)){
-                // se ilumina el cuadro que selecciono
-                DrawRectangleRec(DiaC,selected);
-                
                 int key = GetCharPressed();
                 while (key > 0) 
                 {
